@@ -1,34 +1,26 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Paperclip, 
   ArrowUp, 
   Globe, 
   Sparkles, 
-  Atom, 
-  Compass, 
-  PlusSquare, 
-  SlidersHorizontal,
-  ChevronDown,
-  Volume2,
-  Scan,
-  Radio,
-  Scale,
-  Mic,
-  MicOff
+  Scale, 
+  BookOpen, 
+  ShieldCheck, 
+  Mic, 
+  MicOff,
+  ExternalLink,
+  Search,
+  FileText,
+  BadgeCheck
 } from 'lucide-react';
+import { OFFICIAL_SOURCES, SAMPLE_BANGLADESH_QUESTIONS, BANGLADESH_CORE_STATUTES } from '../data/bangladeshLaws';
 
 export default function WhizzyHomeView({ 
   onSendMessage, 
-  currentContract, 
   selectedModel, 
   setSelectedModel 
 }) {
   const [input, setInput] = useState('');
-  const [directChatMode, setDirectChatMode] = useState('Direct Chat');
-  const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
-  const [isModeDropdownOpen, setIsModeDropdownOpen] = useState(false);
-
-  // Real-time voice dictation
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
 
@@ -38,7 +30,7 @@ export default function WhizzyHomeView({
       const recognition = new SpeechRecognition();
       recognition.continuous = false;
       recognition.interimResults = true;
-      recognition.lang = 'en-US';
+      recognition.lang = 'bn-BD'; // Default to Bangla, also understands mixed English
 
       recognition.onresult = (event) => {
         const transcript = Array.from(event.results)
@@ -81,226 +73,157 @@ export default function WhizzyHomeView({
     }
   };
 
-  const quickPills = [
-    {
-      id: 'think-bigger',
-      label: 'Think Bigger',
-      icon: (
-        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M12 2v4m0 12v4M2 12h4m12 0h4m-3.5-6.5-2.8 2.8m-7.4 7.4-2.8 2.8m0-13 2.8 2.8m7.4 7.4 2.8 2.8" />
-        </svg>
-      ),
-      query: `Analyze ${currentContract.title} for systemic commercial vulnerabilities and disproportionate indemnification exposure.`
-    },
-    {
-      id: 'deep-research',
-      label: 'Deep Research',
-      icon: <Globe className="w-3.5 h-3.5" />,
-      query: `Run deep research on Delaware UCC Section 2-719 enforceability regarding the 1-month liability cap in ${currentContract.title}.`
-    },
-    {
-      id: 'more',
-      label: 'More',
-      icon: <PlusSquare className="w-3.5 h-3.5" />,
-      query: `Provide an executive 3-bullet summary of ${currentContract.title} for the CEO before signing.`
-    }
-  ];
-
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-4 relative select-none min-h-[580px]">
+    <div className="flex-1 flex flex-col items-center justify-center px-4 sm:px-6 py-8 relative overflow-y-auto select-none bg-radial from-emerald-50/30 via-white to-white">
       
-      {/* Stepped Translucent Cyan Pillars at Bottom (Whizzy Signature) */}
-      <div className="whizzy-pillars">
-        <div className="whizzy-pillar h-16 opacity-30" />
-        <div className="whizzy-pillar h-24 opacity-50" />
-        <div className="whizzy-pillar h-36 opacity-70" />
-        <div className="whizzy-pillar h-48 opacity-85" />
-        <div className="whizzy-pillar h-56 opacity-95" />
-        <div className="whizzy-pillar h-48 opacity-85" />
-        <div className="whizzy-pillar h-36 opacity-70" />
-        <div className="whizzy-pillar h-24 opacity-50" />
-        <div className="whizzy-pillar h-16 opacity-30" />
+      {/* Decorative subtle header badge */}
+      <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold mb-6 shadow-2xs">
+        <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        <span>Bangladesh Legal RAG Copilot</span>
+        <span className="text-[10px] bg-white px-1.5 py-0.5 rounded-full border border-emerald-200 font-mono text-emerald-700">
+          5-Agent Pipeline
+        </span>
       </div>
 
-      {/* Main Center Content */}
-      <div className="w-full max-w-2xl mx-auto flex flex-col items-center -mt-12 z-10">
-        
-        {/* Editorial Serif Headline */}
-        <h1 className="font-editorial text-4xl sm:text-[46px] font-bold text-slate-900 tracking-tight text-center mb-8">
-          What can I do for you today?
+      {/* Main Title & Bilingual Tagline */}
+      <div className="text-center max-w-2xl mx-auto space-y-2 mb-8">
+        <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-slate-900 font-serif">
+          Bangladesh Legal Copilot
         </h1>
-
-        {/* Central Search / Prompt Card */}
-        <div className="w-full whizzy-input-card rounded-[22px] p-4 transition-all">
-          
-          {/* Text Area */}
-          <textarea
-            rows={3}
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={handleKeyDown}
-            placeholder={isListening ? "Listening to your voice..." : "What do you want to know..."}
-            className={`w-full bg-transparent border-0 text-sm sm:text-base text-slate-800 placeholder-slate-400 focus:outline-none resize-none px-1 py-1 ${
-              isListening ? 'animate-pulse text-teal-700 font-medium' : ''
-            }`}
-          />
-
-          {/* Action Row Inside Card */}
-          <div className="flex items-center justify-between pt-2">
-            
-            {/* Left Tools & Pills */}
-            <div className="flex items-center gap-2 flex-wrap">
-              {/* Paperclip Button */}
-              <button 
-                type="button"
-                className="w-8 h-8 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white flex items-center justify-center text-slate-600 transition shadow-2xs"
-                title="Attach Document or Contract"
-              >
-                <Paperclip className="w-3.5 h-3.5" />
-              </button>
-
-              {/* Think Bigger Pill */}
-              <button
-                type="button"
-                onClick={() => setInput(quickPills[0].query)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
-              >
-                {quickPills[0].icon}
-                <span>Think Bigger</span>
-              </button>
-
-              {/* Deep Research Pill */}
-              <button
-                type="button"
-                onClick={() => setInput(quickPills[1].query)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
-              >
-                {quickPills[1].icon}
-                <span>Deep Research</span>
-              </button>
-
-              {/* More Pill */}
-              <button
-                type="button"
-                onClick={() => setInput(quickPills[2].query)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
-              >
-                {quickPills[2].icon}
-                <span>More</span>
-              </button>
-            </div>
-
-            {/* Right Action Icons */}
-            <div className="flex items-center gap-2 shrink-0">
-              {/* Voice Dictation Button */}
-              <button 
-                type="button"
-                onClick={toggleVoiceListening}
-                className={`w-8 h-8 rounded-full border flex items-center justify-center transition shadow-2xs ${
-                  isListening 
-                    ? 'border-rose-400 bg-rose-50 text-rose-600 animate-bounce' 
-                    : 'border-slate-200/90 hover:border-slate-300 bg-white text-slate-600'
-                }`}
-                title={isListening ? "Stop listening" : "Real-time Voice Dictation"}
-              >
-                {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
-              </button>
-
-              {/* Teal Up-Arrow Send Button */}
-              <button
-                type="button"
-                onClick={handleSubmit}
-                disabled={!input.trim()}
-                className="w-8 h-8 rounded-full bg-teal-600 hover:bg-teal-700 disabled:opacity-30 text-white flex items-center justify-center transition shadow-xs"
-                title="Send query"
-              >
-                <ArrowUp className="w-4 h-4 stroke-[2.5]" />
-              </button>
-            </div>
-
-          </div>
-
+        <p className="text-sm sm:text-base text-slate-600 font-medium leading-relaxed">
+          বাংলাদেশের সংবিধান, আইন ও সংবিধিবদ্ধ বিধিবিধান অনুসন্ধানের নির্ভুল এআই সহায়ক
+        </p>
+        <div className="flex items-center justify-center gap-3 text-xs text-slate-500 pt-1">
+          <span className="flex items-center gap-1 text-emerald-700 font-semibold">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            Zero Hallucination
+          </span>
+          <span>•</span>
+          <a 
+            href={OFFICIAL_SOURCES.portalUrl} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-emerald-700 hover:underline flex items-center gap-0.5"
+          >
+            bdlaws.minlaw.gov.bd
+            <ExternalLink className="w-2.5 h-2.5" />
+          </a>
+          <span>•</span>
+          <a 
+            href={OFFICIAL_SOURCES.masterPdfPath} 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-emerald-700 hover:underline flex items-center gap-0.5"
+          >
+            Master Legal PDF (429p)
+            <ExternalLink className="w-2.5 h-2.5" />
+          </a>
         </div>
+      </div>
 
-        {/* Sub-bar Below Card */}
-        <div className="w-full flex items-center justify-between px-2 pt-3 text-xs text-slate-500">
+      {/* Main Chat Input Box */}
+      <div className="w-full max-w-3xl bg-white rounded-2xl border border-slate-200/90 shadow-lg hover:border-slate-300 focus-within:border-emerald-500 focus-within:ring-2 focus-within:ring-emerald-500/20 transition-all p-3 sm:p-4 mb-8">
+        <textarea
+          rows={3}
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={handleKeyDown}
+          placeholder="আপনার আইনি প্রশ্ন বাংলায় বা ইংরেজিতে লিখুন... (যেমন: চেক ডিজঅনার নোটিশ, জিডি ও এফআইআরের পার্থক্য, আয়কর রিটার্ন বা উত্তরাধিকার বণ্টন বিধান)"
+          className="w-full resize-none border-0 bg-transparent text-sm sm:text-base text-slate-800 placeholder-slate-400 focus:outline-none select-text leading-relaxed"
+        />
+
+        <div className="flex items-center justify-between pt-2 border-t border-slate-100 mt-2">
           
-          {/* Left: Direct Chat Dropdown */}
-          <div className="relative">
+          {/* Left action: Voice Dictation */}
+          <div className="flex items-center gap-2">
             <button
-              onClick={() => setIsModeDropdownOpen(!isModeDropdownOpen)}
-              className="flex items-center gap-1.5 text-slate-700 font-medium hover:text-slate-900 transition"
+              type="button"
+              onClick={toggleVoiceListening}
+              className={`p-2 rounded-xl text-xs font-medium flex items-center gap-1.5 transition ${
+                isListening 
+                  ? 'bg-rose-50 text-rose-600 border border-rose-200 animate-pulse' 
+                  : 'text-slate-500 hover:text-slate-800 hover:bg-slate-100'
+              }`}
+              title={isListening ? "Listening... Click to stop" : "Voice dictation (Bangla & English)"}
             >
-              {/* Waveform icon */}
-              <div className="flex items-center gap-0.5 text-teal-600">
-                <span className="w-0.5 h-2.5 bg-current rounded-full animate-pulse" />
-                <span className="w-0.5 h-4 bg-current rounded-full" />
-                <span className="w-0.5 h-2 bg-current rounded-full" />
-                <span className="w-0.5 h-3 bg-current rounded-full" />
-              </div>
-              <span>{directChatMode}</span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+              {isListening ? <MicOff className="w-4 h-4 text-rose-600" /> : <Mic className="w-4 h-4 text-slate-500" />}
+              <span className="text-xs hidden sm:inline">{isListening ? 'Listening...' : 'ভয়েস টাইপ'}</span>
             </button>
 
-            {isModeDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-44 bg-white border border-slate-200 rounded-xl shadow-lg p-1 z-30">
-                {['Direct Chat', 'Contract Deep Audit', 'Clause Redlining', 'Statutory Cross-Check'].map((m) => (
-                  <button
-                    key={m}
-                    onClick={() => {
-                      setDirectChatMode(m);
-                      setIsModeDropdownOpen(false);
-                    }}
-                    className="w-full text-left px-2.5 py-1.5 text-xs text-slate-700 hover:bg-slate-50 rounded-lg transition"
-                  >
-                    {m}
-                  </button>
-                ))}
-              </div>
-            )}
+            <span className="text-[11px] text-slate-400 font-mono hidden md:inline">
+              Enter to send, Shift+Enter for new line
+            </span>
           </div>
 
-          {/* Right: Models Dropdown */}
-          <div className="relative flex items-center gap-2">
-            <span className="text-slate-400">Models</span>
-            <button
-              onClick={() => setIsModelDropdownOpen(!isModelDropdownOpen)}
-              className="flex items-center gap-1.5 text-slate-700 font-semibold hover:text-slate-900 transition"
-            >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Live Google Gemini API Connected"></span>
-              <span>{selectedModel}</span>
-              <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-            </button>
+          {/* Right action: Submit button */}
+          <button
+            onClick={handleSubmit}
+            disabled={!input.trim()}
+            className="w-9 h-9 rounded-xl bg-emerald-700 hover:bg-emerald-800 disabled:opacity-30 disabled:cursor-not-allowed text-white flex items-center justify-center transition shadow-xs"
+            title="Send query to Bangladesh Legal Copilot"
+          >
+            <ArrowUp className="w-4 h-4 stroke-[2.5]" />
+          </button>
+        </div>
+      </div>
 
-            {isModelDropdownOpen && (
-              <div className="absolute right-0 mt-2 top-full w-52 bg-white border border-slate-200 rounded-xl shadow-lg p-1 z-30">
-                {[
-                  { name: 'GPT-4o', desc: 'OpenAI Omnimodal flagship' },
-                  { name: 'Legal-Gemini 2.5 Pro', desc: 'Fine-tuned on commercial contracts' },
-                  { name: 'Claude 3.5 Sonnet', desc: 'Anthropic reasoning model' },
-                ].map((m) => (
-                  <button
-                    key={m.name}
-                    onClick={() => {
-                      setSelectedModel(m.name);
-                      setIsModelDropdownOpen(false);
-                    }}
-                    className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-slate-50 transition"
-                  >
-                    <div className="text-xs font-semibold text-slate-800">{m.name}</div>
-                    <div className="text-[10px] text-slate-400">{m.desc}</div>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-
+      {/* Suggested Legal Inquiries (Pills) */}
+      <div className="w-full max-w-3xl space-y-3">
+        <div className="text-xs font-bold uppercase tracking-wider text-slate-400 px-1 flex items-center gap-1.5">
+          <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
+          <span>নমুনা আইনি গবেষণা ও অনুসন্ধান (Suggested Research Prompts)</span>
         </div>
 
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+          {SAMPLE_BANGLADESH_QUESTIONS.map((item, idx) => (
+            <button
+              key={idx}
+              onClick={() => onSendMessage(item.query)}
+              className="text-left p-3 rounded-xl bg-white border border-slate-200/90 hover:border-emerald-300 hover:bg-emerald-50/40 hover:shadow-2xs transition-all group"
+            >
+              <div className="flex items-center justify-between mb-1">
+                <span className="text-[11px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-100">
+                  {item.categoryBn}
+                </span>
+                <span className="text-[10px] font-mono text-slate-400 group-hover:text-emerald-700 transition">
+                  {item.tag}
+                </span>
+              </div>
+              <p className="text-xs text-slate-700 group-hover:text-slate-900 leading-snug font-medium line-clamp-2">
+                {item.query}
+              </p>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Authorized Knowledge Base Sources Footer */}
+      <div className="w-full max-w-3xl mt-8 pt-6 border-t border-slate-100 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-500">
+        <div className="flex items-center gap-2">
+          <BadgeCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+          <span>Grounded in Official Bangladesh Legal Sources (BD Laws & Master Legal PDF)</span>
+        </div>
+        <div className="flex items-center gap-3">
+          <a 
+            href={OFFICIAL_SOURCES.portalUrl}
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-emerald-700 hover:underline font-semibold"
+          >
+            bdlaws.minlaw.gov.bd
+          </a>
+          <span>•</span>
+          <a 
+            href={OFFICIAL_SOURCES.masterPdfPath}
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="text-emerald-700 hover:underline font-semibold"
+          >
+            Allfile.pdf
+          </a>
+        </div>
       </div>
 
     </div>
   );
 }
-

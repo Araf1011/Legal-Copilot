@@ -11,16 +11,17 @@ import ComplianceChecker from './components/ComplianceChecker';
 import UploadModal from './components/UploadModal';
 import AuditReportModal from './components/AuditReportModal';
 import { SAMPLE_CONTRACTS } from './data/sampleContracts';
+import { INITIAL_DEMO_SESSIONS } from './data/bangladeshLaws';
 
 export default function App() {
   const [contracts, setContracts] = useState(SAMPLE_CONTRACTS);
   const [currentContract, setCurrentContract] = useState(SAMPLE_CONTRACTS[0]);
   const [viewMode, setViewMode] = useState('home'); // 'home', 'chat', 'audit', 'draft', 'compare', 'compliance'
   const [activeTab, setActiveTab] = useState('chat');
-  const [selectedModel, setSelectedModel] = useState('Legal-Gemini 2.5 Pro');
+  const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash');
 
-  // Dynamic user chat sessions (Zero hardcoded chats)
-  const [sessions, setSessions] = useState([]);
+  // Dynamic user chat sessions with initial Bangladesh demo sessions
+  const [sessions, setSessions] = useState(INITIAL_DEMO_SESSIONS);
   const [currentSessionId, setCurrentSessionId] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   
@@ -71,94 +72,6 @@ export default function App() {
       }
       return filtered;
     });
-  };
-
-  // AI response engine
-  const createAiResponse = (query) => {
-    const qLower = query.toLowerCase();
-    if (qLower.includes('human') || qLower.includes('replace')) {
-      return {
-        id: Date.now().toString() + '-ai',
-        sender: 'ai',
-        timestamp: 'Today',
-        leadText: 'AI can accelerate high-volume document review and redlining, but cannot replace legal judgment as a whole.',
-        heading: "Here's a breakdown:",
-        sections: [
-          {
-            title: 'What AI Legal Copilot replaces & automates:',
-            items: [
-              'Repetitive clause parsing: extracting indemnities, caps, and governing law instantly.',
-              'Cross-statute benchmarking: flagging unconscionable clauses against Delaware UCC & FTC regulations.',
-              'First-pass redline generation: drafting counter-language with balanced market standards.',
-              'Risk scoring: surfacing asymmetric exposure in minutes rather than hours.'
-            ]
-          },
-          {
-            title: 'What human legal counsel uniquely provides:',
-            items: [
-              'Commercial negotiation judgment: deciding which business risks are acceptable to close a deal.',
-              'Client empathy and strategic relationship management with opposing counsel.',
-              'Ethical duties and fiduciary responsibility under state bar professional standards.',
-              'High-stakes litigation and bespoke courtroom strategy.'
-            ]
-          }
-        ],
-        callout: 'Think of AI as a legal multiplier — not an attorney replacement.',
-        conclusion: 'Legal Copilot handles the tedious mechanical review of 50-page agreements, freeing legal teams to focus on commercial negotiation strategy.'
-      };
-    } else if (qLower.includes('liabilit') || qLower.includes('indemn') || qLower.includes('trap')) {
-      return {
-        id: Date.now().toString() + '-ai',
-        sender: 'ai',
-        timestamp: 'Today',
-        leadText: `I reviewed **${currentContract.title}** and identified two critical liability imbalances under Delaware Commercial Law:`,
-        heading: "Critical Contract Risks:",
-        sections: [
-          {
-            title: 'Key Vulnerabilities Detected:',
-            items: [
-              'Asymmetric Liability Cap (Section 8.1): Vendor liability is capped at merely 1 month fees, while excluding Gross Negligence and Data Breaches.',
-              'Unilateral Indemnification (Section 9.3): Client indemnifies Vendor unconditionally even if defect arises from Vendor software.',
-              'Predatory 36-Month Auto-Renewal (Section 3.2): 90-day certified postal mail requirement makes cancellation intentionally burdensome.'
-            ]
-          },
-          {
-            title: 'Statutory & Enforceability Assessment:',
-            items: [
-              'Delaware UCC § 2-719: Capping liability for gross negligence is disfavored and often held unconscionable.',
-              'FTC Rule on Negative Option Subscriptions: Post-2024 standards mandate click-to-cancel parity.'
-            ]
-          }
-        ],
-        callout: 'Recommendation: Do not execute in present form. Counter-propose our 12-month mutual trailing fee cap.',
-        conclusion: 'Would you like me to draft an assertive email to opposing counsel rejecting Section 8.1 and Section 3.2?',
-        legalRedline: {
-          clauseId: 'c-3',
-          section: 'Section 8.1',
-          original: 'IN NO EVENT SHALL VENDOR AGGREGATE LIABILITY EXCEED TOTAL AMOUNTS ACTUALLY PAID IN THE ONE (1) MONTH PRECEDING...',
-          replacement: 'EACH PARTY\'S TOTAL AGGREGATE LIABILITY SHALL BE CAPPED AT TOTAL FEES PAID IN THE PRECEDING TWELVE (12) MONTHS. NEITHER PARTY SHALL BE CAPPED WITH RESPECT TO GROSS NEGLIGENCE OR DATA BREACHES.'
-        }
-      };
-    } else {
-      return {
-        id: Date.now().toString() + '-ai',
-        sender: 'ai',
-        timestamp: 'Today',
-        leadText: `Based on an analysis of **${currentContract.title}** and relevant jurisprudence:`,
-        heading: "Detailed Findings:",
-        sections: [
-          {
-            title: 'Primary Observations:',
-            items: [
-              `Contractual risk allocation directly impacts client obligations under ${currentContract.governingLaw}.`,
-              'Commercial exposure can be balanced through reciprocal covenants and market-standard liability caps.'
-            ]
-          }
-        ],
-        callout: 'Legal Decision Intelligence: Standard enterprise clauses protect both parties symmetrically.',
-        conclusion: 'I can generate a balanced clause or draft a counter-proposal redline for your negotiation.'
-      };
-    }
   };
 
   // Submit from Home view -> creates session dynamically with the user message

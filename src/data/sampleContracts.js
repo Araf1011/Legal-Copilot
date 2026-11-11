@@ -1,272 +1,203 @@
+// Bangladesh Legal Instruments, Commercial Agreements & Compliance Frameworks
+// Fully compliant with Bangladesh Laws (bdlaws.minlaw.gov.bd)
+
 export const SAMPLE_CONTRACTS = [
   {
-    id: "saas-msa-high-risk",
-    title: "Enterprise Cloud SaaS Master Services Agreement",
-    parties: "Apex Cloud Systems Inc. (Vendor) vs. Horizon Logistics (Client)",
+    id: "bd-employment-agreement",
+    title: "বাংলাদেশ কর্মসংস্থান ও সার্ভিস চুক্তি (Bangladesh Labour Employment Agreement)",
+    parties: "টেক সল্যুশনস বাংলাদেশ লিমিটেড (নিয়োগকর্তা) বনাম মো: রফিকুল ইসলাম (কর্মচারী)",
+    effectiveDate: "2026-01-01",
+    governingLaw: "Laws of the People's Republic of Bangladesh (The Bangladesh Labour Act, 2006)",
+    riskScore: 68,
+    riskLevel: "Medium Risk",
+    summary: "বাংলাদেশ শ্রম আইন ২০০৬ অনুযায়ী প্রস্তুতকৃত সার্ভিস চুক্তি। এতে চাকরি অবসান নোটিশ, ওভারটাইম সুবিধা, অর্জিত ছুটি এবং গ্র্যাচুইটি সংক্রান্ত ধারা বিদ্যমান রয়েছে। শ্রম আইনের ২৬ ধারার সাথে সামঞ্জস্য রেখে নোটিশ ও সার্ভিস বেনিফিটের স্পষ্টতা প্রয়োজন।",
+    clauses: [
+      {
+        id: "emp-1",
+        section: "ধারা ৫.১ (Section 5.1)",
+        title: "চাকরির অবসান ও ছাঁটাই নোটিশ (Termination & Notice Period)",
+        text: "নিয়োগকর্তা যেকোনো সময় কোনো কারণ দর্শানো ব্যতিরেকে মাত্র ১৫ (পনেরো) দিনের নোটিশ অথবা ১৫ দিনের মূল বেতন প্রদান করে কর্মচারীর চাকরি অবসান করতে পারবেন। এ ক্ষেত্রে কর্মচারী কোনো অতিরিক্ত আর্থিক ক্ষতিপূরণ বা সার্ভিস বেনিফিট দাবি করতে পারবেন না।",
+        risk: "critical",
+        riskLabel: "শ্রম আইন ২০০৬-এর ২৬ ধারার লঙ্ঘন",
+        issue: "বাংলাদেশ শ্রম আইন ২০০৬-এর ২৬ ধারা অনুযায়ী স্থায়ী শ্রমিকের ক্ষেত্রে ১২০ দিনের লিখিত নোটিশ অথবা ১২০ দিনের মজুরি এবং প্রতি সমাপ্ত বছর চাকরির জন্য ৩০ দিনের মজুরি ক্ষতিপূরণ প্রদান বাধ্যতামূলক। ১৫ দিনের নোটিশ সম্পূর্ণ অবৈধ ও অকার্যকর।",
+        suggestedRedline: "নিয়োগকর্তা কর্তৃক স্থায়ী কর্মচারীর চাকরি অবসান করতে হলে বাংলাদেশ শ্রম আইন ২০০৬-এর ২৬ ধারা মোতাবেক ১২০ (একশত বিশ) দিনের লিখিত নোটিশ অথবা ১২০ দিনের মজুরি পরিশোধ করতে হবে। অতিরিক্ত হিসেবে প্রতি সমাপ্ত কর্মবছরের জন্য ৩০ (ত্রিশ) দিনের মজুরি বা গ্র্যাচুইটি প্রদান নিশ্চিত করতে হবে।",
+        category: "চাকরি অবসান ও সার্ভিস বেনিফিট"
+      },
+      {
+        id: "emp-2",
+        section: "ধারা ৭.২ (Section 7.2)",
+        title: "কর্মঘণ্টা ও ওভারটাইম মজুরি (Working Hours & Overtime)",
+        text: "কর্মচারীকে সপ্তাহে সর্বমোট ৬০ ঘণ্টা অফিসিয়াল দায়িত্ব পালন করতে হবে। অতিরিক্ত কাজের জন্য কোনো পৃথক ওভারটাইম ভাতা প্রদান করা হবে না; তা মাসিক মোট বেতনের অন্তর্ভুক্ত বলে গণ্য হবে।",
+        risk: "high",
+        riskLabel: "শ্রম আইনের ১০০ ও ১০৮ ধারার বরখেলাপ",
+        issue: "শ্রম আইনের ১০০ ধারা অনুযায়ী দৈনিক সর্বোচ্চ ৮ ঘণ্টা এবং সপ্তাহে সর্বোচ্চ ৪৮ ঘণ্টা কর্মঘণ্টা নির্ধারণ করা হয়েছে। ১০৮ ধারা অনুযায়ী অতিরিক্ত কাজের জন্য স্বাভাবিক মজুরির দ্বিগুণ হারে ওভারটাইম ভাতা প্রদান আইনত বাধ্যতামূলক।",
+        suggestedRedline: "কর্মচারীর সাধারণ কর্মঘণ্টা দৈনিক ৮ ঘণ্টা এবং সপ্তাহে সর্বোচ্চ ৪৮ ঘণ্টা হবে। ৪৮ ঘণ্টার অতিরিক্ত কাজের ক্ষেত্রে বাংলাদেশ শ্রম আইন ২০০৬-এর ১০৮ ধারা অনুসারে সাধারণ মূল মজুরির দ্বিগুণ (Double Rate) হারে অতিরিক্ত কাজের ভাতা প্রদান করা হবে।",
+        category: "কর্মঘণ্টা ও মজুরি"
+      },
+      {
+        id: "emp-3",
+        section: "ধারা ৯.১ (Section 9.1)",
+        title: "অর্জিত ছুটি ও ছুটির নগদায়ন (Annual Leave with Wages)",
+        text: "কর্মচারী বছরে সর্বোচ্চ ১০ দিন বাৎসরিক ছুটি ভোগ করতে পারবেন। কোনো অব্যবহৃত ছুটি পরবর্তী বছরে স্থানান্তরিত হবে না এবং চাকরি ত্যাগের সময় ছুটির আর্থিক সুবিধা প্রদান করা হবে না।",
+        risk: "medium",
+        riskLabel: "শ্রম আইনের ১১৭ ধারার অপর্যাপ্ততা",
+        issue: "১১৭ ধারা মোতাবেক প্রতি ১৮ কর্মদিবসে ১ দিন হিসেবে বছরে পূর্ণ মজুরিতে বার্ষিক ছুটি প্রাপ্য এবং চাকরি অবসানে অব্যবহৃত ছুটির সমপরিমাণ আর্থিক মূল্য পরিশোধের বাধ্যবাধকতা রয়েছে।",
+        suggestedRedline: "শ্রম আইন ২০০৬-এর ১১৭ ধারা অনুযায়ী কর্মচারী প্রতি ১৮ কর্মদিবসের জন্য ১ দিন হারে বাৎসরিক অর্জিত ছুটি প্রাপ্য হবেন এবং চাকরি শেষে অবিক্রিত ছুটির সমমূল্য শ্রমিকের চূড়ান্ত পাওনার সাথে পরিশোধযোগ্য হবে।",
+        category: "ছুটি ও ছুটি নগদায়ন"
+      },
+      {
+        id: "emp-4",
+        section: "ধারা ১৪.৩ (Section 14.3)",
+        title: "বিরোধ নিষ্পত্তি ও এখতিয়ার (Dispute Resolution & Jurisdiction)",
+        text: "চুক্তি সংক্রান্ত যেকোনো বিরোধ সংশ্লিষ্ট জেলার এখতিয়ারাধীন বাংলাদেশ শ্রম আদালত (Labour Court) এবং পরবর্তীতে বাংলাদেশ শ্রম আপিল ট্রাইব্যুনাল (Labour Appellate Tribunal)-এর মাধ্যমে মীমাংসিত হবে।",
+        risk: "low",
+        riskLabel: "আইনানুগ এখতিয়ার",
+        issue: "বাংলাদেশ শ্রম আইনের ২১frame ধারা অনুসারে সঠিক শ্রম আদালতের এখতিয়ার নিশ্চিত করা হয়েছে।",
+        suggestedRedline: "বর্তমান ধারার ভাষা অপরিবর্তিত রাখা যায়।",
+        category: "আইনি এখতিয়ার"
+      }
+    ]
+  },
+  {
+    id: "bd-commercial-lease",
+    title: "বাণিজ্যিক অফিস লিজ চুক্তি (Commercial Lease Agreement, Gulshan, Dhaka)",
+    parties: "ঢাকা রিয়েল এস্টেট প্রাইভেট লিমিটেড (মালিক/লেসর) বনাম এপেক্স লজিস্টিকস বিডি লিমিটেড (ভাড়াটিয়া/লেসি)",
     effectiveDate: "2026-03-01",
-    governingLaw: "State of Delaware, USA",
-    riskScore: 42, // out of 100 (lower = higher risk)
-    riskLevel: "Critical Risk",
-    summary: "This agreement heavily favors the Vendor. It contains unlimited customer indemnification, zero limitation of liability for vendor data breaches, an automatic 3-year auto-renewal trap with 90-day notice, and unilateral price adjustment rights.",
+    governingLaw: "Laws of the People's Republic of Bangladesh (Transfer of Property Act, 1882 & Registration Act, 1908)",
+    riskScore: 78,
+    riskLevel: "Low to Moderate Risk",
+    summary: "গুলশান-২, ঢাকায় অবস্থিত বাণিজ্যিক ফ্লোরের ৩ বছর মেয়াদী ইজারা চুক্তি। সম্পত্তি হস্তান্তর আইন ১৮৮২ ও রেজিস্ট্রেশন আইন ১৯০৮ অনুসারে ১ বছরের অধিক মেয়াদের লিজের ক্ষেত্রে সাব-রেজিস্ট্রি অফিসে বাধ্যতামূলক রেজিস্ট্রি আবশ্যক।",
     clauses: [
       {
-        id: "c-1",
-        section: "Section 3.2",
-        title: "Automatic Renewal & Cancellation",
-        text: "This Agreement shall automatically renew for successive terms of thirty-six (36) months unless Client provides written notice of non-renewal at least ninety (90) days prior to the expiration of the current Term via certified postal mail only. Any failure to provide timely notice under this exact method results in immediate binding renewal for the entire multi-year fee.",
-        risk: "high",
-        riskLabel: "Predatory Renewal Trap",
-        issue: "36-month lock-in with certified mail-only requirement makes non-renewal intentionally difficult and commercially unreasonable.",
-        suggestedRedline: "This Agreement shall automatically renew for successive terms of twelve (12) months unless either Party provides written notice of non-renewal at least thirty (30) days prior to the expiration of the current Term via email or electronic portal.",
-        category: "Termination & Renewal"
-      },
-      {
-        id: "c-2",
-        section: "Section 5.4",
-        title: "Unilateral Price Escalation",
-        text: "Vendor reserves the right, in its sole discretion, to increase Subscription Fees at any time by up to twenty-five percent (25%) upon fifteen (15) days electronic notice. Continued use of the Services after notice constitutes irrevocable acceptance of adjusted pricing.",
-        risk: "high",
-        riskLabel: "Uncapped Fee Escalation",
-        issue: "Vendor can arbitrarily increase fees by 25% with just 15 days notice without customer right to terminate without penalty.",
-        suggestedRedline: "Vendor may adjust Subscription Fees upon sixty (60) days prior written notice before the commencement of a Renewal Term, provided such increase shall not exceed the lesser of five percent (5%) or the Consumer Price Index (CPI). If Client objects, Client may terminate without penalty.",
-        category: "Payment & Fees"
-      },
-      {
-        id: "c-3",
-        section: "Section 8.1",
-        title: "Limitation of Liability",
-        text: "IN NO EVENT SHALL VENDOR'S TOTAL AGGREGATE LIABILITY ARISING OUT OF OR RELATED TO THIS AGREEMENT, WHETHER IN CONTRACT, TORT, OR OTHERWISE, EXCEED THE TOTAL AMOUNTS ACTUALLY PAID BY CLIENT IN THE ONE (1) MONTH PRECEDING THE EVENT GIVING RISE TO LIABILITY, EVEN IN CASES OF GROSS NEGLIGENCE, WILLFUL MISCONDUCT, OR DATA BREACH.",
+        id: "lease-1",
+        section: "ধারা ৩.১ (Section 3.1)",
+        title: "লিজের মেয়াদ ও রেজিস্ট্রেশন (Term & Mandatory Registration)",
+        text: "এই ইজারা চুক্তির মেয়াদ কার্যকর হওয়ার তারিখ হতে ৩৬ (ছত্রিশ) মাস বলবৎ থাকবে। উভয় পক্ষ পারস্পরিক সম্মতিতে ৩০০ টাকার নন-জুডিশিয়াল স্ট্যাম্পে নোটারি পাবলিকের মাধ্যমে এটি সম্পাদন করবেন।",
         risk: "critical",
-        riskLabel: "Extreme Asymmetric Liability Cap",
-        issue: "Caps vendor liability to just 1 month of fees while Client bears full unlimited liability. Disclaims liability even for gross negligence and data breach, violating standard enterprise practice.",
-        suggestedRedline: "EACH PARTY'S TOTAL AGGREGATE LIABILITY SHALL BE CAPPED AT THE TOTAL FEES PAID OR PAYABLE BY CLIENT UNDER THIS AGREEMENT IN THE TWELVE (12) MONTHS PRECEDING THE CLAIM. NOTWITHSTANDING THE FOREGOING, NEITHER PARTY'S LIABILITY SHALL BE CAPPED WITH RESPECT TO GROSS NEGLIGENCE, WILLFUL MISCONDUCT, BREACH OF CONFIDENTIALITY, OR INDEMNIFICATION OBLIGATIONS.",
-        category: "Liability & Indemnity"
+        riskLabel: "রেজিস্ট্রেশন আইনের ১৭ ধারার লঙ্ঘন",
+        issue: "রেজিস্ট্রেশন আইন ১৯০৮-এর ১৭(১)(ঘ) ধারা এবং সম্পত্তি হস্তান্তর আইন ১৮৮২-এর ১০৭ ধারা অনুযায়ী ১ বছরের অধিক মেয়াদের যেকোনো স্থাবর সম্পত্তির লিজ দলিল অবশ্যই বাধ্যতামূলকভাবে নিবন্ধিত (Registered) হতে হবে। শুধুমাত্র ৩০০ টাকার স্ট্যাম্পে নোটারি করলে তা আদালতে সাক্ষ্য হিসেবে অগ্রহণযোগ্য (Unregistered instrument under Section 49 Registration Act)।",
+        suggestedRedline: "এই লিজ চুক্তিটি সংশ্লিষ্ট সাব-রেজিস্ট্রার কার্যালয়ে স্ট্যাম্প আইন ১৮৯৯ এবং রেজিস্ট্রেশন আইন ১৯০৮-এর ১৭ ধারা অনুযায়ী যথাযথ সরকারি স্ট্যাম্প ডিউটি ও নিবন্ধন ফি পরিশোধ সাপেক্ষে রেজিস্ট্রি দলিল আকারে সম্পাদিত ও নিবন্ধিত হবে।",
+        category: "দলিল সম্পাদন ও রেজিস্ট্রেশন"
       },
       {
-        id: "c-4",
-        section: "Section 9.3",
-        title: "One-Way Indemnification",
-        text: "Client agrees to defend, indemnify, and hold harmless Vendor, its affiliates, directors, and employees from any third-party claims, damages, liabilities, costs, and legal fees arising out of Client's use of the platform, regardless of fault or Vendor's underlying system defects.",
-        risk: "critical",
-        riskLabel: "Non-Mutual Indemnity",
-        issue: "Client indemnifies vendor unconditionally even when vendor's code or hardware defects cause the harm, with no reciprocal IP infringement indemnity from Vendor.",
-        suggestedRedline: "Each party shall indemnify, defend, and hold harmless the other party against third-party claims arising from: (a) gross negligence or willful misconduct; (b) breach of confidentiality; or (c) in Vendor's case, any claim that the Services infringe a third-party intellectual property right.",
-        category: "Liability & Indemnity"
-      },
-      {
-        id: "c-5",
-        section: "Section 11.2",
-        title: "Intellectual Property & Customer Data",
-        text: "Client hereby grants Vendor a perpetual, irrevocable, worldwide, royalty-free license to access, ingest, train artificial intelligence algorithms, and commercially monetize all Customer Data uploaded or transmitted through the Services.",
+        id: "lease-2",
+        section: "ধারা ৬.৪ (Section 6.4)",
+        title: "লিজ অবসান নোটিশ (Termination Notice under Section 106)",
+        text: "লেসর যেকোনো সময় কোনো কারণ না দর্শিয়ে ৭ (সাত) দিনের নোটিশে ভাড়াটিয়াকে উচ্ছেদ করতে পারবেন এবং সিকিউরিটি ডিপোজিট বাজেয়াপ্ত করতে পারবেন।",
         risk: "high",
-        riskLabel: "Commercial AI Training on Client Data",
-        issue: "Allows vendor to use confidential client data to train proprietary AI models and monetize derivative works without restriction or privacy protections.",
-        suggestedRedline: "Client retains all right, title, and interest in and to Customer Data. Vendor shall only process Customer Data to the extent necessary to provide the Services and shall not use Customer Data for machine learning model training without Client's prior express written consent.",
-        category: "Intellectual Property"
-      },
-      {
-        id: "c-6",
-        section: "Section 14.7",
-        title: "Governing Law & Mandatory Arbitration",
-        text: "This Agreement shall be governed by the laws of the State of Delaware. Any dispute shall be settled by binding arbitration in Wilmington, DE under AAA rules, with each party bearing its own costs and Client waiving any right to class or consolidated actions.",
-        risk: "medium",
-        riskLabel: "Dispute Forum & Cost Allocation",
-        issue: "Arbitration clause contains class action waiver. Standard Delaware law is customary, but fee-shifting for prevailing party is missing.",
-        suggestedRedline: "This Agreement shall be governed by the laws of the State of Delaware. In the event of any arbitration or legal proceeding, the prevailing party shall be entitled to recover reasonable attorney fees and costs.",
-        category: "Governing Law"
+        riskLabel: "সম্পত্তি হস্তান্তর আইনের ১০৬ ধারার ব্যত্যয়",
+        issue: "সম্পত্তি হস্তান্তর আইন ১৮৮২-এর ১০৬ ধারা অনুযায়ী বাণিজ্যিক বা সাধারণ লিজের ক্ষেত্রে যুক্তিসঙ্গত নোটিশ (সাধারণত ১৫ দিন থেকে ৩০ দিন) প্রদান করা আইনসঙ্গত প্রথা। ৭ দিনের নোটিশে উচ্ছেদ ও অন্যায্য ডিপোজিট বাজেয়াপ্তকরণ আদালতে চ্যালেঞ্জযোগ্য।",
+        suggestedRedline: "যেকোনো পক্ষ অন্তত ৬০ (ষাট) দিনের পূর্ব নোটিশ লিখিতভাবে রেজিস্টার্ড ডাকযোগে প্রদান করে এই লিজ চুক্তি অবসান করতে পারবেন। মেয়াদান্তে সকল বকেয়া সমন্বয় সাপেক্ষে জামানতের টাকা ৩০ দিনের মধ্যে ফেরতযোগ্য হবে।",
+        category: "লিজ অবসান ও নোটিশ"
       }
     ]
   },
   {
-    id: "nda-mutual-safe",
-    title: "Standard Mutual Non-Disclosure Agreement (MNDA)",
-    parties: "Vanguard Innovations Ltd. & Stellar Health Corp.",
+    id: "bd-software-cloud-agreement",
+    title: "সফটওয়্যার ও ক্লাউড সেবা চুক্তি (Software Development & SaaS Agreement)",
+    parties: "ডিজিটাল সলিউশনস বাংলাদেশ লিমিটেড বনাম প্রগতি ফাইন্যান্স পিএলসি",
     effectiveDate: "2026-02-15",
-    governingLaw: "State of New York, USA",
-    riskScore: 89,
-    riskLevel: "Low Risk (Balanced)",
-    summary: "A standard, mutually protective two-way NDA with clear confidentiality definitions, reasonable 2-year survival term, standard standard-of-care, and customary trade secret protections.",
+    governingLaw: "The Contract Act, 1872 & The Cyber Security Act, 2023 (Bangladesh)",
+    riskScore: 84,
+    riskLevel: "Low Risk (Well Balanced)",
+    summary: "ব্যাংকিং ও ফাইন্যান্সিয়াল ডেটার জন্য ক্লাউড সেবা চুক্তি। সাইবার নিরাপত্তা আইন ২০২৩, বাংলাদেশ ব্যাংকের আইসিটি গাইডলাইন এবং দ্য কন্ট্রাক্ট অ্যাক্ট ১৮৭২-এর ক্ষতিপূরণ ও দায়মুক্তি বিধানের সাথে সামঞ্জস্যপূর্ণ।",
     clauses: [
       {
-        id: "nda-1",
-        section: "Section 1.1",
-        title: "Definition of Confidential Information",
-        text: "Confidential Information includes all non-public, proprietary information disclosed by one party ('Disclosing Party') to the other ('Receiving Party'), whether orally or in writing, that is designated as confidential or reasonably should be understood to be confidential.",
+        id: "saas-1",
+        section: "ধারা ৮.১ (Section 8.1)",
+        title: "সাইবার নিরাপত্তা ও ডেটা সুরক্ষা (Cyber Security & Data Privacy)",
+        text: "সার্ভিস প্রোভাইডার গ্রাহকের সকল আর্থিক লেনদেন ও ব্যক্তিগত তথ্য সাইবার নিরাপত্তা আইন ২০২৩ এবং বাংলাদেশ ব্যাংকের আইসিটি সিকিউরিটি গাইডলাইন অনুসারে এনক্রিপ্ট করে দেশের ভেতরে নিরাপদ সার্ভারে সংরক্ষণ করতে বাধ্য থাকবে। কোনো তথ্য বিদেশে পাচার করা যাবে না।",
         risk: "low",
-        riskLabel: "Standard Market Definition",
-        issue: "No significant risks detected. Protects both tangible marked materials and contextual business confidential disclosures.",
-        suggestedRedline: "Retain current standard phrasing.",
-        category: "Confidentiality"
+        riskLabel: "সাইবার নিরাপত্তা ২০২৩ সামঞ্জস্যপূর্ণ",
+        issue: "তথ্য সুরক্ষা নিশ্চিত করেছে এবং স্থানীয় সংবিধিবদ্ধ বিধানের সাথে সংগতিপূর্ণ।",
+        suggestedRedline: "বর্তমান ধারা বহাল রাখুন।",
+        category: "ডেটা সুরক্ষা ও সাইবার নিরাপত্তা"
       },
       {
-        id: "nda-2",
-        section: "Section 3.1",
-        title: "Standard of Care & Duty",
-        text: "The Receiving Party agrees to protect the Confidential Information using the same degree of care it uses for its own confidential materials of like nature, but no less than a reasonable degree of care.",
+        id: "saas-2",
+        section: "ধারা ১০.২ (Section 10.2)",
+        title: "পেমেন্ট ও চেক বাউন্স বিধান (Payment Terms & NI Act Section 138)",
+        text: "সেবামূল্য পরিশোধের জন্য গ্রাহক কর্তৃক প্রদত্ত কোনো ব্যাংক চেক অপর্যাপ্ত তহবিল বা অন্য কোনো কারণে প্রত্যাখ্যাত হলে দ্য নেগোশিয়েবল ইনস্ট্রুমেন্টস অ্যাক্ট ১৮৮১-এর ১৩৮ ধারা অনুসারে তাত্ক্ষণিক আইনি নোটিশ জারি ও ফৌজদারি ব্যবস্থা গ্রহণের অধিকার থাকবে।",
         risk: "low",
-        riskLabel: "Standard Reasonable Care",
-        issue: "Benchmark legal wording compliant with common law standard of care.",
-        suggestedRedline: "No modifications required.",
-        category: "Confidentiality"
-      },
-      {
-        id: "nda-3",
-        section: "Section 4.2",
-        title: "Term & Survival",
-        text: "The obligations of confidentiality shall survive for a period of two (2) years from the date of disclosure; provided that with respect to Trade Secrets, such obligations shall continue for so long as the information remains a trade secret under applicable law.",
-        risk: "low",
-        riskLabel: "Trade Secret Exception Included",
-        issue: "Adequately protects trade secrets beyond the general 2-year limitation period.",
-        suggestedRedline: "No modifications required.",
-        category: "Termination & Renewal"
-      },
-      {
-        id: "nda-4",
-        section: "Section 7.1",
-        title: "Injunctive Relief",
-        text: "Receiving Party acknowledges that any breach of this Agreement may cause irreparable harm for which monetary damages alone would be inadequate, and Disclosing Party shall be entitled to seek equitable relief, including injunction.",
-        risk: "medium",
-        riskLabel: "Automatic Irreparable Harm Concession",
-        issue: "Some courts disfavor automatic concessions of irreparable harm without evidentiary proof.",
-        suggestedRedline: "Disclosing Party may seek injunctive relief from a court of competent jurisdiction without waiving any other rights or remedies available at law or in equity.",
-        category: "Remedies & Enforcement"
-      }
-    ]
-  },
-  {
-    id: "consulting-agreement",
-    title: "Independent Contractor & Consulting Services Agreement",
-    parties: "Acme Tech Ventures LLC (Company) vs. Jane Doe (Consultant)",
-    effectiveDate: "2026-01-10",
-    governingLaw: "State of California, USA",
-    riskScore: 61,
-    riskLevel: "Moderate Risk",
-    summary: "Contains overly broad non-compete provisions that are likely void and unenforceable under California law (AB 1076 / SB 699), plus ambiguous work-for-hire IP assignment.",
-    clauses: [
-      {
-        id: "ca-1",
-        section: "Section 4.1",
-        title: "Non-Competition & Restrictive Covenants",
-        text: "Consultant agrees that during the term of this Agreement and for a period of eighteen (18) months following termination, Consultant shall not directly or indirectly provide services to, consult for, or establish any business entity that competes with Company in North America.",
-        risk: "critical",
-        riskLabel: "Unenforceable & Illegal Non-Compete",
-        issue: "Violates California Business and Professions Code § 16600. Post-employment non-compete agreements are void and subject the employer to statutory civil penalties.",
-        suggestedRedline: "Delete Section 4.1 in its entirety or replace with a reasonable non-solicitation of active employees and non-disclosure of proprietary trade secrets during the engagement term only.",
-        category: "Restrictive Covenants"
-      },
-      {
-        id: "ca-2",
-        section: "Section 6.2",
-        title: "Work Product & Inventions Assignment",
-        text: "Consultant assigns to Company all right, title, and interest in all inventions, software code, concepts, and designs created or conceived during the term, whether or not conceived on Company time or using Company resources.",
-        risk: "high",
-        riskLabel: "Overreaching IP Assignment",
-        issue: "Lacks statutory carve-out for prior inventions and California Labor Code § 2870 employee protection notice.",
-        suggestedRedline: "Consultant assigns all Inventions created specifically for Company in connection with the Services. Inventions developed entirely on Consultant's own time without using Company equipment or confidential data are expressly excluded pursuant to applicable labor code exemptions.",
-        category: "Intellectual Property"
-      },
-      {
-        id: "ca-3",
-        section: "Section 8.1",
-        title: "Indemnity & Taxes",
-        text: "Consultant shall indemnify Company for any reclassification claims, tax liabilities, or penalties assessed by tax authorities regarding independent contractor classification.",
-        risk: "medium",
-        riskLabel: "Contractor Misclassification Indemnity",
-        issue: "Shifts legal burden of worker misclassification entirely to the individual contractor.",
-        suggestedRedline: "Each party shall be responsible for its own tax compliance based upon the bona fide independent contractor relationship agreed upon in good faith.",
-        category: "Liability & Indemnity"
+        riskLabel: "সংবিধিবদ্ধ অধিকার সংরক্ষিত",
+        issue: "এনআই অ্যাক্টের ১৩৮ ধারার সংবিধিবদ্ধ অধিকার স্পষ্ট করা হয়েছে।",
+        suggestedRedline: "বর্তমান ধারা বহাল রাখুন।",
+        category: "আর্থিক লেনদেন ও ব্যাংকিং"
       }
     ]
   }
 ];
 
-export const LEGAL_TEMPLATES = [
+export const CLAUSE_TEMPLATES = [
   {
-    id: "mutual-nda",
-    title: "Mutual Non-Disclosure Agreement (NDA)",
-    description: "Bilateral protection for sensitive corporate, product, or financial discussions.",
-    category: "Confidentiality",
-    jurisdictions: ["Delaware (US)", "California (US)", "England & Wales (UK)", "GDPR Compliant (EU)"],
+    id: "bd-termination-clause",
+    title: "শ্রম আইন ২০০৬ অনুযায়ী চাকরি অবসান ও সার্ভিস বেনিফিট ক্লজ",
+    description: "বাংলাদেশ শ্রম আইন ২০০৬-এর ২৬ ধারা অনুযায়ী ১২০ দিনের নোটিশ ও চাকরির বছরভিত্তিক ক্ষতিপূরণ ফর্মুলা।",
+    category: "শ্রম আইন ও কর্মসংস্থান",
+    jurisdictions: ["Bangladesh Labour Act, 2006", "Laws of Bangladesh"],
     variables: [
-      { name: "party1", label: "Disclosing Party / Party A", default: "Acme Holdings Inc." },
-      { name: "party2", label: "Receiving Party / Party B", default: "Nexus Innovations LLC" },
-      { name: "purpose", label: "Purpose of Disclosure", default: "Evaluating a strategic joint venture and commercial integration" },
-      { name: "durationYears", label: "Confidentiality Term (Years)", default: "2" },
-      { name: "jurisdiction", label: "Governing Law", default: "Delaware" }
+      { name: "noticeDays", label: "নোটিশের মেয়াদ (দিন)", default: "120 days" },
+      { name: "compensationRate", label: "প্রতি বছর চাকরির জন্য ক্ষতিপূরণ", default: "30 days basic wages" }
     ]
   },
   {
-    id: "saas-sla-clause",
-    title: "Balanced Service Level Agreement (SLA) & Uptime Clause",
-    description: "Industry-standard 99.9% availability commitment with scaled service credits.",
-    category: "SLA & Performance",
-    jurisdictions: ["General Commercial", "Delaware", "New York"],
+    id: "bd-arbitration-clause",
+    title: "সালিসি ও বিরোধ নিষ্পত্তি ক্লজ (The Arbitration Act, 2001)",
+    description: "আদালতের বাইরে দ্রুত বাণিজ্যিক বিরোধ নিষ্পত্তির জন্য দ্য আরবিট্রেশন অ্যাক্ট ২০০১ ভিত্তিক মানসম্মত ক্লজ।",
+    category: "বাণিজ্যিক ও সালিসি আইন",
+    jurisdictions: ["The Arbitration Act, 2001 (Act No. I of 2001)", "Dhaka, Bangladesh"],
     variables: [
-      { name: "uptimeTarget", label: "Target Uptime (%)", default: "99.9%" },
-      { name: "credit1", label: "Credit for <99.5%", default: "10% monthly fee" },
-      { name: "credit2", label: "Credit for <99.0%", default: "25% monthly fee" },
-      { name: "terminationThreshold", label: "Repeated Failure Termination Days", default: "3 consecutive months" }
+      { name: "seat", label: "সালিসির স্থান (Seat of Arbitration)", default: "Dhaka, Bangladesh" },
+      { name: "arbitrators", label: "সালিসকারকের সংখ্যা", default: "Sole Arbitrator or Panel of 3" }
     ]
   },
   {
-    id: "ip-assignment",
-    title: "Proprietary Information & Inventions Assignment Agreement",
-    description: "Protects company ownership of all software code, patents, and work products.",
-    category: "Intellectual Property",
-    jurisdictions: ["California (Sec 2870 compliant)", "Delaware", "Federal US"],
+    id: "bd-cheque-bounce-clause",
+    title: "ব্যাংক পেমেন্ট ও চেক ডিজঅনার ক্লজ (The Negotiable Instruments Act, 1881 § 138)",
+    description: "চুক্তিভিত্তিক পেমেন্টে চেক ডিজঅনারের ক্ষেত্রে ১৩৮ ও ১৪১ ধারার কার্যকারিতা ও ৩০ দিনের লিগ্যাল নোটিশ ক্লজ।",
+    category: "ব্যাংকিং ও লেনদেন",
+    jurisdictions: ["The Negotiable Instruments Act, 1881", "Bangladesh Judicial Precedents"],
     variables: [
-      { name: "companyName", label: "Company Name", default: "Starlight Software Inc." },
-      { name: "developerName", label: "Developer / Creator", default: "Alex Mercer" },
-      { name: "effectiveDate", label: "Effective Date", default: "2026-04-01" }
-    ]
-  },
-  {
-    id: "limitation-liability-balanced",
-    title: "Mutual Mutualized Limitation of Liability Clause",
-    description: "Enterprise 12-month trailing fee liability cap with carve-outs for gross negligence.",
-    category: "Risk Mitigation",
-    jurisdictions: ["US Common Law", "UK Commercial Court"],
-    variables: [
-      { name: "capMultiplier", label: "Liability Cap Formula", default: "12 months aggregate fees paid" },
-      { name: "superCapMultiplier", label: "Data Breach Super-Cap (optional)", default: "2x trailing 12 months" }
+      { name: "curePeriod", label: "নোটিশের প্রতিকার সময়সীমা", default: "30 days from receipt" },
+      { name: "statutoryForum", label: "বিচারিক আদালত", default: "Competent Court of Sessions / Joint Sessions Judge" }
     ]
   }
 ];
 
 export const COMPLIANCE_FRAMEWORKS = [
   {
-    framework: "GDPR (EU General Data Protection Regulation)",
-    status: "Attention Required",
-    score: "72%",
-    color: "amber",
-    items: [
-      { check: "Data Processing Agreement (DPA) Referenced", passed: false, note: "Missing mandatory Article 28 DPA schedule." },
-      { check: "Cross-Border Data Transfer Safeguards (SCCs)", passed: false, note: "No Standard Contractual Clauses for EU-US data egress." },
-      { check: "Sub-processor Notification Requirement", passed: true, note: "Vendor must provide 30 days prior notice for sub-processors." },
-      { check: "Data Breach Notification Timeline", passed: true, note: "Notice required within 72 hours of incident confirmation." }
-    ]
-  },
-  {
-    framework: "California Privacy Rights Act (CPRA / CCPA)",
+    framework: "সাইবার নিরাপত্তা আইন ২০২৩ (Cyber Security Act, 2023)",
     status: "Compliant",
-    score: "90%",
+    score: "92%",
     color: "emerald",
     items: [
-      { check: "Prohibition on Sale or Sharing of Personal Data", passed: true, note: "Contract explicitly restricts vendor from commercial sale." },
-      { check: "Service Provider Certification under CPRA", passed: true, note: "Vendor certified as a statutory Service Provider." },
-      { check: "Audit and Compliance Verification Rights", passed: false, note: "Client has limited annual audit access upon 60 days notice." }
+      { check: "গুরুত্বপূর্ণ তথ্য পরিকাঠামো (CII) সুরক্ষা নিশ্চিতকরণ", passed: true, note: "সাইবার নিরাপত্তা আইন ২০২৩-এর ১৭ ধারা অনুসারে ডেটা এনক্রিপশন ও ব্যাকআপ সংরক্ষিত।" },
+      { check: "ব্যক্তিগত গোপনীয়তা ও আইডেন্টিটি ফ্রড প্রতিরোধ", passed: true, note: "২৪ ধারা অনুসারে পরিচয় জালিয়াতি ও অ্যাকাউন্ট অপব্যবহারের কঠোর নিষেধাজ্ঞা অন্তর্ভুক্ত।" },
+      { check: "অনলাইন ডেটা স্থানান্তর ও ক্লাউড সার্ভার কমপ্লায়েন্স", passed: true, note: "বাংলাদেশ টেলিযোগাযোগ ও সাইবার নিরাপত্তা নীতিমালা অনুসরণ করা হয়েছে।" }
     ]
   },
   {
-    framework: "SOC 2 Type II & Security Safeguards",
+    framework: "বাংলাদেশ শ্রম আইন ২০০৬ (Bangladesh Labour Act, 2006)",
+    status: "Attention Required",
+    score: "70%",
+    color: "amber",
+    items: [
+      { check: "২৬ ধারা অনুসারে ১২০ দিনের অবসান নোটিশ ও সার্ভিস ক্ষতিপূরণ", passed: false, note: "কিছু চুক্তিতে ১৫ বা ৩০ দিনের নোটিশ বিদ্যমান, যা শ্রম আইনের ২৬ ধারার সাথে সাংঘর্ষিক।" },
+      { check: "১০০ ও ১০৮ ধারা অনুসারে দৈনিক ৮ ঘণ্টা ও ওভারটাইম মজুরি", passed: true, note: "সাপ্তাহিক ৪৮ কর্মঘণ্টা ও দ্বিগুণ হারে ওভারটাইম ভাতার বিধান নিশ্চিত হয়েছে।" },
+      { check: "১১৭ ধারা অনুসারে অর্জিত বাৎসরিক ছুটি ও ছুটি নগদায়ন", passed: true, note: "১৮ কর্মদিবসে ১ দিন অর্জিত ছুটির সংবিধিবদ্ধ অধিকার সংরক্ষিত।" }
+    ]
+  },
+  {
+    framework: "আয়কর আইন ২০২৩ ও এনবিআর রাজস্ব কমপ্লায়েন্স (Income Tax Act, 2023)",
     status: "Strong",
-    score: "94%",
+    score: "96%",
     color: "blue",
     items: [
-      { check: "Annual Third-Party Audit Report Delivery", passed: true, note: "Vendor provides SOC 2 Type II report upon annual request." },
-      { check: "AES-256 Encryption at Rest & in Transit (TLS 1.3)", passed: true, note: "Explicitly defined in Exhibit B Security Policy." },
-      { check: "Disaster Recovery RPO / RTO Commitments", passed: true, note: "RPO < 1 hour, RTO < 4 hours specified." }
+      { check: "২৬১ ধারা অনুসারে ই-টিআইএন (e-TIN) যাচাই", passed: true, note: "সকল পক্ষ ও কর্মচারীর ক্ষেত্রে বৈধ ই-টিআইএন ও এনআইডি যাচাইকৃত।" },
+      { check: "১৬৬ ও ১৭১ ধারা অনুসারে কর দিবসের মধ্যে রিটার্ন দাখিলের প্রমাণপত্র (PSR)", passed: true, note: "বাণিজ্যিক লেনদেন ও পেমেন্টে আয়কর রিটার্ন প্রাপ্তিস্বীকার পত্র প্রদর্শন বাধ্যতামূলক।" },
+      { check: "উৎস কর কর্তন (TDS / AIT) বিধিবিধান", passed: true, note: "আয়কর আইন ২০২৩-এর তফসিল অনুযায়ী সঠিক হারে উৎসে কর কর্তন নিশ্চিত করা হয়েছে।" }
     ]
   }
 ];
 
+export const LEGAL_TEMPLATES = CLAUSE_TEMPLATES;

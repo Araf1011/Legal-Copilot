@@ -1,12 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Paperclip, 
   ArrowUp, 
-  Globe, 
   Sparkles, 
-  PlusSquare, 
-  ChevronDown, 
-  Scan, 
   Copy, 
   Check, 
   Volume2, 
@@ -16,12 +11,16 @@ import {
   Square,
   Mic,
   MicOff,
-  Key,
-  X
+  Scale,
+  BookOpen,
+  ExternalLink,
+  ShieldAlert,
+  ShieldCheck
 } from 'lucide-react';
 import { streamAIResponse } from '../services/aiService';
+import { OFFICIAL_SOURCES } from '../data/bangladeshLaws';
 
-// Helper component to render rich markdown in chat messages and real-time streaming
+// Helper component to render rich markdown in chat messages with Bangladesh Legal Copilot styling
 function FormattedMessage({ text }) {
   if (!text) return null;
 
@@ -35,7 +34,7 @@ function FormattedMessage({ text }) {
         <ul key={`ul-${elements.length}`} className="space-y-1.5 my-2 pl-1">
           {currentList.map((item, idx) => (
             <li key={idx} className="flex items-start gap-2">
-              <span className="text-teal-600 font-bold mt-0.5 select-none">•</span>
+              <span className="text-emerald-700 font-bold mt-0.5 select-none">•</span>
               <span className="flex-1 text-slate-800">{formatInline(item)}</span>
             </li>
           ))}
@@ -47,20 +46,54 @@ function FormattedMessage({ text }) {
 
   const formatInline = (str) => {
     if (!str) return '';
-    const regex = /(\*\*.*?\*\*|\*.*?\*|`.*?`)/g;
-    const parts = str.split(regex);
+    
+    // Auto-link URLs
+    const urlRegex = /(https?:\/\/[^\s]+|\/Allfile\.pdf)/g;
+    const partsWithLinks = [];
+    let lastIndex = 0;
+    let match;
 
-    return parts.map((part, i) => {
-      if (part.startsWith('**') && part.endsWith('**')) {
-        return <strong key={i} className="font-semibold text-slate-900">{part.slice(2, -2)}</strong>;
+    while ((match = urlRegex.exec(str)) !== null) {
+      if (match.index > lastIndex) {
+        partsWithLinks.push(str.substring(lastIndex, match.index));
       }
-      if (part.startsWith('*') && part.endsWith('*')) {
-        return <em key={i} className="italic text-slate-700">{part.slice(1, -1)}</em>;
-      }
-      if (part.startsWith('`') && part.endsWith('`')) {
-        return <code key={i} className="px-1.5 py-0.5 rounded bg-slate-100 text-teal-800 text-xs font-mono">{part.slice(1, -1)}</code>;
-      }
-      return part;
+      const url = match[0];
+      partsWithLinks.push(
+        <a 
+          key={`link-${match.index}`} 
+          href={url} 
+          target="_blank" 
+          rel="noopener noreferrer" 
+          className="text-emerald-700 underline font-medium hover:text-emerald-900 inline-flex items-center gap-0.5"
+        >
+          {url.includes('Allfile.pdf') ? '📄 Master Legal PDF (/Allfile.pdf)' : url}
+          <ExternalLink className="w-2.5 h-2.5 inline" />
+        </a>
+      );
+      lastIndex = match.index + url.length;
+    }
+    if (lastIndex < str.length) {
+      partsWithLinks.push(str.substring(lastIndex));
+    }
+
+    return partsWithLinks.map((subPart, pIdx) => {
+      if (typeof subPart !== 'string') return subPart;
+      
+      const regex = /(\*\*.*?\*\*|\*.*?\*|`.*?`)/g;
+      const parts = subPart.split(regex);
+
+      return parts.map((part, i) => {
+        if (part.startsWith('**') && part.endsWith('**')) {
+          return <strong key={`${pIdx}-${i}`} className="font-semibold text-slate-900">{part.slice(2, -2)}</strong>;
+        }
+        if (part.startsWith('*') && part.endsWith('*')) {
+          return <em key={`${pIdx}-${i}`} className="italic text-slate-700">{part.slice(1, -1)}</em>;
+        }
+        if (part.startsWith('`') && part.endsWith('`')) {
+          return <code key={`${pIdx}-${i}`} className="px-1.5 py-0.5 rounded bg-emerald-50 text-emerald-900 text-xs font-mono border border-emerald-200">{part.slice(1, -1)}</code>;
+        }
+        return part;
+      });
     });
   };
 
@@ -73,12 +106,58 @@ function FormattedMessage({ text }) {
       continue;
     }
 
+    // Section 8 Disclaimer Box
+    if (trimmed.includes('আইনি সতর্কবার্তা') || trimmed.includes('Legal Disclaimer') || trimmed.startsWith('### ৮.') || trimmed.startsWith('### 8.')) {
+      flushList();
+      const disclaimerText = trimmed.replace(/^###\s*[০-৯0-9.]*\s*/, '');
+      elements.push(
+        <div key={`disclaimer-${i}`} className="my-4 p-3.5 bg-amber-50/80 border border-amber-200/90 rounded-xl text-amber-950 text-xs leading-relaxed flex items-start gap-2.5 shadow-2xs">
+          <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+          <div className="flex-1">
+            <div className="font-bold text-[11px] uppercase tracking-wider text-amber-900 mb-0.5 flex items-center gap-1.5">
+              <span>Bangladesh Legal Disclaimer</span>
+              <span className="font-mono text-[9px] bg-amber-100 px-1 rounded text-amber-800">Rule § 11</span>
+            </div>
+            <div>{formatInline(disclaimerText)}</div>
+          </div>
+        </div>
+      );
+      continue;
+    }
+
+    // Standard Section Header (### 1. Direct Answer, ### 2. Relevant Law, etc.)
+    if (trimmed.startsWith('### ')) {
+      flushList();
+      const headerText = trimmed.replace(/^###\s*/, '');
+      elements.push(
+        <div key={`heading-${i}`} className="pt-3 pb-1 mt-2 border-b border-slate-100 flex items-center gap-2">
+          <span className="w-1.5 h-4 rounded-full bg-emerald-600 inline-block"></span>
+          <h3 className="text-sm sm:text-base font-bold text-slate-900 tracking-tight">
+            {formatInline(headerText)}
+          </h3>
+        </div>
+      );
+      continue;
+    }
+
+    // Sub-header (## or #)
+    if (trimmed.startsWith('# ') || trimmed.startsWith('## ')) {
+      flushList();
+      const h2Text = trimmed.replace(/^#+\s*/, '');
+      elements.push(
+        <h2 key={`h2-${i}`} className="text-base sm:text-lg font-bold text-slate-900 tracking-tight pt-2 pb-1 border-b border-slate-100">
+          {formatInline(h2Text)}
+        </h2>
+      );
+      continue;
+    }
+
     // Callout blockquote > ...
     if (trimmed.startsWith('>')) {
       flushList();
       const quoteText = trimmed.replace(/^>\s*/, '');
       elements.push(
-        <blockquote key={`quote-${i}`} className="border-l-3 border-teal-600 pl-3.5 py-1.5 my-3 text-slate-700 italic bg-teal-50/40 rounded-r-lg">
+        <blockquote key={`quote-${i}`} className="border-l-3 border-emerald-600 pl-3.5 py-1.5 my-3 text-slate-700 italic bg-emerald-50/40 rounded-r-lg">
           {formatInline(quoteText)}
         </blockquote>
       );
@@ -102,7 +181,7 @@ function FormattedMessage({ text }) {
         i++;
       }
       elements.push(
-        <pre key={`code-${i}`} className="p-3 my-2.5 bg-slate-900 text-teal-300 font-mono text-xs rounded-xl overflow-x-auto shadow-inner">
+        <pre key={`code-${i}`} className="p-3 my-2.5 bg-slate-900 text-emerald-300 font-mono text-xs rounded-xl overflow-x-auto shadow-inner">
           {codeLines.join('\n')}
         </pre>
       );
@@ -127,18 +206,12 @@ export default function WhizzyChatView({
   contract, 
   session,
   onSendMessage,
-  onApplyRedline,
-  onToggleInspector,
-  isInspectorOpen,
-  selectedModel = 'Legal-Gemini 2.5 Pro',
+  selectedModel = 'gemini-2.5-flash',
   setSelectedModel
 }) {
   const [input, setInput] = useState('');
   const [copiedId, setCopiedId] = useState(null);
   const [feedback, setFeedback] = useState({});
-  const [directChatMode, setDirectChatMode] = useState('Direct Chat');
-  const [isModeDropdownOpen, setIsModeDropdownOpen] = useState(false);
-  const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
 
   // Real-time streaming state
   const [isGenerating, setIsGenerating] = useState(false);
@@ -151,30 +224,21 @@ export default function WhizzyChatView({
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
 
-  // Live API Key state
-  const [apiKey, setApiKey] = useState(() => {
-    const stored = typeof window !== 'undefined' ? localStorage.getItem('legal_copilot_gemini_key') : null;
-    if (stored && stored.trim().length > 15) return stored.trim();
-    return (import.meta.env?.VITE_GEMINI_API_KEY || '').trim();
-  });
-  const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false);
-
   const messagesEndRef = useRef(null);
-
   const messages = session?.messages || [];
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, streamingText, isGenerating]);
+  }, [messages, isGenerating, streamingText]);
 
-  // Speech Recognition setup
+  // Voice speech-to-text initialization
   useEffect(() => {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     if (SpeechRecognition) {
       const recognition = new SpeechRecognition();
       recognition.continuous = false;
       recognition.interimResults = true;
-      recognition.lang = 'en-US';
+      recognition.lang = 'bn-BD'; // Support Bangla & English
 
       recognition.onresult = (event) => {
         const transcript = Array.from(event.results)
@@ -183,14 +247,8 @@ export default function WhizzyChatView({
         setInput(transcript);
       };
 
-      recognition.onend = () => {
-        setIsListening(false);
-      };
-
-      recognition.onerror = () => {
-        setIsListening(false);
-      };
-
+      recognition.onend = () => setIsListening(false);
+      recognition.onerror = () => setIsListening(false);
       recognitionRef.current = recognition;
     }
   }, []);
@@ -220,7 +278,7 @@ export default function WhizzyChatView({
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text.replace(/[#*`>]/g, ''));
-      utterance.rate = 1.05;
+      utterance.rate = 1.0;
       utterance.pitch = 1.0;
       window.speechSynthesis.speak(utterance);
     }
@@ -237,7 +295,7 @@ export default function WhizzyChatView({
     }
   };
 
-  // Real-time streaming engine (streams word-by-word or directly via Gemini SSE)
+  // Real-time streaming engine with 5-Agent Multi-Agent Progress
   const startRealTimeStream = async (queryText, isExistingUserMsg = false) => {
     const q = queryText.trim();
     if (!q || isGenerating) return;
@@ -245,7 +303,7 @@ export default function WhizzyChatView({
     setInput('');
     setIsGenerating(true);
     setStreamingText('');
-    setThinkingStep('Analyzing contract clauses & statutory precedents...');
+    setThinkingStep('Agent 1: আইনি প্রশ্ন বিশ্লেষণ ও আইনি ক্ষেত্র চিহ্নিতকরণ (Query Understanding)...');
 
     if (!isExistingUserMsg) {
       const userMsg = {
@@ -260,26 +318,30 @@ export default function WhizzyChatView({
     const controller = new AbortController();
     abortControllerRef.current = controller;
 
-    // Progressive thinking indicators
+    // Progressive Multi-Agent Pipeline steps
     const t1 = setTimeout(() => {
-      setThinkingStep('Searching Delaware UCC § 2-719 & commercial case law...');
+      setThinkingStep('Agent 2: বাংলাদেশ লজ (bdlaws.minlaw.gov.bd) ও মাস্টার PDF অনুসন্ধান...');
     }, 450);
 
     const t2 = setTimeout(() => {
-      setThinkingStep('Synthesizing market-standard redlines...');
+      setThinkingStep('Agent 3: সংবিধিবদ্ধ ধারা ও শর্তাবলি গবেষণা (Statutory Analysis)...');
     }, 950);
 
     const t3 = setTimeout(() => {
-      setThinkingStep('');
+      setThinkingStep('Agent 4: আইনি যাচাইকরণ এজেন্ট (Verification & Section Check)...');
     }, 1450);
+
+    const t4 = setTimeout(() => {
+      setThinkingStep('Agent 5: ৮-ধাপের কাঠামোবদ্ধ উত্তর প্রস্তুতকরণ (Generating Response)...');
+    }, 1950);
 
     let accumulatedText = '';
     try {
       const generator = streamAIResponse({
         query: q,
-        contract,
-        apiKey: (apiKey || import.meta.env?.VITE_GEMINI_API_KEY || '').trim(),
-        model: 'gemini-flash-lite-latest',
+        _contract: null,
+        apiKey: (typeof window !== 'undefined' ? (localStorage.getItem('legal_copilot_gemini_key') || import.meta.env?.VITE_GEMINI_API_KEY || '') : '').trim(),
+        model: 'gemini-1.5-flash',
         signal: controller.signal
       });
 
@@ -304,13 +366,14 @@ export default function WhizzyChatView({
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
+      clearTimeout(t4);
       setIsGenerating(false);
       setStreamingText('');
       setThinkingStep('');
     }
   };
 
-  // Auto-stream if session has a trailing unresponded user message (e.g. sent from Home view)
+  // Auto-stream if session has a trailing unresponded user message
   useEffect(() => {
     if (!session || !session.messages || session.messages.length === 0) return;
     const lastMsg = session.messages[session.messages.length - 1];
@@ -321,36 +384,49 @@ export default function WhizzyChatView({
     }
   }, [session?.id, session?.messages?.length]);
 
-  const handleSaveApiKey = (key) => {
-    setApiKey(key);
-    localStorage.setItem('legal_copilot_gemini_key', key);
-    setIsApiKeyModalOpen(false);
-  };
-
   return (
     <div className="flex-1 flex flex-col h-full bg-white relative overflow-hidden select-text">
       
-      {/* Stepped Translucent Cyan Pillars at Bottom (Whizzy Signature) */}
-      <div className="whizzy-pillars">
-        <div className="whizzy-pillar h-16 opacity-30" />
-        <div className="whizzy-pillar h-24 opacity-50" />
-        <div className="whizzy-pillar h-36 opacity-70" />
-        <div className="whizzy-pillar h-48 opacity-85" />
-        <div className="whizzy-pillar h-56 opacity-95" />
-        <div className="whizzy-pillar h-48 opacity-85" />
-        <div className="whizzy-pillar h-36 opacity-70" />
-        <div className="whizzy-pillar h-24 opacity-50" />
-        <div className="whizzy-pillar h-16 opacity-30" />
+      {/* Subtle top indicator bar */}
+      <div className="h-9 px-6 bg-slate-50 border-b border-slate-100 flex items-center justify-between text-xs text-slate-500 shrink-0">
+        <div className="flex items-center gap-2">
+          <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+          <span className="font-semibold text-slate-700">Bangladesh Legal Copilot</span>
+          <span className="text-[10px] bg-white border border-slate-200 px-1.5 py-0.2 rounded font-mono text-emerald-800 font-bold">
+            RAG Grounded
+          </span>
+        </div>
+        <div className="flex items-center gap-3">
+          <a 
+            href={OFFICIAL_SOURCES.portalUrl}
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-emerald-700 flex items-center gap-1 font-medium"
+          >
+            bdlaws.minlaw.gov.bd
+            <ExternalLink className="w-2.5 h-2.5" />
+          </a>
+          <span>•</span>
+          <a 
+            href={OFFICIAL_SOURCES.masterPdfPath}
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className="hover:text-emerald-700 flex items-center gap-1 font-medium"
+          >
+            Master PDF (429p)
+            <ExternalLink className="w-2.5 h-2.5" />
+          </a>
+        </div>
       </div>
 
       {/* Main Conversation Scroll View */}
       <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 z-10">
-        <div className="max-w-2xl mx-auto space-y-6 pb-48">
+        <div className="max-w-3xl mx-auto space-y-6 pb-48">
           
           {/* Centered Date Pill ("TODAY") */}
           <div className="flex justify-center">
-            <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase select-none">
-              TODAY
+            <span className="text-[10px] font-semibold text-slate-400 tracking-wider uppercase bg-slate-100 px-2.5 py-0.5 rounded-full select-none">
+              TODAY • BANGLADESH LEGAL JURISDICTION
             </span>
           </div>
 
@@ -359,7 +435,7 @@ export default function WhizzyChatView({
             if (msg.sender === 'user') {
               return (
                 <div key={msg.id} className="flex justify-end">
-                  <div className="bg-[#f1f3f5] text-slate-900 text-sm font-normal px-4 py-2 rounded-2xl max-w-lg shadow-2xs">
+                  <div className="bg-[#f1f3f5] text-slate-900 text-sm font-normal px-4 py-2.5 rounded-2xl max-w-xl shadow-2xs leading-relaxed">
                     {msg.text}
                   </div>
                 </div>
@@ -367,58 +443,50 @@ export default function WhizzyChatView({
             }
 
             // AI Response
-            const content = msg.text || (msg.leadText ? `${msg.leadText}\n\n${msg.heading || ''}\n${msg.conclusion || ''}` : '');
+            const content = msg.text || '';
 
             return (
               <div key={msg.id} className="space-y-4 text-slate-800 text-sm leading-relaxed pt-1">
                 
-                {/* Only show web sources pill if real web sources were actually used */}
-                {msg.sources && msg.sources.length > 0 && (
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-slate-200 bg-white shadow-2xs text-xs text-slate-700">
-                      <Globe className="w-3.5 h-3.5 text-teal-600" />
-                      <span className="font-medium text-slate-600">{msg.sources.length} sources</span>
-                    </div>
-                    {msg.sources.map((src, idx) => (
-                      <a 
-                        key={idx} 
-                        href={src.url || '#'} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
-                      >
-                        {src.title || src.domain || 'Source'}
-                      </a>
-                    ))}
+                {/* Agent Attribution Pill */}
+                <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-emerald-200 bg-emerald-50 text-[11px] text-emerald-900 font-semibold shadow-2xs">
+                    <Scale className="w-3 h-3 text-emerald-700" />
+                    <span>Verified Legal Response</span>
                   </div>
-                )}
+                  <span className="text-[10px] text-slate-400 font-mono">
+                    Grounded in BD Law Statutes
+                  </span>
+                </div>
 
                 {/* Rendered content */}
-                <div className="text-slate-800 text-sm leading-relaxed font-normal">
+                <div className="text-slate-800 text-sm leading-relaxed font-normal bg-white rounded-xl">
                   <FormattedMessage text={content} />
                 </div>
 
                 {/* Action Toolbar Below Message */}
-                <div className="flex items-center gap-3 pt-2 text-slate-400 select-none">
+                <div className="flex items-center gap-3 pt-2 text-slate-400 select-none border-t border-slate-100">
                   <button 
                     onClick={() => handleCopy(content, msg.id)}
-                    className="hover:text-slate-600 transition p-1"
+                    className="hover:text-slate-600 transition p-1 flex items-center gap-1 text-xs"
                     title="Copy response"
                   >
-                    {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-teal-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    <span>{copiedId === msg.id ? 'Copied' : 'Copy'}</span>
                   </button>
 
                   <button 
                     onClick={() => handleReadAloud(content)}
-                    className="hover:text-slate-600 transition p-1"
+                    className="hover:text-slate-600 transition p-1 flex items-center gap-1 text-xs"
                     title="Read aloud"
                   >
                     <Volume2 className="w-3.5 h-3.5" />
+                    <span>Listen</span>
                   </button>
 
                   <button 
                     onClick={() => handleFeedback(msg.id, 'up')}
-                    className={`hover:text-slate-600 transition p-1 ${feedback[msg.id] === 'up' ? 'text-teal-600' : ''}`}
+                    className={`hover:text-slate-600 transition p-1 ${feedback[msg.id] === 'up' ? 'text-emerald-600' : ''}`}
                     title="Good response"
                   >
                     <ThumbsUp className="w-3.5 h-3.5" />
@@ -435,12 +503,13 @@ export default function WhizzyChatView({
                   <button 
                     onClick={() => {
                       const lastUserMsg = [...messages].reverse().find(m => m.sender === 'user');
-                      startRealTimeStream(lastUserMsg?.text || 'Analyze contract', false);
+                      startRealTimeStream(lastUserMsg?.text || 'আইনি গবেষণা', false);
                     }}
-                    className="hover:text-slate-600 transition p-1"
+                    className="hover:text-slate-600 transition p-1 flex items-center gap-1 text-xs ml-auto"
                     title="Regenerate"
                   >
                     <RotateCw className="w-3.5 h-3.5" />
+                    <span>Regenerate</span>
                   </button>
                 </div>
 
@@ -452,16 +521,16 @@ export default function WhizzyChatView({
           {isGenerating && (
             <div className="space-y-4 text-slate-800 text-sm leading-relaxed pt-1 animate-in fade-in duration-150">
               {thinkingStep && (
-                <div className="text-xs text-slate-500 italic flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-lg px-3 py-1.5 w-fit">
-                  <Sparkles className="w-3.5 h-3.5 text-teal-600 animate-spin" />
-                  <span>{thinkingStep}</span>
+                <div className="text-xs text-emerald-900 bg-emerald-50 border border-emerald-200 rounded-lg px-3 py-2 w-fit flex items-center gap-2 shadow-2xs">
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-700 animate-spin" />
+                  <span className="font-medium">{thinkingStep}</span>
                 </div>
               )}
 
               {streamingText && (
-                <div className="text-slate-800 text-sm leading-relaxed font-normal">
+                <div className="text-slate-800 text-sm leading-relaxed font-normal bg-white">
                   <FormattedMessage text={streamingText} />
-                  <span className="inline-block w-2 h-4 ml-1 bg-teal-600 animate-pulse align-middle rounded-xs" />
+                  <span className="inline-block w-2 h-4 ml-1 bg-emerald-600 animate-pulse align-middle rounded-xs" />
                 </div>
               )}
             </div>
@@ -473,9 +542,9 @@ export default function WhizzyChatView({
 
       {/* Fixed Bottom Prompt Dock */}
       <div className="absolute bottom-4 left-0 right-0 px-4 z-20 pointer-events-none">
-        <div className="max-w-2xl mx-auto pointer-events-auto">
+        <div className="max-w-3xl mx-auto pointer-events-auto">
           
-          <div className="w-full whizzy-input-card rounded-[22px] p-3 transition-all bg-white shadow-xl border border-slate-200">
+          <div className="w-full rounded-2xl p-3 transition-all bg-white shadow-xl border border-slate-200">
             {/* Input Line */}
             <input
               type="text"
@@ -487,40 +556,34 @@ export default function WhizzyChatView({
                   startRealTimeStream(input, false);
                 }
               }}
-              placeholder={isListening ? "Listening to your voice..." : "What do you want to know..."}
+              placeholder={isListening ? "Listening to your voice (Bangla/English)..." : "বাংলাদেশের যেকোনো আইন, ধারা বা অধিকার সম্পর্কে প্রশ্ন করুন..."}
               className={`w-full bg-transparent border-0 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none px-2 py-1 ${
-                isListening ? 'animate-pulse text-teal-700 font-medium' : ''
+                isListening ? 'animate-pulse text-emerald-700 font-medium' : ''
               }`}
             />
 
             {/* Bottom Row inside card */}
             <div className="flex items-center justify-between pt-2">
               <div className="flex items-center gap-2 flex-wrap">
-                <button 
-                  type="button"
-                  className="w-8 h-8 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white flex items-center justify-center text-slate-600 transition shadow-2xs"
-                  title="Attach file"
+                <a
+                  href={OFFICIAL_SOURCES.portalUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-full border border-slate-200/90 hover:border-emerald-300 bg-white hover:bg-emerald-50/50 text-slate-700 text-xs font-medium transition shadow-2xs"
                 >
-                  <Paperclip className="w-3.5 h-3.5" />
-                </button>
+                  <Scale className="w-3 h-3 text-emerald-600" />
+                  <span>BD Laws</span>
+                </a>
 
-                <button
-                  type="button"
-                  onClick={() => startRealTimeStream(`Analyze ${contract.title} for systemic commercial vulnerabilities.`, false)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
+                <a
+                  href={OFFICIAL_SOURCES.masterPdfPath}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1 px-2.5 py-1 rounded-full border border-slate-200/90 hover:border-emerald-300 bg-white hover:bg-emerald-50/50 text-slate-700 text-xs font-medium transition shadow-2xs"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-teal-600" />
-                  <span>Think Bigger</span>
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => startRealTimeStream(`Deep statutory audit on ${contract.governingLaw} precedents.`, false)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
-                >
-                  <Globe className="w-3.5 h-3.5 text-teal-600" />
-                  <span>Deep Research</span>
-                </button>
+                  <BookOpen className="w-3 h-3 text-emerald-600" />
+                  <span>Master PDF (429p)</span>
+                </a>
               </div>
 
               <div className="flex items-center gap-2 shrink-0">
@@ -533,7 +596,7 @@ export default function WhizzyChatView({
                       ? 'border-rose-400 bg-rose-50 text-rose-600 animate-bounce' 
                       : 'border-slate-200/90 hover:border-slate-300 bg-white text-slate-600'
                   }`}
-                  title={isListening ? "Stop listening" : "Real-time Voice Dictation"}
+                  title={isListening ? "Stop listening" : "Real-time Voice Dictation (Bangla/English)"}
                 >
                   {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
                 </button>
@@ -551,146 +614,21 @@ export default function WhizzyChatView({
                 ) : (
                   <button
                     type="button"
-                    onClick={() => startRealTimeStream(input, false)}
                     disabled={!input.trim()}
-                    className="w-8 h-8 rounded-full bg-teal-600 hover:bg-teal-700 disabled:opacity-30 text-white flex items-center justify-center transition shadow-xs"
-                    title="Send message"
+                    onClick={() => startRealTimeStream(input, false)}
+                    className="w-8 h-8 rounded-full bg-emerald-700 hover:bg-emerald-800 disabled:opacity-30 disabled:cursor-not-allowed text-white flex items-center justify-center transition shadow-xs"
+                    title="Send"
                   >
                     <ArrowUp className="w-4 h-4 stroke-[2.5]" />
                   </button>
                 )}
               </div>
             </div>
-          </div>
 
-          {/* Sub-bar below card */}
-          <div className="w-full flex items-center justify-between px-2 pt-2 text-xs text-slate-500">
-            <div className="relative">
-              <button
-                onClick={() => setIsModeDropdownOpen(!isModeDropdownOpen)}
-                className="flex items-center gap-1.5 text-slate-700 font-medium hover:text-slate-900 transition"
-              >
-                <div className="flex items-center gap-0.5 text-teal-600">
-                  <span className="w-0.5 h-2.5 bg-current rounded-full" />
-                  <span className="w-0.5 h-4 bg-current rounded-full" />
-                  <span className="w-0.5 h-2 bg-current rounded-full" />
-                </div>
-                <span>{directChatMode}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-              </button>
-
-              {isModeDropdownOpen && (
-                <div className="absolute left-0 bottom-full mb-2 w-44 bg-white border border-slate-200 rounded-xl shadow-lg p-1 z-30">
-                  {['Direct Chat', 'Contract Deep Audit', 'Clause Redlining'].map((m) => (
-                    <button
-                      key={m}
-                      onClick={() => {
-                        setDirectChatMode(m);
-                        setIsModeDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-2.5 py-1.5 text-xs text-slate-700 hover:bg-slate-50 rounded-lg transition"
-                    >
-                      {m}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="relative flex items-center gap-2">
-              <span className="text-slate-400">Models</span>
-              <button
-                onClick={() => setIsModelDropdownOpen(!isModelDropdownOpen)}
-                className="flex items-center gap-1.5 text-slate-700 font-semibold hover:text-slate-900 transition"
-              >
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                <span>{selectedModel}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
-              </button>
-
-              {isModelDropdownOpen && (
-                <div className="absolute right-0 bottom-full mb-2 w-52 bg-white border border-slate-200 rounded-xl shadow-lg p-1.5 z-30">
-                  {['Legal-Gemini 2.5 Pro', 'GPT-4o', 'Claude 3.5 Sonnet'].map((m) => (
-                    <button
-                      key={m}
-                      onClick={() => {
-                        setSelectedModel?.(m);
-                        setIsModelDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-2.5 py-1.5 text-xs text-slate-700 hover:bg-slate-50 rounded-lg transition"
-                    >
-                      {m}
-                    </button>
-                  ))}
-                  <div className="pt-1 border-t border-slate-100 mt-1">
-                    <button
-                      onClick={() => {
-                        setIsModelDropdownOpen(false);
-                        setIsApiKeyModalOpen(true);
-                      }}
-                      className="w-full text-left px-2.5 py-1.5 text-xs text-emerald-700 font-medium hover:bg-emerald-50 rounded-lg transition flex items-center gap-1.5"
-                    >
-                      <Key className="w-3 h-3 text-emerald-600" />
-                      <span>{apiKey ? 'Live Gemini Key Connected ✓' : 'Add Gemini API Key'}</span>
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
           </div>
 
         </div>
       </div>
-
-      {/* Optional Live API Key Settings Modal */}
-      {isApiKeyModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs">
-          <div className="bg-white border border-slate-200 rounded-2xl w-full max-w-md p-5 shadow-2xl space-y-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <div className="flex items-center gap-2">
-                <Key className="w-4 h-4 text-teal-600" />
-                <span className="font-bold text-sm text-slate-900">Connect Live Gemini API</span>
-              </div>
-              <button 
-                onClick={() => setIsApiKeyModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            <p className="text-xs text-slate-500 leading-relaxed">
-              Legal Copilot includes a real-time streaming legal reasoning engine out of the box. You can optionally paste your free Google Gemini API key to stream directly from live Google AI servers!
-            </p>
-
-            <div>
-              <label className="text-xs font-semibold text-slate-700 block mb-1">Google Gemini API Key</label>
-              <input 
-                type="password"
-                placeholder="AIzaSy..."
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-mono text-slate-800 focus:outline-none focus:border-teal-500"
-              />
-            </div>
-
-            <div className="flex items-center justify-end gap-2 pt-2">
-              <button
-                onClick={() => setIsApiKeyModalOpen(false)}
-                className="px-3 py-1.5 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-800"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={() => handleSaveApiKey(apiKey)}
-                className="px-4 py-1.5 rounded-lg bg-teal-600 hover:bg-teal-700 text-white text-xs font-semibold shadow-xs"
-              >
-                Save & Connect
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
     </div>
   );
