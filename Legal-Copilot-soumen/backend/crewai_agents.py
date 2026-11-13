@@ -27,8 +27,8 @@ os.environ.setdefault("CREWAI_DISABLE_TELEMETRY", "true")
 os.environ.setdefault("OTEL_SDK_DISABLED", "true")
 
 log = logging.getLogger("legal_crew")
-
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+GROQ_MODEL = os.getenv("GROQ_MODEL", "openai/gpt-oss-120b")
+# GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 GROQ_BASE_URL = os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
 MAX_CONTEXT_CHARS = 9000
 
