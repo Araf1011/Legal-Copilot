@@ -206,7 +206,7 @@ export default function WhizzyChatView({
   contract, 
   session,
   onSendMessage,
-  selectedModel = 'gemini-2.5-flash',
+  selectedModel = 'groq-llama-3.3-70b',
   setSelectedModel
 }) {
   const [input, setInput] = useState('');
@@ -337,13 +337,7 @@ export default function WhizzyChatView({
 
     let accumulatedText = '';
     try {
-      const generator = streamAIResponse({
-        query: q,
-        _contract: null,
-        apiKey: (typeof window !== 'undefined' ? (localStorage.getItem('legal_copilot_gemini_key') || import.meta.env?.VITE_GEMINI_API_KEY || '') : '').trim(),
-        model: 'gemini-1.5-flash',
-        signal: controller.signal
-      });
+      const generator = streamAIResponse({ query: q, signal: controller.signal });
 
       for await (const chunk of generator) {
         accumulatedText += chunk;
@@ -361,6 +355,13 @@ export default function WhizzyChatView({
     } catch (err) {
       if (err.name !== 'AbortError') {
         console.error("Stream error:", err);
+        // Show the real problem to the user instead of silently dropping the question
+        onSendMessage(null, {
+          id: (Date.now() + 2).toString(),
+          sender: 'ai',
+          timestamp: 'Today',
+          text: `⚠️ **Could not get an answer.** ${err.message || 'Unknown error.'}\n\nউত্তর পাওয়া যায়নি — ব্যাকএন্ড চালু আছে কি না এবং GROQ_API_KEY দেওয়া আছে কি না দেখুন।`
+        }, null);
       }
     } finally {
       clearTimeout(t1);
@@ -449,15 +450,18 @@ export default function WhizzyChatView({
               <div key={msg.id} className="space-y-4 text-slate-800 text-sm leading-relaxed pt-1">
                 
                 {/* Agent Attribution Pill */}
-                <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-emerald-200 bg-emerald-50 text-[11px] text-emerald-900 font-semibold shadow-2xs">
-                    <Scale className="w-3 h-3 text-emerald-700" />
-                    <span>Verified Legal Response</span>
-                  </div>
-                  <span className="text-[10px] text-slate-400 font-mono">
-                    Grounded in BD Law Statutes
-                  </span>
-                </div>
+                {/* Hidden for error messages */}
+{!content.startsWith('⚠️') && (
+  <div className="flex items-center gap-2">
+    <div className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-emerald-200 bg-emerald-50 text-[11px] text-emerald-900 font-semibold shadow-2xs">
+      <Scale className="w-3 h-3 text-emerald-700" />
+      <span>AI Legal Answer</span>
+    </div>
+    <span className="text-[10px] text-slate-400 font-mono">
+      Check the sources &amp; verification notes below
+    </span>
+  </div>
+)}
 
                 {/* Rendered content */}
                 <div className="text-slate-800 text-sm leading-relaxed font-normal bg-white rounded-xl">

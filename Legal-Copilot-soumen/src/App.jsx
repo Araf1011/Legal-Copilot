@@ -18,7 +18,7 @@ export default function App() {
   const [currentContract, setCurrentContract] = useState(SAMPLE_CONTRACTS[0]);
   const [viewMode, setViewMode] = useState('home'); // 'home', 'chat', 'audit', 'draft', 'compare', 'compliance'
   const [activeTab, setActiveTab] = useState('chat');
-  const [selectedModel, setSelectedModel] = useState('gemini-2.5-flash');
+  const [selectedModel, setSelectedModel] = useState('groq-llama-3.3-70b');
 
   // Dynamic user chat sessions with initial Bangladesh demo sessions
   const [sessions, setSessions] = useState(INITIAL_DEMO_SESSIONS);
@@ -249,13 +249,8 @@ export default function App() {
         
         {/* Clean Header Bar */}
         <WhizzyTopBar 
-          onOpenExport={() => setIsExportOpen(true)}
-          onOpenUpload={() => setIsUploadOpen(true)}
           isSidebarOpen={isSidebarOpen}
           onToggleSidebar={() => setIsSidebarOpen(!isSidebarOpen)}
-          currentContract={currentContract}
-          contracts={contracts}
-          setCurrentContract={setCurrentContract}
         />
 
           {/* Central Workspace View */}

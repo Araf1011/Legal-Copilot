@@ -38,8 +38,8 @@ export default function Navbar({
       <div className="bg-gradient-to-r from-indigo-900/60 via-purple-900/40 to-slate-900 px-4 py-1.5 text-xs border-b border-indigo-500/20 text-slate-300 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span className="font-semibold text-indigo-300">Hackathon AI Model:</span>
-          <span>Legal-Gemini 2.5 Pro (Fine-tuned on Commercial Contract Jurisprudence)</span>
+          <span className="font-semibold text-indigo-300">AI Model:</span>
+          <span>Groq Llama 3.3 70B via CrewAI + RAG (not fine-tuned)</span>
         </div>
         <div className="flex items-center gap-4 hidden sm:flex text-slate-400">
           <div className="flex items-center gap-1.5">
