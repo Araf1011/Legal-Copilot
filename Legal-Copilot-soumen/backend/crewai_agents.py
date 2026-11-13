@@ -124,7 +124,7 @@ class CrewAILegalCoordinator:
             # Groq is not a native CrewAI provider (and recent CrewAI no longer bundles LiteLLM), but Groq serves an
             # OpenAI-compatible API, so we use CrewAI's native OpenAI client pointed at Groq.
             self._llm = LLM(model=f"openai/{GROQ_MODEL}", base_url=GROQ_BASE_URL, api_key=key,
-                            temperature=0.1, max_tokens=2500, timeout=90)
+                temperature=0.1, max_tokens=4000, timeout=90)
         return self._llm
 
     @property
