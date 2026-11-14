@@ -4,7 +4,8 @@ import {
   Download, 
   FileText,
   PanelLeft,
-  ChevronDown
+  ChevronDown,
+  Sparkles
 } from 'lucide-react';
 
 export default function WhizzyTopBar({ 
@@ -14,7 +15,8 @@ export default function WhizzyTopBar({
   onToggleSidebar,
   currentContract,
   contracts,
-  setCurrentContract
+  setCurrentContract,
+  onNavigateToLanding
 }) {
   return (
     <div className="h-12 px-5 flex items-center justify-between select-none shrink-0 z-10 bg-white border-b border-slate-100">
@@ -68,6 +70,15 @@ export default function WhizzyTopBar({
 
       {/* Right: Clean Action Buttons (NO duplicate profile avatar) */}
       <div className="flex items-center gap-2">
+        <button 
+          onClick={onNavigateToLanding}
+          className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
+          title="Return to Product Landing Page"
+        >
+          <Sparkles className="w-3.5 h-3.5 text-teal-600" />
+          <span className="hidden sm:inline">Overview</span>
+        </button>
+
         <button 
           onClick={onOpenUpload}
           className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"

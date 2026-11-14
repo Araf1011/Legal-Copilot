@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import LandingPage from './components/LandingPage';
 import ChatGPTSidebar from './components/ChatGPTSidebar';
 import WhizzyTopBar from './components/WhizzyTopBar';
 import WhizzyHomeView from './components/WhizzyHomeView';
@@ -15,7 +16,7 @@ import { SAMPLE_CONTRACTS } from './data/sampleContracts';
 export default function App() {
   const [contracts, setContracts] = useState(SAMPLE_CONTRACTS);
   const [currentContract, setCurrentContract] = useState(SAMPLE_CONTRACTS[0]);
-  const [viewMode, setViewMode] = useState('home'); // 'home', 'chat', 'audit', 'draft', 'compare', 'compliance'
+  const [viewMode, setViewMode] = useState('landing'); // 'landing', 'home', 'chat', 'audit', 'draft', 'compare', 'compliance'
   const [activeTab, setActiveTab] = useState('chat');
   const [selectedModel, setSelectedModel] = useState('Legal-Gemini 2.5 Pro');
 
@@ -315,6 +316,18 @@ export default function App() {
     handleSendMessageFromHome(`Please analyze ${clause.section} (${clause.title}) and explain how we should negotiate this against opposing counsel: "${clause.issue}"`);
   };
 
+  // Fullscreen Product Landing Page View
+  if (viewMode === 'landing') {
+    return (
+      <LandingPage 
+        onLaunchApp={() => setViewMode('home')}
+        onLaunchWithPrompt={(promptText) => {
+          handleSendMessageFromHome(promptText);
+        }}
+      />
+    );
+  }
+
   return (
     <div className="flex h-screen w-screen bg-white text-slate-800 font-sans overflow-hidden select-none">
       
@@ -329,6 +342,7 @@ export default function App() {
         onDeleteSession={handleDeleteSession}
         onTogglePin={handleTogglePin}
         activeTab={viewMode}
+        onNavigateToLanding={() => setViewMode('landing')}
       />
 
       {/* Main Content Workspace */}
@@ -343,6 +357,7 @@ export default function App() {
           currentContract={currentContract}
           contracts={contracts}
           setCurrentContract={setCurrentContract}
+          onNavigateToLanding={() => setViewMode('landing')}
         />
 
           {/* Central Workspace View */}

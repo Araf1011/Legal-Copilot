@@ -21,7 +21,8 @@ export default function ChatGPTSidebar({
   onSelectSession, 
   onDeleteSession,
   onTogglePin,
-  activeTab
+  activeTab,
+  onNavigateToLanding
 }) {
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -61,8 +62,12 @@ export default function ChatGPTSidebar({
       
       {/* 1. Header: Brand + Collapse Button */}
       <div className="h-14 px-3.5 flex items-center justify-between shrink-0 border-b border-slate-100">
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 text-teal-600 flex items-center justify-center">
+        <div 
+          onClick={onNavigateToLanding}
+          className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition group"
+          title="Go to Product Landing Page"
+        >
+          <div className="w-6 h-6 text-teal-600 flex items-center justify-center group-hover:scale-105 transition">
             <svg 
               className="w-5 h-5 text-teal-600" 
               viewBox="0 0 24 24" 
