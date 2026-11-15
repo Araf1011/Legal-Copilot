@@ -268,16 +268,16 @@ export default function WhizzyHomeView({
               onClick={() => setIsModelDropdownOpen(!isModelDropdownOpen)}
               className="flex items-center gap-1.5 text-slate-700 font-semibold hover:text-slate-900 transition"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="Live Google Gemini API Connected"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" title="FastAPI CrewAI + Groq RAG Engine Active"></span>
               <span>{selectedModel}</span>
               <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
             </button>
 
             {isModelDropdownOpen && (
-              <div className="absolute right-0 mt-2 top-full w-52 bg-white border border-slate-200 rounded-xl shadow-lg p-1 z-30">
+              <div className="absolute right-0 mt-2 top-full w-56 bg-white border border-slate-200 rounded-xl shadow-lg p-1 z-30">
                 {[
-                  { name: 'GPT-4o', desc: 'OpenAI Omnimodal flagship' },
-                  { name: 'Legal-Gemini 2.5 Pro', desc: 'Fine-tuned on commercial contracts' },
+                  { name: 'groq-llama-3.3-70b', desc: 'FastAPI CrewAI Multi-Agent RAG' },
+                  { name: 'Legal-Gemini 2.5 Pro', desc: 'Google Gemini Live Fallback' },
                   { name: 'Claude 3.5 Sonnet', desc: 'Anthropic reasoning model' },
                 ].map((m) => (
                   <button
@@ -296,6 +296,24 @@ export default function WhizzyHomeView({
             )}
           </div>
 
+        </div>
+
+        {/* Quick Bangladesh Statutory & Contract Audit Chips */}
+        <div className="w-full flex items-center justify-center gap-2 flex-wrap pt-6">
+          {[
+            { label: 'চেক ডিজঅনার (NI Act 138)', query: 'চেক ডিজঅনার হলে ধারা ১৩৮ অনুযায়ী কী আইনি পদক্ষেপ নিতে হবে?' },
+            { label: 'জামিন আবেদন (CrPC 496/497)', query: 'জামিনের আবেদন করার নিয়ম ও জামিনযোগ্য/অজামিনযোগ্য অপরাধের শর্তাবলী কী?' },
+            { label: 'GD vs FIR পার্থক্য', query: 'জিডি (General Diary) এবং এফআইআর (FIR) এর মধ্যে পার্থক্য কী এবং কখন কোনটি করতে হয়?' },
+            { label: 'SaaS Liability Cap Audit', query: 'Analyze Enterprise Cloud SaaS Master Services Agreement Section 8.1 for Delaware UCC § 2-719 enforceability.' }
+          ].map((chip, idx) => (
+            <button
+              key={idx}
+              onClick={() => onSendMessage(chip.query)}
+              className="text-[11px] px-3 py-1.5 rounded-full bg-white hover:bg-emerald-50 text-slate-700 hover:text-emerald-800 border border-slate-200 hover:border-emerald-300 transition shadow-2xs font-medium"
+            >
+              {chip.label}
+            </button>
+          ))}
         </div>
 
       </div>

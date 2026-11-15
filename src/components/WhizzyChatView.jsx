@@ -17,7 +17,10 @@ import {
   Mic,
   MicOff,
   Key,
-  X
+  X,
+  ShieldCheck,
+  AlertTriangle,
+  ExternalLink
 } from 'lucide-react';
 import { streamAIResponse } from '../services/aiService';
 
@@ -274,13 +277,18 @@ export default function WhizzyChatView({
     }, 1450);
 
     let accumulatedText = '';
+    let metaData = null;
+
     try {
       const generator = streamAIResponse({
         query: q,
         contract,
         apiKey: (apiKey || import.meta.env?.VITE_GEMINI_API_KEY || '').trim(),
-        model: 'gemini-flash-lite-latest',
-        signal: controller.signal
+        model: 'groq-llama-3.3-70b',
+        signal: controller.signal,
+        onMeta: (meta) => {
+          metaData = meta;
+        }
       });
 
       for await (const chunk of generator) {
@@ -293,12 +301,24 @@ export default function WhizzyChatView({
         id: (Date.now() + 1).toString(),
         sender: 'ai',
         timestamp: 'Today',
-        text: accumulatedText
+        text: accumulatedText,
+        sources: metaData?.sources || [],
+        verified: metaData?.verified,
+        warnings: metaData?.warnings || [],
+        unsupported_citations: metaData?.unsupported_citations || [],
+        pipeline_steps: metaData?.pipeline_steps || []
       };
       onSendMessage(null, aiMsg, null);
     } catch (err) {
       if (err.name !== 'AbortError') {
         console.error("Stream error:", err);
+        const errMsg = {
+          id: (Date.now() + 1).toString(),
+          sender: 'ai',
+          timestamp: 'Today',
+          text: `⚠️ **Connection Notice:**\n${err.message || 'Could not complete legal query.'}\n\n*To start the backend, run:*\n\`cd backend && uvicorn main:app --reload\` (on port 8000).`
+        };
+        onSendMessage(null, errMsg, null);
       }
     } finally {
       clearTimeout(t1);
@@ -372,12 +392,24 @@ export default function WhizzyChatView({
             return (
               <div key={msg.id} className="space-y-4 text-slate-800 text-sm leading-relaxed pt-1">
                 
-                {/* Only show web sources pill if real web sources were actually used */}
+                {/* Warnings / Disclaimer Notice if present */}
+                {msg.warnings && msg.warnings.length > 0 && (
+                  <div className="p-3 bg-amber-50/80 border border-amber-200/90 rounded-xl text-xs text-amber-950 space-y-1">
+                    {msg.warnings.map((w, idx) => (
+                      <div key={idx} className="flex items-start gap-1.5">
+                        <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0 mt-0.5" />
+                        <span>{w}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {/* Only show sources pill if real sources were actually retrieved */}
                 {msg.sources && msg.sources.length > 0 && (
                   <div className="flex items-center gap-2 flex-wrap">
-                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-slate-200 bg-white shadow-2xs text-xs text-slate-700">
-                      <Globe className="w-3.5 h-3.5 text-teal-600" />
-                      <span className="font-medium text-slate-600">{msg.sources.length} sources</span>
+                    <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-emerald-200 bg-emerald-50 text-xs text-emerald-800">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                      <span className="font-semibold">{msg.sources.length} RAG Sources</span>
                     </div>
                     {msg.sources.map((src, idx) => (
                       <a 
@@ -385,9 +417,15 @@ export default function WhizzyChatView({
                         href={src.url || '#'} 
                         target="_blank" 
                         rel="noopener noreferrer"
-                        className="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 transition"
+                        className="text-[11px] px-2.5 py-1 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 transition border border-slate-200 flex items-center gap-1"
                       >
-                        {src.title || src.domain || 'Source'}
+                        <span className="font-medium">{src.act || src.title || src.domain || 'Source'}</span>
+                        {src.sections && src.sections.length > 0 && (
+                          <span className="font-mono text-[10px] text-emerald-700 font-semibold">
+                            (§ {src.sections.join(', ')})
+                          </span>
+                        )}
+                        <ExternalLink className="w-2.5 h-2.5 text-slate-400" />
                       </a>
                     ))}
                   </div>

@@ -12,16 +12,17 @@ import ComplianceChecker from './components/ComplianceChecker';
 import UploadModal from './components/UploadModal';
 import AuditReportModal from './components/AuditReportModal';
 import { SAMPLE_CONTRACTS } from './data/sampleContracts';
+import { INITIAL_DEMO_SESSIONS } from './data/bangladeshLaws';
 
 export default function App() {
   const [contracts, setContracts] = useState(SAMPLE_CONTRACTS);
   const [currentContract, setCurrentContract] = useState(SAMPLE_CONTRACTS[0]);
   const [viewMode, setViewMode] = useState('landing'); // 'landing', 'home', 'chat', 'audit', 'draft', 'compare', 'compliance'
   const [activeTab, setActiveTab] = useState('chat');
-  const [selectedModel, setSelectedModel] = useState('Legal-Gemini 2.5 Pro');
+  const [selectedModel, setSelectedModel] = useState('groq-llama-3.3-70b');
 
-  // Dynamic user chat sessions (Zero hardcoded chats)
-  const [sessions, setSessions] = useState([]);
+  // Dynamic user chat sessions with initial Bangladesh demo sessions
+  const [sessions, setSessions] = useState(INITIAL_DEMO_SESSIONS);
   const [currentSessionId, setCurrentSessionId] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   

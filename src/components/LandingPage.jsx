@@ -73,9 +73,14 @@ export default function LandingPage({ onLaunchApp, onLaunchWithPrompt }) {
 
   const samplePrompts = [
     {
-      label: 'Can AI replace legal analysis?',
-      category: 'Jurisprudence Strategy',
-      prompt: 'Can AI replace legal analysis?'
+      label: 'চেক ডিজঅনার হলে করণীয় (NI Act § 138)',
+      category: 'Banking & Criminal',
+      prompt: 'চেক ডিজঅনার হলে ধারা ১৩৮ অনুযায়ী কী আইনি পদক্ষেপ নিতে হবে এবং নোটিশের সময়সীমা কত?'
+    },
+    {
+      label: 'জামিনযোগ্য ও অজামিনযোগ্য অপরাধ (CrPC § 496/497)',
+      category: 'CrPC Procedural Law',
+      prompt: 'জামিনের আবেদন করার নিয়ম ও জামিনযোগ্য/অজামিনযোগ্য অপরাধের শর্তাবলী কী?'
     },
     {
       label: 'Audit 1-month SaaS liability cap vs Delaware UCC',
@@ -86,11 +91,6 @@ export default function LandingPage({ onLaunchApp, onLaunchWithPrompt }) {
       label: 'Strike predatory 36-month certified mail auto-renewal',
       category: 'Commercial Traps',
       prompt: 'Draft a balanced counter-proposal for Section 3.2 36-month automatic renewal and certified mail requirements.'
-    },
-    {
-      label: 'GDPR Article 28 AI model training restrictions',
-      category: 'Data Privacy & AI Risk',
-      prompt: 'Analyze data rights clause: does the vendor have the right to ingest our confidential data to train their proprietary AI models?'
     }
   ];
 
@@ -552,3 +552,4 @@ export default function LandingPage({ onLaunchApp, onLaunchWithPrompt }) {
     </div>
   );
 }
+
