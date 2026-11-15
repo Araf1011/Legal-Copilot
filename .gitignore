@@ -7,15 +7,21 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Frontend build artifacts
+frontend/node_modules
+frontend/dist
+frontend/dist-ssr
+frontend/*.local
+
+# Root-level leftovers (node_modules/dist may exist at root from before reorganization)
 node_modules
 dist
 dist-ssr
-*.local
 
 # Environment variables
-.env
-.env.*
-!.env.example
+frontend/.env
+frontend/.env.*
+!frontend/.env.example
 backend/.env
 backend/.env.*
 !backend/.env.example
