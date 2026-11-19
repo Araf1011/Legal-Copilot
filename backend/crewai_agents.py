@@ -27,7 +27,11 @@ os.environ.setdefault("CREWAI_DISABLE_TELEMETRY", "true")
 os.environ.setdefault("OTEL_SDK_DISABLED", "true")
 
 log = logging.getLogger("legal_crew")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+_configured_model = os.getenv("GROQ_MODEL", "qwen/qwen3.8-27b").strip()
+if not _configured_model or "llama" in _configured_model.lower():
+    GROQ_MODEL = "qwen/qwen3.8-27b"
+else:
+    GROQ_MODEL = _configured_model
 GROQ_BASE_URL = os.getenv("GROQ_BASE_URL", "https://api.groq.com/openai/v1")
 MAX_CONTEXT_CHARS = 9000
 
@@ -121,7 +125,8 @@ class CrewAILegalCoordinator:
                 raise LLMNotConfigured("GROQ_API_KEY is not set. Copy backend/.env.example to backend/.env and add your key.")
             from crewai import LLM
             # Groq serves an OpenAI-compatible API, so we use CrewAI's native OpenAI client pointed at Groq.
-            m_name = GROQ_MODEL if GROQ_MODEL.startswith("openai/") else f"openai/{GROQ_MODEL}"
+            model_target = GROQ_MODEL if not GROQ_MODEL.startswith("openai/") else GROQ_MODEL.replace("openai/", "", 1)
+            m_name = f"openai/{model_target}"
             self._llm = LLM(model=m_name, base_url=GROQ_BASE_URL, api_key=key,
                 temperature=0.1, max_tokens=4000, timeout=90)
         return self._llm
