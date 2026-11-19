@@ -46,11 +46,15 @@ import bangladeshLegalRulesBg from '../assets/bangladesh-green-nature-map.jpg';
 export default function LandingPage({ onLaunchApp, onLaunchWithPrompt }) {
   // Navigation tabs: 'home' | 'law' | 'locator' | 'helpline'
   const [currentTab, setCurrentTab] = useState('home');
-  // Default language is English
-  const [lang, setLang] = useState('en'); // 'en' | 'bn'
+  // Default language is Bengali as per reference UI
+  const [lang, setLang] = useState('bn'); // 'bn' | 'en'
   const [searchQuery, setSearchQuery] = useState('');
   const [lawFilter, setLawFilter] = useState('all');
   const [selectedDivision, setSelectedDivision] = useState('dhaka');
+
+  // Navigation dropdown states
+  const [isLawDropdownOpen, setIsLawDropdownOpen] = useState(false);
+  const [isLocatorDropdownOpen, setIsLocatorDropdownOpen] = useState(false);
 
   // Feature 5: Real-time voice legal inquiry (English & Bengali)
   const [isListening, setIsListening] = useState(false);
@@ -133,33 +137,36 @@ export default function LandingPage({ onLaunchApp, onLaunchWithPrompt }) {
       : 'গণপ্রজাতন্ত্রী বাংলাদেশ আইন ও বিচারিক অনুসন্ধান প্ল্যাটফর্ম • AI Jurisprudence',
     heroTitlePart1: isEn
       ? 'AI Legal Counsel for Bangladesh Law & '
-      : 'বাংলাদেশের আইন, আদালত ও বিধিমালার ',
+      : 'বাংলাদেশের আইন, আদালত ও বিধিমালার জন্য ',
     heroTitleAccent: isEn
       ? 'Commercial Practice'
-      : 'নির্ভুল কৃত্রিম বুদ্ধিমত্তা',
+      : 'নিখুঁত',
+    heroTitleLine2: isEn
+      ? ''
+      : 'আইনি সহায়তা',
     heroSub: isEn
       ? 'Instant clause risk auditing, statutory cross-referencing across 500+ Bangladesh Acts, procedural criminal & civil guidance, and territorial court-station jurisdiction.'
-      : 'দণ্ডবিধি, ফৌজদারি কার্যবিধি (CrPC), চুক্তি আইন ও এনআই অ্যাক্টসহ ৫০০+ বাংলাদেশ গেজেট স্ট্যাটিউটের ধারাভিত্তিক ব্যাখ্যা, আইনি নোটিশ খসড়া ও এখতিয়ারভিত্তিক থানা-আদালত নির্দেশনা।',
-    docketTitle: isEn ? 'LEGAL INQUIRY & STATUTE DESK' : 'আইনি প্রশ্ন অনুসন্ধান (LEGAL QUERY DESK)',
+      : 'দণ্ডবিধি, ফৌজদারি কার্যবিধি (CrPC), চুক্তি আইন ও এনআই অ্যাক্টসহ ৫০০+ বাংলাদেশ গেজেট স্ট্যাটিউট্যের ধারাভিত্তিক ব্যাখ্যা, আইনি নোটিশ খসড়া ও এখতিয়ারভিত্তিক থানা-আদালত নির্দেশনা।',
+    docketTitle: isEn ? 'LEGAL QUERY DESK' : 'আইনি প্রশ্ন অনুসন্ধান (LEGAL QUERY DESK)',
     searchPlaceholder: isEn
       ? 'e.g. Legal steps for check dishonor under NI Act § 138, or Bail under CrPC § 497...'
       : 'যেমন: চেক বাউন্স হলে ধারা ১৩৮ অনুযায়ী করণীয় কী? অথবা জামিনের আবেদন...',
-    searchBtn: isEn ? 'Analyze Law' : 'আইন খুঁজুন',
+    searchBtn: isEn ? 'Search Law' : 'আইন খুঁজুন',
     popularQueriesLabel: isEn ? 'Popular inquiries:' : 'জনপ্রিয় অনুসন্ধান:',
     navHome: isEn ? 'Home' : 'হোম',
-    navLaw: isEn ? 'Laws & Statutes' : 'আইন ও বিধিমালা',
-    navLocator: isEn ? 'Court & Station Locator' : 'আদালত ও থানা',
+    navLaw: isEn ? 'Laws & Regulations' : 'আইন ও বিধিমালা',
+    navLocator: isEn ? 'Courts & Police Stations' : 'আদালত ও থানা',
     navHelpline: isEn ? 'Helplines' : 'হেল্পলাইন',
     navProfile: isEn ? 'Profile' : 'প্রোফাইল',
-    navCta: isEn ? 'Try Legal Copilot' : 'কোপাইলট শুরু করুন',
+    navCta: isEn ? 'Start Copilot' : 'কোপাইলট শুরু করুন',
     stat1Val: isEn ? '500+ Acts' : '৫০০+ আইন',
     stat1Label: isEn ? 'Bangladesh Gazette Statutes' : 'বাংলাদেশ গেজেট ও আইন',
     stat2Val: isEn ? '64 Districts' : '৬৪ জেলা',
-    stat2Label: isEn ? 'Court & Police Jurisdictions' : 'আদালত ও পুলিশ এখতিয়ার',
-    stat3Val: '16430',
-    stat3Label: isEn ? 'Toll-Free Govt Legal Aid' : 'বিনামূল্যে সরকারি আইনি সহায়তা',
-    stat4Val: '100%',
-    stat4Label: isEn ? 'Verified Statutory Citations' : 'ধারাভিত্তিক রেফারেন্স ভেরিফাইড',
+    stat2Label: isEn ? 'Courts & Police Jurisdiction' : 'আদালত ও পুলিশ এখতিয়ার',
+    stat3Val: isEn ? '16,430' : '\u09E7\u09EC,\u09EA\u09E9\u09E6',
+    stat3Label: isEn ? 'Free Govt Legal Aid' : 'বিনামূল্যে সরকারি আইনি সহায়তা',
+    stat4Val: isEn ? '100%' : '\u09E7\u09E6\u09E6%',
+    stat4Label: isEn ? 'Statute Reference Verified' : 'ধারাভিত্তিক রেফারেন্স ভেরিফাইড',
     lawSectionBadge: isEn ? 'Corpus Juris • Statutes & Penal Codes' : 'আইন ও সংবিধি আর্কাইভ • Corpus Juris',
     lawSectionTitle: isEn ? 'Bangladesh Acts & Statutory Corpus' : 'বাংলাদেশের প্রধান আইন ও সংবিধি ভাণ্ডার',
     lawSectionSub: isEn
@@ -618,98 +625,152 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
   };
 
   return (
-    <div className={`min-h-screen text-slate-900 selection:bg-[#0d9488]/20 selection:text-[#0f766e] relative isolate ${isEn ? 'font-sans' : 'font-bengali-sans'}`}>
+    <div className={`min-h-screen text-slate-900 selection:bg-emerald-500/20 selection:text-emerald-900 bg-[#f8f7f2] relative isolate ${isEn ? 'font-sans' : 'font-bengali-sans'}`}>
       
-      {/* ── FULL WEB BACKGROUND: Lush Green Bangladesh Nature & Decorated Legal Map ── */}
-      <div className="fixed inset-0 pointer-events-none -z-10 overflow-hidden">
-        {/* Full-bleed high-res green nature tea garden & Bangladesh map artwork */}
-        <img
-          src={bangladeshLegalRulesBg}
-          alt="Bangladesh Green Nature & Legal Map Background"
-          className="w-full h-full object-cover object-center scale-[1.01]"
-        />
-
-        {/* Soft translucent dark-emerald vignette allowing 100% visual clarity of the green tea hills, rivers and golden map */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#022c22]/55 via-[#022c22]/25 to-[#022c22]/65 pointer-events-none" />
-        <div className="absolute inset-0 bg-[#022c22]/15 pointer-events-none" />
-      </div>
+      {/* ── CLEAN AMBIENT LIGHTING: Subtle soft parchment warmth ── */}
+      <div className="fixed inset-0 pointer-events-none -z-10 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-[#ffffff] via-[#f8f7f2] to-[#f2f0e6]" />
 
       {/* ═════════════════════════════════════════════════════════════════════ */}
-      {/* FLOATING PILL ISLAND NAVIGATION BAR (Modeled after Reference UI)     */}
+      {/* FLOATING PILL ISLAND NAVIGATION BAR (Reference Design)               */}
       {/* ═════════════════════════════════════════════════════════════════════ */}
       <header className="fixed top-3.5 left-0 right-0 z-50 px-4 sm:px-6 pointer-events-none">
-        <div className="max-w-6xl mx-auto bg-[#ece7e1]/92 backdrop-blur-xl border border-stone-300/80 shadow-xl shadow-stone-950/15 rounded-full h-15 px-3.5 sm:px-4 flex items-center justify-between gap-3 pointer-events-auto transition-all">
+        <div className="max-w-5xl mx-auto bg-[#ece7df] border border-stone-300/60 shadow-md shadow-stone-300/25 rounded-full h-15 px-3.5 sm:px-4 flex items-center justify-between gap-3 pointer-events-auto transition-all">
 
-          {/* Left Brand Badge: Green Square with Bangladesh Map & Red Sun Dot */}
+          {/* Left Brand Badge: Green Rounded Square with Scale & Title */}
           <div className="flex items-center gap-2.5 cursor-pointer group shrink-0" onClick={() => switchTab('home')}>
-            <div className="w-9 h-9 rounded-xl bg-[#006a4e] flex items-center justify-center shadow-xs border border-emerald-400/30 group-hover:scale-105 transition-transform shrink-0 relative overflow-hidden">
-              <svg viewBox="0 0 100 100" className="w-6.5 h-6.5" fill="none">
-                {/* Bangladesh Map Silhouette in crisp white */}
-                <path
-                  d="M38 18 C45 15, 52 18, 56 24 C62 26, 68 32, 72 38 C74 46, 70 52, 68 56 C72 60, 77 67, 78 76 C76 83, 72 90, 66 90 C62 88, 59 82, 55 80 C50 78, 45 81, 41 80 C36 78, 32 72, 30 67 C28 61, 26 56, 27 50 C26 44, 23 38, 26 31 C29 25, 33 22, 38 18 Z"
-                  fill="#ffffff"
-                />
-                {/* Red Sun Circle in center */}
-                <circle cx="48" cy="52" r="11" fill="#f42a41" />
-              </svg>
+            <div className="w-9 h-9 rounded-xl bg-[#0d5c46] flex items-center justify-center shadow-xs shrink-0 text-white group-hover:scale-105 transition-transform">
+              <Scale className="w-5 h-5 text-white stroke-[2.2]" />
             </div>
             <div className="flex flex-col text-left leading-tight">
-              <span className="font-bold text-[13px] sm:text-[14px] tracking-tight text-[#0f3d2e] group-hover:text-[#006a4e] transition-colors">
+              <span className="font-bold text-[13px] text-slate-800 tracking-tight">
                 {isEn ? 'Legal' : 'বাংলাদেশ'}
               </span>
-              <span className="text-[12px] sm:text-[13px] font-bold text-[#1e4839] -mt-0.5 tracking-tight">
+              <span className="text-[12px] font-bold text-slate-700 -mt-0.5 tracking-tight">
                 {isEn ? 'Copilot BD' : 'আইন সহকারী'}
               </span>
             </div>
           </div>
 
           {/* Center Capsule Nav Links with Mint Container and Active Pill */}
-          <nav className="hidden md:flex items-center gap-1 bg-[#e2efe7] border border-[#cbe1d3] rounded-full p-1 text-xs">
+          <nav className="hidden md:flex items-center gap-1 bg-[#e2ebe4] border border-[#d2ded5] rounded-full p-1 text-xs relative">
             <button 
               type="button"
               onClick={() => switchTab('home')}
-              className={`px-4 py-1.5 rounded-full font-semibold transition ${
+              className={`px-3.5 py-1 rounded-full font-semibold transition ${
                 currentTab === 'home'
-                  ? 'bg-white text-[#155e42] shadow-xs'
-                  : 'text-[#2a5040] hover:text-[#0f3d2e] hover:bg-white/50'
+                  ? 'bg-white text-[#0d5c46] shadow-xs'
+                  : 'text-slate-700 hover:text-[#0d5c46] hover:bg-white/50'
               }`}
             >
               {t.navHome}
             </button>
 
-            <button 
-              type="button"
-              onClick={() => switchTab('law')}
-              className={`flex items-center gap-1 px-3.5 py-1.5 rounded-full font-semibold transition ${
-                currentTab === 'law'
-                  ? 'bg-white text-[#155e42] shadow-xs'
-                  : 'text-[#2a5040] hover:text-[#0f3d2e] hover:bg-white/50'
-              }`}
-            >
-              <span>{t.navLaw}</span>
-              <ChevronDown className="w-3 h-3 text-[#2a5040]/70" />
-            </button>
+            {/* Laws & Regulations with Dropdown */}
+            <div className="relative">
+              <button 
+                type="button"
+                onClick={() => {
+                  switchTab('law');
+                  setIsLawDropdownOpen(!isLawDropdownOpen);
+                  setIsLocatorDropdownOpen(false);
+                }}
+                onMouseEnter={() => setIsLawDropdownOpen(true)}
+                className={`flex items-center gap-1 px-3 py-1 rounded-full font-semibold transition ${
+                  currentTab === 'law'
+                    ? 'bg-white text-[#0d5c46] shadow-xs'
+                    : 'text-slate-700 hover:text-[#0d5c46] hover:bg-white/50'
+                }`}
+              >
+                <span>{t.navLaw}</span>
+                <ChevronDown className="w-3 h-3 text-slate-500" />
+              </button>
 
-            <button 
-              type="button"
-              onClick={() => switchTab('locator')}
-              className={`flex items-center gap-1 px-3.5 py-1.5 rounded-full font-semibold transition ${
-                currentTab === 'locator'
-                  ? 'bg-white text-[#155e42] shadow-xs'
-                  : 'text-[#2a5040] hover:text-[#0f3d2e] hover:bg-white/50'
-              }`}
-            >
-              <span>{t.navLocator}</span>
-              <ChevronDown className="w-3 h-3 text-[#2a5040]/70" />
-            </button>
+              {isLawDropdownOpen && (
+                <div 
+                  onMouseLeave={() => setIsLawDropdownOpen(false)}
+                  className="absolute top-full left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-stone-200 p-2 z-50 text-left animate-in fade-in slide-in-from-top-1"
+                >
+                  <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    {isEn ? 'Statute Corpus' : 'প্রধান আইন ও কোডসমূহ'}
+                  </div>
+                  {statutes.slice(0, 5).map(st => (
+                    <button
+                      key={st.id}
+                      onClick={() => {
+                        switchTab('law');
+                        setLawFilter(st.category);
+                        setIsLawDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-emerald-50 hover:text-[#0d5c46] transition flex items-center justify-between"
+                    >
+                      <span className="font-medium text-slate-800">{st.title}</span>
+                      <span className="text-[10px] text-slate-400 font-mono">{st.sections}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Courts & Police Stations with Dropdown */}
+            <div className="relative">
+              <button 
+                type="button"
+                onClick={() => {
+                  switchTab('locator');
+                  setIsLocatorDropdownOpen(!isLocatorDropdownOpen);
+                  setIsLawDropdownOpen(false);
+                }}
+                onMouseEnter={() => setIsLocatorDropdownOpen(true)}
+                className={`flex items-center gap-1 px-3 py-1 rounded-full font-semibold transition ${
+                  currentTab === 'locator'
+                    ? 'bg-white text-[#0d5c46] shadow-xs'
+                    : 'text-slate-700 hover:text-[#0d5c46] hover:bg-white/50'
+                }`}
+              >
+                <span>{t.navLocator}</span>
+                <ChevronDown className="w-3 h-3 text-slate-500" />
+              </button>
+
+              {isLocatorDropdownOpen && (
+                <div 
+                  onMouseLeave={() => setIsLocatorDropdownOpen(false)}
+                  className="absolute top-full left-0 mt-2 w-64 bg-white rounded-2xl shadow-xl border border-stone-200 p-2 z-50 text-left animate-in fade-in slide-in-from-top-1"
+                >
+                  <div className="px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    {isEn ? 'Jurisdiction & Police' : 'আদালত ও পুলিশ এখতিয়ার'}
+                  </div>
+                  <button
+                    onClick={() => { switchTab('locator'); setIsLocatorDropdownOpen(false); }}
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-emerald-50 hover:text-[#0d5c46] transition"
+                  >
+                    <div className="font-semibold text-slate-800">{t.gdTitle}</div>
+                    <div className="text-[10px] text-slate-500">{t.gdCode}</div>
+                  </button>
+                  <button
+                    onClick={() => { switchTab('locator'); setIsLocatorDropdownOpen(false); }}
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-emerald-50 hover:text-[#0d5c46] transition"
+                  >
+                    <div className="font-semibold text-slate-800">{t.firTitle}</div>
+                    <div className="text-[10px] text-slate-500">{t.firCode}</div>
+                  </button>
+                  <button
+                    onClick={() => { switchTab('locator'); setIsLocatorDropdownOpen(false); }}
+                    className="w-full text-left px-3 py-2 rounded-xl text-xs hover:bg-emerald-50 hover:text-[#0d5c46] transition"
+                  >
+                    <div className="font-semibold text-slate-800">{t.crTitle}</div>
+                    <div className="text-[10px] text-slate-500">{t.crCode}</div>
+                  </button>
+                </div>
+              )}
+            </div>
 
             <button 
               type="button"
               onClick={() => switchTab('helpline')}
-              className={`flex items-center gap-1 px-3.5 py-1.5 rounded-full font-semibold transition ${
+              className={`flex items-center gap-1 px-3 py-1 rounded-full font-semibold transition ${
                 currentTab === 'helpline'
-                  ? 'bg-white text-[#155e42] shadow-xs'
-                  : 'text-[#2a5040] hover:text-[#0f3d2e] hover:bg-white/50'
+                  ? 'bg-white text-[#0d5c46] shadow-xs'
+                  : 'text-slate-700 hover:text-[#0d5c46] hover:bg-white/50'
               }`}
             >
               <span>{t.navHelpline}</span>
@@ -719,15 +780,15 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
           {/* Right Action: Language Switcher Capsule + Profile / Copilot Pill */}
           <div className="flex items-center gap-2 sm:gap-2.5 shrink-0">
             
-            {/* EN / BAN Capsule Toggle (Exact match to reference) */}
-            <div className="flex items-center bg-white/80 border border-stone-300/80 rounded-full p-0.5 shadow-2xs">
+            {/* EN / BAN Capsule Toggle */}
+            <div className="flex items-center bg-white/80 border border-stone-300/70 rounded-full p-0.5 shadow-2xs">
               <button
                 type="button"
                 onClick={() => setLang('bn')}
-                className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+                className={`px-2.5 py-1 rounded-full text-xs font-semibold transition ${
                   !isEn 
-                    ? 'bg-white text-[#155e42] font-bold shadow-xs border border-stone-200/80 font-bengali-sans' 
-                    : 'text-stone-600 hover:text-stone-900 font-bengali-sans'
+                    ? 'bg-white text-[#0d5c46] font-bold shadow-xs border border-stone-200/80 font-bengali-sans' 
+                    : 'text-slate-600 hover:text-slate-900 font-bengali-sans'
                 }`}
                 title="বাংলায় পরিবর্তন করুন"
               >
@@ -736,10 +797,10 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
               <button
                 type="button"
                 onClick={() => setLang('en')}
-                className={`px-3 py-1 rounded-full text-xs font-semibold transition ${
+                className={`px-2.5 py-1 rounded-full text-xs font-semibold transition ${
                   isEn 
-                    ? 'bg-white text-[#155e42] font-bold shadow-xs border border-stone-200/80' 
-                    : 'text-stone-600 hover:text-stone-900'
+                    ? 'bg-white text-[#0d5c46] font-bold shadow-xs border border-stone-200/80' 
+                    : 'text-slate-600 hover:text-slate-900'
                 }`}
                 title="Switch to English"
               >
@@ -750,19 +811,19 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
             {/* Profile / Workspace Pill Button */}
             <button
               onClick={onLaunchApp}
-              className="flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-white/95 hover:bg-white border border-stone-300/80 hover:border-emerald-600 text-xs font-semibold text-[#155e42] shadow-2xs transition group"
+              className="flex items-center gap-1.5 px-3 sm:px-3.5 py-1.5 rounded-full bg-white hover:bg-stone-50 border border-stone-300/70 hover:border-emerald-600 text-xs font-semibold text-slate-800 shadow-2xs transition group"
               title="Launch Workspace / Profile"
             >
-              <User className="w-3.5 h-3.5 text-[#155e42]" />
+              <User className="w-3.5 h-3.5 text-slate-600" />
               <span>{t.navProfile}</span>
             </button>
 
-            {/* Launch Legal Copilot Primary Action */}
+            {/* Launch Legal Copilot Primary Action Button */}
             <button
               onClick={onLaunchApp}
-              className="hidden lg:flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-[#006a4e] hover:bg-[#00543e] text-white text-xs font-bold shadow-xs hover:shadow-md transition-all transform hover:-translate-y-0.5"
+              className="flex items-center gap-1.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-[#0d5c46] hover:bg-[#094736] text-white text-xs font-bold shadow-xs hover:shadow-md transition-all"
             >
-              <Sparkles className="w-3 h-3 text-emerald-200" />
+              <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
               <span>{t.navCta}</span>
             </button>
           </div>
@@ -774,84 +835,73 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
       {/* PAGE 1: HOME VIEW                                                     */}
       {/* ═════════════════════════════════════════════════════════════════════ */}
       {currentTab === 'home' && (
-        <div className="pt-26 pb-20 animate-in fade-in duration-200">
+        <div className="pt-36 sm:pt-40 lg:pt-44 pb-16 animate-in fade-in duration-200">
           
-          <section className="px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto text-center mb-16">
-            
-            {/* Official Docket Ribbon */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#064e3b]/80 backdrop-blur-md border border-emerald-400/30 shadow-md text-xs text-emerald-200 font-medium mb-6">
-              <Award className="w-4 h-4 text-amber-300" />
-              <span>{t.badge}</span>
-            </div>
+          <section className="px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto text-center">
 
-            {/* Editorial Headline (High-contrast white & luminous gradient over green nature) */}
-            <h1 className="font-editorial text-4xl sm:text-6xl lg:text-[62px] font-bold text-white tracking-tight leading-[1.12] mb-6 max-w-4xl mx-auto drop-shadow-md">
-              {t.heroTitlePart1}{' '}
-              <span className="bg-gradient-to-r from-emerald-300 via-teal-200 to-amber-300 bg-clip-text text-transparent underline decoration-amber-400/50 decoration-wavy decoration-1 underline-offset-8">
-                {t.heroTitleAccent}
-              </span>
+            {/* Headline */}
+            <h1 className="font-bangla-headline font-bold text-2xl sm:text-[36px] md:text-[42px] lg:text-[46px] tracking-tight leading-[1.25] text-center max-w-5xl mx-auto">
+              {isEn ? (
+                <>
+                  <span className="text-slate-900">{t.heroTitlePart1}</span>
+                  <span className="text-[#0d6e56]">{t.heroTitleAccent}</span>
+                </>
+              ) : (
+                <div className="flex flex-col items-center justify-center">
+                  <div className="text-slate-900 whitespace-normal sm:whitespace-nowrap">
+                    {t.heroTitlePart1}
+                    <span className="text-[#0d6e56]">{t.heroTitleAccent}</span>
+                  </div>
+                  <div className="text-[#0d6e56] mt-1 sm:mt-2">
+                    {t.heroTitleLine2}
+                  </div>
+                </div>
+              )}
             </h1>
 
             {/* Subtitle */}
-            <p className="text-base sm:text-lg text-emerald-50 max-w-2xl mx-auto leading-relaxed mb-10 font-normal drop-shadow-sm">
+            <p className="text-slate-600 text-xs sm:text-sm lg:text-[15px] max-w-2xl mx-auto text-center leading-relaxed mt-5 mb-8 font-normal">
               {t.heroSub}
             </p>
 
-            {/* Classical Docket Search Card */}
-            <div className="max-w-3xl mx-auto bg-white/95 backdrop-blur-xl rounded-2xl border-2 border-emerald-600/30 p-3 sm:p-4 shadow-2xl shadow-emerald-950/20 mb-10 relative text-left">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-2.5 mb-3 px-2 text-[11px] font-mono text-slate-500">
-                <div className="flex items-center gap-1.5 text-[#006a4e] font-semibold">
-                  <ScrollText className="w-3.5 h-3.5" />
-                  <span>{t.docketTitle}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="bg-emerald-50 text-[#006a4e] px-2 py-0.5 rounded border border-emerald-200 text-[10px] font-bold">
-                    BM25 + ChromaDB Hybrid
-                  </span>
-                </div>
+            {/* Search Box Card ("আইনি প্রশ্ন অনুসন্ধান (LEGAL QUERY DESK)") */}
+            <div className="max-w-3xl mx-auto bg-white rounded-[24px] sm:rounded-[28px] border border-emerald-100/90 shadow-[0_10px_35px_-8px_rgba(0,0,0,0.05)] p-5 sm:p-6 mb-7 text-left">
+              <div className="flex items-center gap-2 text-[#0d6e56] text-xs font-bold mb-3 tracking-wide">
+                <BookOpen className="w-4 h-4 text-[#0d6e56]" />
+                <span>{t.docketTitle}</span>
               </div>
 
-              <form onSubmit={handleSearchSubmit} className="flex flex-col sm:flex-row items-center gap-2">
-                <div className="relative flex-1 w-full">
-                  <Search className="w-5 h-5 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={t.searchPlaceholder}
-                    className="w-full pl-11 pr-12 py-3.5 rounded-xl bg-slate-50/80 border border-slate-200 text-sm text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-[#006a4e]/40 focus:bg-white transition"
-                  />
-                  {/* Voice Legal Dictation Button (Feature 5) */}
-                  <button
-                    type="button"
-                    onClick={toggleVoice}
-                    className={`absolute right-2.5 top-1/2 -translate-y-1/2 p-2 rounded-lg transition-all flex items-center justify-center ${
-                      isListening 
-                        ? 'bg-rose-500 text-white animate-pulse shadow-md shadow-rose-500/30 ring-2 ring-rose-300' 
-                        : 'text-slate-400 hover:text-[#006a4e] hover:bg-emerald-50'
-                    }`}
-                    title={isEn ? (isListening ? 'Stop voice recording' : 'Voice Search (Speak in English or বাংলা)') : (isListening ? 'শোনা বন্ধ করুন' : 'ভয়েস সার্চ (বাংলা বা ইংরেজিতে বলুন)')}
-                  >
-                    {isListening ? (
-                      <span className="relative flex h-4 w-4 items-center justify-center">
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
-                        <Mic className="w-4 h-4 text-white relative z-10" />
-                      </span>
-                    ) : (
-                      <Mic className="w-4 h-4" />
-                    )}
-                  </button>
-                </div>
+              <form onSubmit={handleSearchSubmit} className="flex items-center rounded-xl sm:rounded-2xl border border-slate-200/90 bg-[#fafaf8] p-1.5 focus-within:border-[#0d6e56] focus-within:ring-2 focus-within:ring-[#0d6e56]/15 transition-all">
+                <Search className="w-5 h-5 text-slate-400 ml-2.5 shrink-0" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={t.searchPlaceholder}
+                  className="w-full bg-transparent border-0 px-3 py-2 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none"
+                />
+                {/* Voice Dictation Button */}
+                <button
+                  type="button"
+                  onClick={toggleVoice}
+                  className={`p-2 rounded-lg transition mr-1.5 shrink-0 flex items-center justify-center ${
+                    isListening ? 'text-rose-500 animate-pulse bg-rose-50' : 'text-slate-400 hover:text-[#0d6e56]'
+                  }`}
+                  title={isEn ? (isListening ? 'Stop voice recording' : 'Voice Search (Speak query)') : (isListening ? 'শোনা বন্ধ করুন' : 'ভয়েস সার্চ (বাংলা বা ইংরেজিতে বলুন)')}
+                >
+                  <Mic className="w-4 h-4" />
+                </button>
+
                 <button
                   type="submit"
-                  className="w-full sm:w-auto px-7 py-3.5 rounded-xl bg-[#006a4e] hover:bg-[#00523d] text-white text-sm font-bold flex items-center justify-center gap-2 shadow-sm transition shrink-0"
+                  className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-lg sm:rounded-xl bg-[#0d5c46] hover:bg-[#094736] text-white text-xs sm:text-sm font-bold flex items-center gap-1.5 shrink-0 transition shadow-xs"
                 >
                   <span>{t.searchBtn}</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </form>
 
-              {/* Real-time Voice Transcription Banner */}
+              {/* Voice Notice Feedback */}
               {voiceNotice && (
                 <div className="mt-2 text-[11px] font-mono text-rose-700 bg-rose-50 border border-rose-200 rounded-lg px-2.5 py-1 inline-flex items-center gap-1.5 animate-pulse">
                   <span className="w-2 h-2 rounded-full bg-rose-500 animate-ping"></span>
@@ -859,15 +909,15 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
                 </div>
               )}
 
-              {/* Quick Statute Chips */}
-              <div className="mt-3.5 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-1.5 text-xs">
-                <span className="text-[11px] text-slate-400 font-mono mr-1">{t.popularQueriesLabel}</span>
+              {/* Popular Query Chips */}
+              <div className="mt-4 pt-3 border-t border-slate-100 flex flex-wrap items-center gap-1.5 sm:gap-2 text-xs">
+                <span className="text-slate-400 text-xs font-medium mr-1">{t.popularQueriesLabel}</span>
                 {popularChips.map((chip, idx) => (
                   <button
                     key={idx}
                     type="button"
                     onClick={() => onLaunchWithPrompt(chip.query)}
-                    className="px-2.5 py-1 rounded-lg bg-[#faf8f5] hover:bg-emerald-50 text-slate-700 hover:text-[#006a4e] border border-slate-200 text-[11px] transition font-medium"
+                    className="px-3 py-1 rounded-full border border-slate-200 bg-white hover:border-[#0d6e56] hover:text-[#0d6e56] text-slate-700 text-xs font-medium transition shadow-2xs"
                   >
                     {chip.label}
                   </button>
@@ -875,27 +925,29 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
               </div>
             </div>
 
-            {/* Judicial Sovereign Seal Stats Bar */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4 sm:p-6 bg-[#064e3b]/80 backdrop-blur-md border border-emerald-400/30 rounded-2xl shadow-xl max-w-4xl mx-auto text-left sm:text-center text-white">
-              <div className="p-2">
-                <div className="font-editorial text-3xl font-bold text-emerald-300">{t.stat1Val}</div>
-                <div className="text-xs text-emerald-100 mt-0.5 font-medium">{t.stat1Label}</div>
-                <div className="text-[10px] text-emerald-300/70 font-mono">bdlaws.minlaw.gov.bd</div>
-              </div>
-              <div className="p-2">
-                <div className="font-editorial text-3xl font-bold text-white">{t.stat2Val}</div>
-                <div className="text-xs text-emerald-100 mt-0.5 font-medium">{t.stat2Label}</div>
-                <div className="text-[10px] text-emerald-300/70 font-mono">CMM, Sessions & Thana</div>
-              </div>
-              <div className="p-2">
-                <div className="font-editorial text-3xl font-bold text-white">{t.stat3Val}</div>
-                <div className="text-xs text-emerald-100 mt-0.5 font-medium">{t.stat3Label}</div>
-                <div className="text-[10px] text-emerald-300/70 font-mono">National Legal Aid 24/7</div>
-              </div>
-              <div className="p-2">
-                <div className="font-editorial text-3xl font-bold text-amber-300">{t.stat4Val}</div>
-                <div className="text-xs text-emerald-100 mt-0.5 font-medium">{t.stat4Label}</div>
-                <div className="text-[10px] text-amber-300/70 font-mono">Zero Hallucinated Citations</div>
+            {/* Floating Stats Bar */}
+            <div className="max-w-3xl mx-auto bg-white rounded-[24px] sm:rounded-[28px] border border-stone-200/80 shadow-[0_8px_30px_-6px_rgba(0,0,0,0.04)] p-5 sm:p-6 mb-16">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
+                <div>
+                  <div className="text-2xl sm:text-3xl font-bold text-[#0d6e56] font-bangla-headline">{t.stat1Val}</div>
+                  <div className="text-xs font-medium text-slate-700 mt-1">{t.stat1Label}</div>
+                  <div className="text-[11px] text-slate-400 font-mono mt-0.5">bdlaws.minlaw.gov.bd</div>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-bold text-[#0d6e56] font-bangla-headline">{t.stat2Val}</div>
+                  <div className="text-xs font-medium text-slate-700 mt-1">{t.stat2Label}</div>
+                  <div className="text-[11px] text-slate-400 font-mono mt-0.5">CMM, Sessions & Thana</div>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-bold text-[#0d6e56] font-bangla-headline">{t.stat3Val}</div>
+                  <div className="text-xs font-medium text-slate-700 mt-1">{t.stat3Label}</div>
+                  <div className="text-[11px] text-slate-400 font-mono mt-0.5">National Legal Aid 24/7</div>
+                </div>
+                <div>
+                  <div className="text-2xl sm:text-3xl font-bold text-[#c27803] font-bangla-headline">{t.stat4Val}</div>
+                  <div className="text-xs font-medium text-slate-700 mt-1">{t.stat4Label}</div>
+                  <div className="text-[11px] text-slate-400 font-mono mt-0.5">Zero Hallucinated Citations</div>
+                </div>
               </div>
             </div>
 
@@ -1165,19 +1217,19 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
           </section>
 
           {/* Call to Action */}
-          <section className="text-center px-4 sm:px-6 max-w-4xl mx-auto py-12 border-t border-emerald-500/25">
-            <div className="w-12 h-12 rounded-2xl bg-emerald-950/80 text-emerald-300 flex items-center justify-center mx-auto mb-4 border border-emerald-400/30 shadow-lg">
-              <Gavel className="w-6 h-6" />
+          <section className="text-center px-4 sm:px-6 max-w-4xl mx-auto py-12 border-t border-stone-200">
+            <div className="w-12 h-12 rounded-2xl bg-[#0d5c46] text-white flex items-center justify-center mx-auto mb-4 shadow-md">
+              <Gavel className="w-6 h-6 text-white" />
             </div>
-            <h2 className="font-editorial text-3xl sm:text-4xl font-bold text-white mb-3 drop-shadow-md">
+            <h2 className="font-editorial text-3xl sm:text-4xl font-bold text-slate-900 mb-3">
               {isEn ? 'Ready for Authoritative Legal AI Intelligence?' : 'আইনি সিদ্ধান্ত গ্রহণ হোক নির্ভুল ও তাৎক্ষণিক'}
             </h2>
-            <p className="text-emerald-100 text-sm max-w-lg mx-auto mb-6 drop-shadow-sm font-medium">
+            <p className="text-slate-600 text-sm max-w-lg mx-auto mb-6 font-normal">
               {isEn ? 'Ask complex queries, cross-verify statutory clauses, and redline contracts in seconds.' : 'চুক্তি খসড়া, ধারা ক্রস-ভেরিফিকেশন কিংবা থানা-আদালত এখতিয়ারের সঠিক উত্তর পান লিগ্যাল কোপাইলট দিয়ে।'}
             </p>
             <button
               onClick={onLaunchApp}
-              className="px-8 py-3.5 rounded-xl bg-[#006a4e] hover:bg-[#00523d] text-white text-sm font-bold shadow-lg shadow-black/20 inline-flex items-center gap-2 transition transform hover:-translate-y-0.5"
+              className="px-8 py-3.5 rounded-xl bg-[#0d5c46] hover:bg-[#094736] text-white text-sm font-bold shadow-md shadow-stone-400/20 inline-flex items-center gap-2 transition transform hover:-translate-y-0.5"
             >
               <span>{t.navCta}</span>
               <ArrowRight className="w-4 h-4" />
@@ -1191,19 +1243,19 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
       {/* PAGE 2: LAWS & STATUTES INDIVIDUAL PAGE                               */}
       {/* ═════════════════════════════════════════════════════════════════════ */}
       {currentTab === 'law' && (
-        <div className="pt-26 pb-24 animate-in fade-in duration-200">
+        <div className="pt-36 sm:pt-40 pb-24 animate-in fade-in duration-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             {/* Section Header */}
             <div className="text-center max-w-3xl mx-auto mb-12">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#064e3b]/80 backdrop-blur-md border border-emerald-400/30 text-xs text-emerald-200 font-medium mb-3 shadow-md">
-                <BookOpen className="w-3.5 h-3.5 text-emerald-300" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs text-[#0d5c46] font-medium mb-3 shadow-2xs">
+                <BookOpen className="w-3.5 h-3.5 text-[#0d5c46]" />
                 <span>{t.lawSectionBadge}</span>
               </div>
-              <h1 className="font-editorial text-3xl sm:text-5xl font-bold text-white tracking-tight mb-4 drop-shadow-md">
+              <h1 className="font-editorial text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-4">
                 {t.lawSectionTitle}
               </h1>
-              <p className="text-emerald-100 text-sm sm:text-base leading-relaxed drop-shadow-sm font-medium">
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
                 {t.lawSectionSub}
               </p>
 
@@ -1321,19 +1373,19 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
       {/* PAGE 3: COURT & POLICE STATION LOCATOR INDIVIDUAL PAGE                */}
       {/* ═════════════════════════════════════════════════════════════════════ */}
       {currentTab === 'locator' && (
-        <div className="pt-26 pb-24 animate-in fade-in duration-200">
+        <div className="pt-36 sm:pt-40 pb-24 animate-in fade-in duration-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             {/* Section Header */}
             <div className="text-center max-w-3xl mx-auto mb-12">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#064e3b]/80 backdrop-blur-md border border-emerald-400/30 text-xs text-emerald-200 font-medium mb-3 shadow-md">
-                <Compass className="w-3.5 h-3.5 text-amber-300" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs text-[#0d5c46] font-medium mb-3 shadow-2xs">
+                <Compass className="w-3.5 h-3.5 text-[#0d5c46]" />
                 <span>{t.locatorBadge}</span>
               </div>
-              <h1 className="font-editorial text-3xl sm:text-5xl font-bold text-white tracking-tight mb-4 drop-shadow-md">
+              <h1 className="font-editorial text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-4">
                 {t.locatorTitle}
               </h1>
-              <p className="text-emerald-100 text-sm sm:text-base leading-relaxed drop-shadow-sm font-medium">
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
                 {t.locatorSub}
               </p>
             </div>
@@ -1464,19 +1516,19 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
       {/* PAGE 4: OFFICIAL HELPLINES INDIVIDUAL PAGE                            */}
       {/* ═════════════════════════════════════════════════════════════════════ */}
       {currentTab === 'helpline' && (
-        <div className="pt-26 pb-24 animate-in fade-in duration-200">
+        <div className="pt-36 sm:pt-40 pb-24 animate-in fade-in duration-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
             {/* Section Header */}
             <div className="text-center max-w-3xl mx-auto mb-12">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#064e3b]/80 backdrop-blur-md border border-emerald-400/30 text-xs text-emerald-200 font-medium mb-3 shadow-md">
-                <Phone className="w-3.5 h-3.5 text-emerald-300" />
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs text-[#0d5c46] font-medium mb-3 shadow-2xs">
+                <Phone className="w-3.5 h-3.5 text-[#0d5c46]" />
                 <span>{t.helplineBadge}</span>
               </div>
-              <h1 className="font-editorial text-3xl sm:text-5xl font-bold text-white tracking-tight mb-4 drop-shadow-md">
+              <h1 className="font-editorial text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-4">
                 {t.helplineTitle}
               </h1>
-              <p className="text-emerald-100 text-sm sm:text-base leading-relaxed drop-shadow-sm font-medium">
+              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
                 {t.helplineSub}
               </p>
             </div>

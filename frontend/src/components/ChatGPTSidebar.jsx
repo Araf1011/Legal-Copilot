@@ -22,9 +22,11 @@ export default function ChatGPTSidebar({
   onDeleteSession,
   onTogglePin,
   activeTab,
-  onNavigateToLanding
+  onNavigateToLanding,
+  lang = 'bn'
 }) {
   const [searchQuery, setSearchQuery] = useState('');
+  const isEn = lang === 'en';
 
   const filteredSessions = sessions.filter(s => 
     s.title.toLowerCase().includes(searchQuery.toLowerCase())
@@ -33,28 +35,8 @@ export default function ChatGPTSidebar({
   const pinnedSessions = filteredSessions.filter(s => s.isPinned);
   const recentSessions = filteredSessions; // All chats remain in Recent, and pinned ones ALSO appear in Pinned section
 
-  // Collapsed Sidebar Rail
-  if (!isOpen) {
-    return (
-      <div className="w-14 bg-[#fbfbfb] border-r border-slate-200/90 flex flex-col items-center py-3 select-none shrink-0 z-30 transition-all">
-        <button 
-          onClick={onToggle}
-          className="p-2 text-slate-500 hover:text-slate-800 rounded-xl hover:bg-slate-100 transition"
-          title="Expand sidebar"
-        >
-          <PanelLeft className="w-4 h-4" />
-        </button>
-
-        <button 
-          onClick={onNewChat}
-          className="mt-3 w-9 h-9 rounded-xl bg-[#006a4e] hover:bg-[#00543e] text-white flex items-center justify-center transition shadow-xs"
-          title="New Chat"
-        >
-          <SquarePen className="w-4 h-4" />
-        </button>
-      </div>
-    );
-  }
+  // Collapsed: render nothing — TopBar has the open button
+  if (!isOpen) return null;
 
   // Expanded Sidebar: Exact Hierarchy Requested
   return (
@@ -112,7 +94,7 @@ export default function ChatGPTSidebar({
         >
           <div className="flex items-center gap-2 text-slate-800">
             <SquarePen className="w-4 h-4 text-[#006a4e]" />
-            <span>New chat</span>
+            <span>{isEn ? 'New chat' : 'নতুন কথোপকথন'}</span>
           </div>
           <kbd className="text-[10px] bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded text-slate-500 font-mono">
             ⌘K
@@ -126,7 +108,7 @@ export default function ChatGPTSidebar({
           <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
           <input
             type="text"
-            placeholder="Search chats..."
+            placeholder={isEn ? 'Search chats...' : 'চ্যাট খুঁজুন...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full bg-white border border-slate-200 rounded-xl pl-8 pr-7 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:border-[#006a4e] shadow-2xs transition"
@@ -150,7 +132,7 @@ export default function ChatGPTSidebar({
           <div className="space-y-0.5">
             <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-1 flex items-center gap-1.5">
               <Pin className="w-3 h-3 text-[#006a4e] fill-[#006a4e]" />
-              <span>Pinned</span>
+              <span>{isEn ? 'Pinned' : 'পিন করা'}</span>
               <span className="text-[10px] font-mono text-[#006a4e] ml-auto font-bold">{pinnedSessions.length}</span>
             </div>
 
@@ -205,7 +187,7 @@ export default function ChatGPTSidebar({
         {/* 5. Recent Chat Section */}
         <div className="space-y-0.5">
           <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-3 mb-1 flex items-center justify-between">
-            <span>Recent</span>
+            <span>{isEn ? 'Recent' : 'সাম্প্রতিক'}</span>
             {recentSessions.length > 0 && (
               <span className="text-[10px] font-mono text-slate-400">{recentSessions.length}</span>
             )}
@@ -262,8 +244,8 @@ export default function ChatGPTSidebar({
           ) : (
             pinnedSessions.length === 0 && (
               <div className="px-3 py-4 text-center text-xs text-slate-400 leading-relaxed">
-                No recent chats yet.<br />
-                <span className="text-[#006a4e] font-medium">Type a prompt to begin.</span>
+                {isEn ? 'No recent chats yet.' : 'এখনো কোনো কথোপকথন নেই।'}<br />
+                <span className="text-[#006a4e] font-medium">{isEn ? 'Type a prompt to begin.' : 'শুরু করতে একটি প্রশ্ন লিখুন।'}</span>
               </div>
             )
           )}
@@ -278,8 +260,8 @@ export default function ChatGPTSidebar({
             <Scale className="w-4 h-4" />
           </div>
           <div className="min-w-0 leading-tight">
-            <div className="font-bold text-xs text-slate-900 truncate">Bangladesh Legal Counsel</div>
-            <div className="text-[10px] text-[#006a4e] font-mono font-medium">520+ Acts & Gazettes</div>
+            <div className="font-bold text-xs text-slate-900 truncate">{isEn ? 'Bangladesh Legal Counsel' : 'বাংলাদেশ আইনি সহকারী'}</div>
+            <div className="text-[10px] text-[#006a4e] font-mono font-medium">{isEn ? '520+ Acts & Gazettes' : '৫২০+ আইন ও গেজেট'}</div>
           </div>
         </div>
       </div>
