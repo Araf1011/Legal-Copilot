@@ -643,11 +643,11 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
               <Scale className="w-5 h-5 text-white stroke-[2.2]" />
             </div>
             <div className="flex flex-col text-left leading-tight">
-              <span className="font-bold text-[13px] text-slate-800 tracking-tight">
-                {isEn ? 'Legal' : 'বাংলাদেশ'}
+              <span className="font-bold text-[14px] text-slate-900 tracking-tight font-bangla-headline">
+                {isEn ? 'Nyay Dishari' : 'ন্যায়দিশারি'}
               </span>
-              <span className="text-[12px] font-bold text-slate-700 -mt-0.5 tracking-tight">
-                {isEn ? 'Copilot BD' : 'আইন সহকারী'}
+              <span className="text-[11px] font-semibold text-[#0d5c46] -mt-0.5 tracking-tight">
+                {isEn ? 'Legal Copilot BD' : 'আইনি কোপাইলট'}
               </span>
             </div>
           </div>
@@ -1495,17 +1495,17 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
               <Scale className="w-4 h-4" />
             </div>
             <div>
-              <span className="font-bold text-slate-900 block">Legal Copilot AI</span>
+              <span className="font-bold text-slate-900 block font-bangla-headline">{isEn ? 'Nyay Dishari • Legal Copilot AI' : 'ন্যায়দিশারি • Legal Copilot AI'}</span>
               <span className="text-[11px] text-slate-400">
-                © {new Date().getFullYear()} {isEn ? 'Statutory Jurisprudence Platform' : 'বাংলাদেশ আইন ও সংবিধি প্ল্যাটফর্ম'}
+                © {new Date().getFullYear()} {isEn ? 'Bangladesh Statutory Jurisprudence Platform' : 'বাংলাদেশ আইন ও সংবিধি প্ল্যাটফর্ম'}
               </span>
             </div>
           </div>
 
           <div className="text-center sm:text-right text-[11px] text-slate-500 max-w-md">
             {isEn 
-              ? 'Legal Disclaimer: Legal Copilot provides automated decision intelligence and statutory cross-referencing. It does not constitute formal legal representation or create an attorney-client relationship.' 
-              : 'আইনি সতর্কবার্তা: এই প্ল্যাটফর্মটি স্বয়ংক্রিয় সিদ্ধান্ত সহায়তা এবং আইনের ধারা ভিত্তিক তথ্য সরবরাহ করে। এটি আনুষ্ঠানিক আদালত প্রতিনিধিত্ব বা আইনজীবী-মক্কেল সম্পর্কের বিকল্প নয়।'}
+              ? 'Legal Disclaimer: Nyay Dishari (ন্যায়দিশারি) provides automated decision intelligence and statutory cross-referencing. It does not constitute formal legal representation or create an attorney-client relationship.' 
+              : 'আইনি সতর্কবার্তা: ন্যায়দিশারি স্বয়ংক্রিয় সিদ্ধান্ত সহায়তা এবং আইনের ধারা ভিত্তিক তথ্য সরবরাহ করে। এটি আনুষ্ঠানিক আদালত প্রতিনিধিত্ব বা আইনজীবী-মক্কেল সম্পর্কের বিকল্প নয়।'}
           </div>
 
         </div>

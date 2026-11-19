@@ -61,7 +61,7 @@ export default function ChatGPTSidebar({
             </svg>
           </div>
           <span className="font-bold text-sm tracking-tight text-slate-900 flex items-center gap-1.5 font-sans">
-            <span>Legal Copilot</span>
+            <span className="font-bangla-headline">{isEn ? 'Nyay Dishari' : 'ন্যায়দিশারি'}</span>
             <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-100 text-[#006a4e] font-bold border border-emerald-300">
               BD
             </span>
@@ -283,7 +283,7 @@ export default function ChatGPTSidebar({
             <Scale className="w-4 h-4" />
           </div>
           <div className="min-w-0 leading-tight">
-            <div className="font-bold text-xs text-slate-900 truncate">{isEn ? 'Bangladesh Legal Counsel' : 'বাংলাদেশ আইনি সহকারী'}</div>
+            <div className="font-bold text-xs text-slate-900 truncate font-bangla-headline">{isEn ? 'Nyay Dishari Legal AI' : 'ন্যায়দিশারি • আইনি সহকারী'}</div>
             <div className="text-[10px] text-[#006a4e] font-mono font-medium">{isEn ? '520+ Acts & Gazettes' : '৫২০+ আইন ও গেজেট'}</div>
           </div>
         </div>

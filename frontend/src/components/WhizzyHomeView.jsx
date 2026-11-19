@@ -126,7 +126,7 @@ export default function WhizzyHomeView({
         </div>
 
         <h1 className="font-editorial text-3xl sm:text-[44px] font-bold text-slate-900 tracking-tight text-center mb-3">
-          {isEn ? 'AI Legal Counsel for Bangladesh Jurisprudence' : 'বাংলাদেশ আইন ও বিচারিক সহায়তায় AI কোপাইলট'}
+          {isEn ? 'Nyay Dishari — AI Legal Counsel for Bangladesh' : 'ন্যায়দিশারি — বাংলাদেশ আইন ও বিচারিক সহায়তায় AI কোপাইলট'}
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 text-center max-w-lg mb-8 leading-relaxed">
           {isEn
