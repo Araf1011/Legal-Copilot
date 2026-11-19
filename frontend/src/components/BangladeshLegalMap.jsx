@@ -313,7 +313,7 @@ export default function BangladeshLegalMap({ lang = 'bn', onLaunchWithPrompt }) 
     <div className="space-y-8 animate-in fade-in duration-200">
 
       {/* ── LOCATION DETECTION BAR ────────────────────────────────────────── */}
-      <div className="bg-gradient-to-r from-emerald-900/90 via-[#006a4e] to-teal-900 text-white rounded-3xl p-6 sm:p-8 shadow-md relative overflow-hidden">
+      <div className="bg-gradient-to-r from-emerald-900/90 via-[#006a4e] to-teal-900 text-white rounded-3xl p-5 sm:p-6 shadow-md relative overflow-hidden mb-6">
         <div className="absolute top-0 right-0 w-80 h-80 bg-white/5 rounded-full blur-3xl pointer-events-none" />
         
         <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
@@ -400,6 +400,119 @@ export default function BangladeshLegalMap({ lang = 'bn', onLaunchWithPrompt }) 
                 </button>
               );
             })}
+          </div>
+        </div>
+
+      </div>
+
+      {/* ── INTERACTIVE LEAFLET MAP & TOOLBAR ────────────────────────────── */}
+      <div className="bg-white rounded-3xl border-2 border-slate-200 shadow-md overflow-hidden">
+        
+        {/* Controls Toolbar */}
+        <div className="p-4 sm:p-5 border-b border-slate-200 bg-[#faf8f5] flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3 sm:gap-4">
+          
+          {/* Category Tabs: All / Police / Courts */}
+          <div className="flex items-center gap-1 bg-slate-200/70 p-1 rounded-2xl text-xs font-semibold shrink-0">
+            <button
+              onClick={() => setFilterCategory('all')}
+              className={`px-3.5 py-1.5 rounded-xl transition cursor-pointer ${
+                filterCategory === 'all' ? 'bg-white text-slate-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              {isEn ? 'All' : 'সব স্থান'} ({BANGLADESH_STATIONS.length})
+            </button>
+            <button
+              onClick={() => setFilterCategory('police')}
+              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1 cursor-pointer ${
+                filterCategory === 'police' ? 'bg-sky-600 text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <span>🚓 {isEn ? 'Police Stations' : 'থানা'}</span>
+            </button>
+            <button
+              onClick={() => setFilterCategory('court')}
+              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1 cursor-pointer ${
+                filterCategory === 'court' ? 'bg-[#006a4e] text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <span>⚖️ {isEn ? 'Courts' : 'আদালত'}</span>
+            </button>
+          </div>
+
+          {/* Search Input */}
+          <div className="relative flex-1 max-w-md">
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder={isEn ? 'Search station, court, or area (e.g. Dhanmondi, CMM, Sylhet)…' : 'থানা, আদালত বা এলাকা খুঁজুন (যেমন: ধানমন্ডি, CMM, চট্টগ্রাম)…'}
+              className="w-full pl-9 pr-3.5 py-2 text-xs bg-white rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#006a4e]/20 focus:border-[#006a4e]"
+            />
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
+          {/* Division Selector */}
+          <div className="flex items-center gap-1 overflow-x-auto text-xs pb-1 sm:pb-0">
+            {[
+              { id: 'all', labelEn: 'All Divisions', labelBn: 'সকল বিভাগ' },
+              { id: 'dhaka', labelEn: 'Dhaka', labelBn: 'ঢাকা' },
+              { id: 'chittagong', labelEn: 'Chittagong', labelBn: 'চট্টগ্রাম' },
+              { id: 'sylhet', labelEn: 'Sylhet', labelBn: 'সিলেট' },
+              { id: 'rajshahi', labelEn: 'Rajshahi', labelBn: 'রাজশাহী' },
+              { id: 'khulna', labelEn: 'Khulna', labelBn: 'খুলনা' }
+            ].map(div => (
+              <button
+                key={div.id}
+                onClick={() => setSelectedDivision(div.id)}
+                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold shrink-0 transition cursor-pointer ${
+                  selectedDivision === div.id 
+                    ? 'bg-[#006a4e] text-white font-bold shadow-2xs' 
+                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
+                }`}
+              >
+                {isEn ? div.labelEn : div.labelBn}
+              </button>
+            ))}
+          </div>
+
+        </div>
+
+        {/* ── LEAFLET MAP CONTAINER ────────────────────────────────────────── */}
+        <div className="relative w-full h-[450px] sm:h-[500px] bg-slate-100">
+          <div ref={mapContainerRef} className="w-full h-full z-0" />
+
+          {/* Map Overlay Badge */}
+          <div className="absolute top-3 left-3 z-[400] bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-md border border-slate-200 text-xs flex items-center gap-2 select-none">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+            <span className="font-semibold text-slate-800">
+              {isEn ? 'Showing' : 'প্রদর্শিত:'} {filteredStations.length} {isEn ? 'Jurisdictions on Bangladesh Map' : 'টি বিচারিক ও থানা কেন্দ্র'}
+            </span>
+          </div>
+
+          {/* Legend Bottom Right */}
+          <div className="absolute bottom-3 right-3 z-[400] bg-white/95 backdrop-blur-md p-2.5 rounded-xl shadow-md border border-slate-200 text-[11px] font-medium text-slate-700 space-y-1 select-none">
+            <div className="flex items-center gap-2">
+              <span className="w-3.5 h-3.5 rounded-full bg-sky-600 inline-block text-[9px] text-white text-center leading-3.5">🚓</span>
+              <span>{isEn ? 'Police Station (থানা)' : 'থানা'}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="w-3.5 h-3.5 rounded-full bg-emerald-800 inline-block text-[9px] text-white text-center leading-3.5">⚖️</span>
+              <span>{isEn ? 'Court (আদালত)' : 'আদালত'}</span>
+            </div>
+            {userLocation && (
+              <div className="flex items-center gap-2">
+                <span className="w-3.5 h-3.5 rounded-full bg-[#006a4e] border-2 border-white inline-block"></span>
+                <span className="font-bold text-[#006a4e]">{isEn ? 'You (আপনার অবস্থান)' : 'আপনার অবস্থান'}</span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -554,119 +667,9 @@ export default function BangladeshLegalMap({ lang = 'bn', onLaunchWithPrompt }) 
         </div>
       )}
 
-      {/* ── MAP & DIRECTORY WORKSPACE ─────────────────────────────────────── */}
+      {/* ── CARDS DIRECTORY WORKSPACE ─────────────────────────────────────── */}
       <div className="bg-white rounded-3xl border-2 border-slate-200 shadow-md overflow-hidden">
-        
-        {/* Controls Toolbar */}
-        <div className="p-4 sm:p-6 border-b border-slate-200 bg-[#faf8f5] flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
-          
-          {/* Category Tabs: All / Police / Courts */}
-          <div className="flex items-center gap-1 bg-slate-200/70 p-1 rounded-2xl text-xs font-semibold shrink-0">
-            <button
-              onClick={() => setFilterCategory('all')}
-              className={`px-3.5 py-1.5 rounded-xl transition ${
-                filterCategory === 'all' ? 'bg-white text-slate-900 shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              {isEn ? 'All Locations' : 'সব স্থান'} ({BANGLADESH_STATIONS.length})
-            </button>
-            <button
-              onClick={() => setFilterCategory('police')}
-              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1 ${
-                filterCategory === 'police' ? 'bg-sky-600 text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <span>🚓 {isEn ? 'Police Stations' : 'থানা সমূহ'}</span>
-            </button>
-            <button
-              onClick={() => setFilterCategory('court')}
-              className={`px-3.5 py-1.5 rounded-xl transition flex items-center gap-1 ${
-                filterCategory === 'court' ? 'bg-[#006a4e] text-white shadow-xs font-bold' : 'text-slate-600 hover:text-slate-900'
-              }`}
-            >
-              <span>⚖️ {isEn ? 'Courts' : 'আদালত সমূহ'}</span>
-            </button>
-          </div>
-
-          {/* Search Input */}
-          <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder={isEn ? 'Search station, court, or area (e.g. Dhanmondi, CMM, Sylhet)…' : 'থানা, আদালত বা এলাকা খুঁজুন (যেমন: ধানমন্ডি, CMM, চট্টগ্রাম)…'}
-              className="w-full pl-9 pr-3.5 py-2 text-xs bg-white rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-[#006a4e]/20 focus:border-[#006a4e]"
-            />
-            {searchQuery && (
-              <button 
-                onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-600"
-              >
-                ✕
-              </button>
-            )}
-          </div>
-
-          {/* Division Selector */}
-          <div className="flex items-center gap-1 overflow-x-auto text-xs pb-1 sm:pb-0">
-            {[
-              { id: 'all', labelEn: 'All Divisions', labelBn: 'সকল বিভাগ' },
-              { id: 'dhaka', labelEn: 'Dhaka', labelBn: 'ঢাকা' },
-              { id: 'chittagong', labelEn: 'Chittagong', labelBn: 'চট্টগ্রাম' },
-              { id: 'sylhet', labelEn: 'Sylhet', labelBn: 'সিলেট' },
-              { id: 'rajshahi', labelEn: 'Rajshahi', labelBn: 'রাজশাহী' },
-              { id: 'khulna', labelEn: 'Khulna', labelBn: 'খুলনা' }
-            ].map(div => (
-              <button
-                key={div.id}
-                onClick={() => setSelectedDivision(div.id)}
-                className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold shrink-0 transition ${
-                  selectedDivision === div.id 
-                    ? 'bg-[#006a4e] text-white font-bold' 
-                    : 'bg-slate-100 hover:bg-slate-200 text-slate-700'
-                }`}
-              >
-                {isEn ? div.labelEn : div.labelBn}
-              </button>
-            ))}
-          </div>
-
-        </div>
-
-        {/* ── INTERACTIVE LEAFLET MAP CONTAINER ─────────────────────────── */}
-        <div className="relative w-full h-[450px] sm:h-[500px] bg-slate-100">
-          <div ref={mapContainerRef} className="w-full h-full z-0" />
-
-          {/* Map Overlay Badge */}
-          <div className="absolute top-3 left-3 z-[400] bg-white/95 backdrop-blur-md px-3 py-1.5 rounded-xl shadow-md border border-slate-200 text-xs flex items-center gap-2 select-none">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-            <span className="font-semibold text-slate-800">
-              {isEn ? 'Showing' : 'প্রদর্শিত:'} {filteredStations.length} {isEn ? 'Jurisdictions on Bangladesh Map' : 'টি বিচারিক ও থানা কেন্দ্র'}
-            </span>
-          </div>
-
-          {/* Legend Bottom Right */}
-          <div className="absolute bottom-3 right-3 z-[400] bg-white/95 backdrop-blur-md p-2.5 rounded-xl shadow-md border border-slate-200 text-[11px] font-medium text-slate-700 space-y-1 select-none">
-            <div className="flex items-center gap-2">
-              <span className="w-3.5 h-3.5 rounded-full bg-sky-600 inline-block text-[9px] text-white text-center leading-3.5">🚓</span>
-              <span>{isEn ? 'Police Station (থানা)' : 'থানা'}</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="w-3.5 h-3.5 rounded-full bg-emerald-800 inline-block text-[9px] text-white text-center leading-3.5">⚖️</span>
-              <span>{isEn ? 'Court (আদালত)' : 'আদালত'}</span>
-            </div>
-            {userLocation && (
-              <div className="flex items-center gap-2">
-                <span className="w-3.5 h-3.5 rounded-full bg-[#006a4e] border-2 border-white inline-block"></span>
-                <span className="font-bold text-[#006a4e]">{isEn ? 'You (আপনার অবস্থান)' : 'আপনার অবস্থান'}</span>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* ── CARDS DIRECTORY GRID ──────────────────────────────────────── */}
-        <div className="p-6 bg-slate-50/50 border-t border-slate-200">
+        <div className="p-6 bg-slate-50/50">
           <div className="flex items-center justify-between mb-4">
             <h3 className="font-editorial text-lg font-bold text-slate-900">
               {isEn ? 'Directory & Jurisdiction List' : 'অধিক্ষেত্র ও ঠিকানা নির্দেশিকা'}

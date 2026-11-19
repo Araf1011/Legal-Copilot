@@ -1374,59 +1374,21 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
       {/* PAGE 3: COURT & POLICE STATION LOCATOR INDIVIDUAL PAGE                */}
       {/* ═════════════════════════════════════════════════════════════════════ */}
       {currentTab === 'locator' && (
-        <div className="pt-36 sm:pt-40 pb-24 animate-in fade-in duration-200">
+        <div className="pt-28 sm:pt-32 pb-20 animate-in fade-in duration-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             {/* Section Header */}
-            <div className="text-center max-w-3xl mx-auto mb-12">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs text-[#0d5c46] font-medium mb-3 shadow-2xs">
+            <div className="text-center max-w-3xl mx-auto mb-6 sm:mb-8">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs text-[#0d5c46] font-medium mb-2.5 shadow-2xs">
                 <Compass className="w-3.5 h-3.5 text-[#0d5c46]" />
                 <span>{t.locatorBadge}</span>
               </div>
-              <h1 className="font-editorial text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-4">
+              <h1 className="font-editorial text-3xl sm:text-5xl font-bold text-slate-900 tracking-tight mb-2.5">
                 {t.locatorTitle}
               </h1>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
+              <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">
                 {t.locatorSub}
               </p>
-            </div>
-
-            {/* Procedural Distinction Banner: GD vs FIR vs C.R. Case */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-              
-              <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-2xs relative">
-                <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-800 font-mono font-bold flex items-center justify-center text-xs mb-3 border border-blue-200">
-                  GD
-                </div>
-                <h4 className="font-bold text-sm text-slate-900 mb-1">{t.gdTitle}</h4>
-                <div className="text-[11px] font-mono text-blue-700 mb-2">{t.gdCode}</div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {t.gdDesc}
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-2xs relative">
-                <div className="w-8 h-8 rounded-lg bg-rose-50 text-rose-800 font-mono font-bold flex items-center justify-center text-xs mb-3 border border-rose-200">
-                  FIR
-                </div>
-                <h4 className="font-bold text-sm text-slate-900 mb-1">{t.firTitle}</h4>
-                <div className="text-[11px] font-mono text-rose-700 mb-2">{t.firCode}</div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {t.firDesc}
-                </p>
-              </div>
-
-              <div className="bg-white p-6 rounded-2xl border-2 border-slate-200 shadow-2xs relative">
-                <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-800 font-mono font-bold flex items-center justify-center text-xs mb-3 border border-emerald-200">
-                  C.R.
-                </div>
-                <h4 className="font-bold text-sm text-slate-900 mb-1">{t.crTitle}</h4>
-                <div className="text-[11px] font-mono text-emerald-700 mb-2">{t.crCode}</div>
-                <p className="text-xs text-slate-600 leading-relaxed">
-                  {t.crDesc}
-                </p>
-              </div>
-
             </div>
 
             {/* Interactive GPS Bangladesh Map & Nearest Facilities Directory */}
