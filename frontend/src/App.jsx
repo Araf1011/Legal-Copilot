@@ -11,6 +11,7 @@ import ContractComparison from './components/ContractComparison';
 import ComplianceChecker from './components/ComplianceChecker';
 import UploadModal from './components/UploadModal';
 import AuditReportModal from './components/AuditReportModal';
+import BangladeshLegalMap from './components/BangladeshLegalMap';
 import { SAMPLE_CONTRACTS } from './data/sampleContracts';
 import { INITIAL_DEMO_SESSIONS } from './data/bangladeshLaws';
 
@@ -345,6 +346,7 @@ export default function App() {
         onTogglePin={handleTogglePin}
         activeTab={viewMode}
         onNavigateToLanding={() => setViewMode('landing')}
+        onNavigateToLocator={() => setViewMode('locator')}
         lang={lang}
       />
 
@@ -464,6 +466,29 @@ export default function App() {
                   </button>
                   <ComplianceChecker 
                     contract={currentContract}
+                  />
+                </div>
+              )}
+
+              {/* Bangladesh Court & Police Station Locator Map */}
+              {viewMode === 'locator' && (
+                <div className="p-4 sm:p-8 max-w-7xl mx-auto w-full animate-in fade-in duration-200">
+                  <div className="flex items-center justify-between mb-6">
+                    <button
+                      onClick={() => setViewMode('home')}
+                      className="text-xs font-semibold text-[#006a4e] hover:text-[#0d5c46] flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 transition cursor-pointer"
+                    >
+                      ← {lang === 'en' ? 'Back to Copilot' : 'কোপাইলটে ফিরুন'}
+                    </button>
+                    <div className="text-xs text-slate-500 font-medium">
+                      {lang === 'en' ? 'Live GPS Nearest Jurisdiction Radar' : 'লাইভ জিপিএস বিচারিক ও থানা অধিক্ষেত্র রেডার'}
+                    </div>
+                  </div>
+                  <BangladeshLegalMap 
+                    lang={lang} 
+                    onLaunchWithPrompt={(prompt) => {
+                      handleSendMessageFromHome(prompt);
+                    }} 
                   />
                 </div>
               )}

@@ -43,6 +43,26 @@
   background-position: 0 0, center top;
 }
 
+/* Leaflet map custom markers & popup styling */
+.custom-leaflet-user-marker,
+.custom-leaflet-station-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: 18px !important;
+  box-shadow: 0 12px 30px -5px rgba(0, 0, 0, 0.15) !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+.leaflet-popup-content {
+  margin: 0 !important;
+  line-height: inherit !important;
+}
+
 /* Whizzy signature cyan stepped pillars at bottom */
 .whizzy-pillars {
   display: flex;

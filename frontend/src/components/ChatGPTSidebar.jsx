@@ -9,7 +9,8 @@ import {
   MessageSquare,
   Scale,
   Gift,
-  X
+  X,
+  Compass
 } from 'lucide-react';
 
 export default function ChatGPTSidebar({ 
@@ -23,6 +24,7 @@ export default function ChatGPTSidebar({
   onTogglePin,
   activeTab,
   onNavigateToLanding,
+  onNavigateToLocator,
   lang = 'bn'
 }) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -87,7 +89,7 @@ export default function ChatGPTSidebar({
       </div>
 
       {/* 2. New Chat Option (At the very top) */}
-      <div className="px-3 pt-3 pb-2">
+      <div className="px-3 pt-3 pb-2 space-y-1.5">
         <button
           onClick={onNewChat}
           className="w-full bg-white hover:bg-slate-50 border border-slate-200/90 text-slate-800 rounded-xl py-2 px-3 text-xs font-semibold flex items-center justify-between transition shadow-2xs group"
@@ -100,6 +102,27 @@ export default function ChatGPTSidebar({
             ⌘K
           </kbd>
         </button>
+
+        {onNavigateToLocator && (
+          <button
+            onClick={onNavigateToLocator}
+            className={`w-full border rounded-xl py-2 px-3 text-xs font-semibold flex items-center justify-between transition shadow-2xs cursor-pointer ${
+              activeTab === 'locator'
+                ? 'bg-[#006a4e] text-white border-[#006a4e]'
+                : 'bg-white hover:bg-slate-50 border-slate-200/90 text-slate-800'
+            }`}
+          >
+            <div className="flex items-center gap-2">
+              <Compass className={`w-4 h-4 ${activeTab === 'locator' ? 'text-white' : 'text-[#006a4e]'}`} />
+              <span>{isEn ? 'Courts & Police Map' : 'আদালত ও থানা ম্যাপ'}</span>
+            </div>
+            <span className={`text-[10px] px-1.5 py-0.2 rounded font-mono font-bold ${
+              activeTab === 'locator' ? 'bg-white/20 text-white' : 'bg-emerald-50 text-[#006a4e]'
+            }`}>
+              GPS
+            </span>
+          </button>
+        )}
       </div>
 
       {/* 3. Search Section (To find any chat) */}

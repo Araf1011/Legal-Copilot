@@ -42,6 +42,7 @@ import {
   AlertCircle
 } from 'lucide-react';
 import bangladeshLegalRulesBg from '../assets/bangladesh-green-nature-map.jpg';
+import BangladeshLegalMap from './BangladeshLegalMap';
 
 export default function LandingPage({ onLaunchApp, onLaunchWithPrompt }) {
   // Navigation tabs: 'home' | 'law' | 'locator' | 'helpline'
@@ -1428,85 +1429,8 @@ PRAYER: That the Hon'ble Court be pleased to enlarge the accused on bail pending
 
             </div>
 
-            {/* Directory Card with Division Filter */}
-            <div className="bg-white rounded-3xl border-2 border-[#d6cebf] shadow-md p-6 sm:p-8">
-              
-              <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-b border-slate-200 pb-5 mb-6">
-                <div className="flex items-center gap-2">
-                  <Landmark className="w-5 h-5 text-[#0f766e]" />
-                  <span className="font-editorial text-lg font-bold text-slate-900">
-                    {isEn ? 'Territorial Division & Metropolitan Directory' : 'জেলা ও মেট্রোপলিটন জোন ভিত্তিক তালিকা'}
-                  </span>
-                </div>
-
-                {/* Division Tabs */}
-                <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl text-xs font-semibold">
-                  <button
-                    onClick={() => setSelectedDivision('dhaka')}
-                    className={`px-3.5 py-1.5 rounded-lg transition ${selectedDivision === 'dhaka' ? 'bg-white text-[#006a4e] shadow-2xs font-bold' : 'text-slate-600 hover:text-slate-900'}`}
-                  >
-                    {isEn ? 'Dhaka' : 'ঢাকা'}
-                  </button>
-                  <button
-                    onClick={() => setSelectedDivision('chittagong')}
-                    className={`px-3.5 py-1.5 rounded-lg transition ${selectedDivision === 'chittagong' ? 'bg-white text-[#006a4e] shadow-2xs font-bold' : 'text-slate-600 hover:text-slate-900'}`}
-                  >
-                    {isEn ? 'Chittagong' : 'চট্টগ্রাম'}
-                  </button>
-                  <button
-                    onClick={() => setSelectedDivision('sylhet')}
-                    className={`px-3.5 py-1.5 rounded-lg transition ${selectedDivision === 'sylhet' ? 'bg-white text-[#006a4e] shadow-2xs font-bold' : 'text-slate-600 hover:text-slate-900'}`}
-                  >
-                    {isEn ? 'Sylhet' : 'সিলেট'}
-                  </button>
-                </div>
-              </div>
-
-              {/* Locations List */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {(stationLocations[selectedDivision] || []).map((loc, i) => (
-                  <div 
-                    key={i} 
-                    className="p-5 rounded-2xl bg-[#faf8f5] border border-slate-200 hover:border-[#0d9488] transition flex flex-col justify-between"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-2 mb-2">
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-white text-slate-700 border border-slate-200 font-bold">
-                          {loc.type}
-                        </span>
-                        <span className="text-[11px] font-mono text-[#0f766e] font-semibold">
-                          {loc.phone}
-                        </span>
-                      </div>
-
-                      <h4 className="font-bold text-sm text-slate-900 mb-1.5">
-                        {loc.name}
-                      </h4>
-
-                      <div className="text-xs text-slate-600 flex items-start gap-1.5 mb-2">
-                        <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0 mt-0.5" />
-                        <span>{loc.address}</span>
-                      </div>
-
-                      <div className="text-[11px] text-slate-500 bg-white p-2.5 rounded-lg border border-slate-100">
-                        <span className="font-semibold text-slate-700">{isEn ? 'Jurisdiction:' : 'এখতিয়ার:'}</span> {loc.jurisdiction}
-                      </div>
-                    </div>
-
-                    <div className="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between text-xs">
-                      <button 
-                        onClick={() => onLaunchWithPrompt(isEn ? `Explain the territorial legal jurisdiction and filing procedures for ${loc.name}.` : `আমাকে ${loc.name} এর অধিক্ষেত্র ও আইনি কার্যক্রম সম্পর্কে বিস্তারিত জানান।`)}
-                        className="text-[#0f766e] font-bold hover:underline flex items-center gap-1"
-                      >
-                        <span>{isEn ? 'Procedural Guidance' : 'আইনি প্রক্রিয়া জানুন'}</span>
-                        <ChevronRight className="w-3 h-3" />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-            </div>
+            {/* Interactive GPS Bangladesh Map & Nearest Facilities Directory */}
+            <BangladeshLegalMap lang={lang} onLaunchWithPrompt={onLaunchWithPrompt} />
 
           </div>
         </div>
