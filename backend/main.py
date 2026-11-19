@@ -21,8 +21,16 @@ app = FastAPI(
 )
 
 # credentials + "*" is rejected by browsers, so list real origins (comma-separated in .env)
-_origins = [o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173").split(",") if o.strip()]
-app.add_middleware(CORSMiddleware, allow_origins=_origins, allow_methods=["GET", "POST"], allow_headers=["Content-Type"])
+# Default includes localhost dev + all *.vercel.app preview deployments
+_default_origins = "http://localhost:5173,http://127.0.0.1:5173"
+_origins = [o.strip() for o in os.getenv("CORS_ORIGINS", _default_origins).split(",") if o.strip()]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",   # all Vercel preview URLs
+    allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
+)
 
 coordinator = CrewAILegalCoordinator(rag_knowledge_base)
 
@@ -57,6 +65,12 @@ class QueryResponse(BaseModel):
     warnings: List[str] = []
     sources: List[Source] = []
     response: str
+
+
+@app.get("/health")
+def health_alias():
+    """Railway healthcheck endpoint."""
+    return {"status": "ok"}
 
 
 @app.get("/")
