@@ -83,27 +83,28 @@ export default function WhizzyHomeView({
 
   const quickPills = [
     {
-      id: 'think-bigger',
-      label: 'Think Bigger',
-      icon: (
-        <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="3" />
-          <path d="M12 2v4m0 12v4M2 12h4m12 0h4m-3.5-6.5-2.8 2.8m-7.4 7.4-2.8 2.8m0-13 2.8 2.8m7.4 7.4 2.8 2.8" />
-        </svg>
-      ),
-      query: `Analyze ${currentContract.title} for systemic commercial vulnerabilities and disproportionate indemnification exposure.`
+      id: 'ni-138',
+      label: 'NI Act § 138 (Check Bounce)',
+      icon: <Scale className="w-3.5 h-3.5 text-[#006a4e]" />,
+      query: `Draft a statutory legal notice under Section 138 of the Negotiable Instruments Act 1881 for a dishonoured cheque of BDT 1,500,000/- with 'Insufficient Funds'.`
     },
     {
-      id: 'deep-research',
-      label: 'Deep Research',
-      icon: <Globe className="w-3.5 h-3.5" />,
-      query: `Run deep research on Delaware UCC Section 2-719 enforceability regarding the 1-month liability cap in ${currentContract.title}.`
+      id: 'crpc-bail',
+      label: 'CrPC § 497 Bail',
+      icon: <Sparkles className="w-3.5 h-3.5 text-[#006a4e]" />,
+      query: `What are the judicial grounds for securing bail in non-bailable offenses under CrPC Section 497 in Bangladesh? Cite 50 DLR (AD) 161.`
     },
     {
-      id: 'more',
-      label: 'More',
-      icon: <PlusSquare className="w-3.5 h-3.5" />,
-      query: `Provide an executive 3-bullet summary of ${currentContract.title} for the CEO before signing.`
+      id: 'penal-fraud',
+      label: 'Penal Code § 420/406',
+      icon: <Globe className="w-3.5 h-3.5 text-[#006a4e]" />,
+      query: `Analyze the legal difference between breach of commercial contract versus criminal cheating under Penal Code Section 420 and criminal breach of trust under Section 406.`
+    },
+    {
+      id: 'labour-termination',
+      label: 'Labour Act § 26',
+      icon: <PlusSquare className="w-3.5 h-3.5 text-[#006a4e]" />,
+      query: `Calculate mandatory severance benefits, gratuity, and notice pay for a permanent officer terminated under Section 26 of Bangladesh Labour Act 2006.`
     }
   ];
 
@@ -126,10 +127,18 @@ export default function WhizzyHomeView({
       {/* Main Center Content */}
       <div className="w-full max-w-2xl mx-auto flex flex-col items-center -mt-12 z-10">
         
-        {/* Editorial Serif Headline */}
-        <h1 className="font-editorial text-4xl sm:text-[46px] font-bold text-slate-900 tracking-tight text-center mb-8">
-          What can I do for you today?
+        {/* Sovereign Legal Badge & Editorial Headline */}
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs text-[#006a4e] font-semibold mb-3 shadow-2xs">
+          <Scale className="w-3.5 h-3.5 text-[#006a4e]" />
+          <span>Supreme Court & Bangladesh Statutory Intelligence</span>
+        </div>
+
+        <h1 className="font-editorial text-3xl sm:text-[44px] font-bold text-slate-900 tracking-tight text-center mb-3">
+          AI Legal Counsel for Bangladesh Jurisprudence
         </h1>
+        <p className="text-xs sm:text-sm text-slate-600 text-center max-w-lg mb-8 leading-relaxed">
+          Cross-reference 500+ official Bangladesh Acts, draft statutory notices, and verify court jurisdiction in seconds.
+        </p>
 
         {/* Central Search / Prompt Card */}
         <div className="w-full whizzy-input-card rounded-[22px] p-4 transition-all">
@@ -140,9 +149,9 @@ export default function WhizzyHomeView({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={isListening ? "Listening to your voice..." : "What do you want to know..."}
+            placeholder={isListening ? "Listening to your voice..." : "Ask any query on Bangladesh law, Penal Code, CrPC, NI Act, or contracts..."}
             className={`w-full bg-transparent border-0 text-sm sm:text-base text-slate-800 placeholder-slate-400 focus:outline-none resize-none px-1 py-1 ${
-              isListening ? 'animate-pulse text-teal-700 font-medium' : ''
+              isListening ? 'animate-pulse text-[#006a4e] font-medium' : ''
             }`}
           />
 
@@ -150,7 +159,7 @@ export default function WhizzyHomeView({
           <div className="flex items-center justify-between pt-2">
             
             {/* Left Tools & Pills */}
-            <div className="flex items-center gap-2 flex-wrap">
+            <div className="flex items-center gap-1.5 flex-wrap">
               {/* Paperclip Button */}
               <button 
                 type="button"
@@ -160,35 +169,17 @@ export default function WhizzyHomeView({
                 <Paperclip className="w-3.5 h-3.5" />
               </button>
 
-              {/* Think Bigger Pill */}
-              <button
-                type="button"
-                onClick={() => setInput(quickPills[0].query)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
-              >
-                {quickPills[0].icon}
-                <span>Think Bigger</span>
-              </button>
-
-              {/* Deep Research Pill */}
-              <button
-                type="button"
-                onClick={() => setInput(quickPills[1].query)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
-              >
-                {quickPills[1].icon}
-                <span>Deep Research</span>
-              </button>
-
-              {/* More Pill */}
-              <button
-                type="button"
-                onClick={() => setInput(quickPills[2].query)}
-                className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
-              >
-                {quickPills[2].icon}
-                <span>More</span>
-              </button>
+              {quickPills.slice(0, 3).map((pill) => (
+                <button
+                  key={pill.id}
+                  type="button"
+                  onClick={() => setInput(pill.query)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-[#006a4e] bg-white hover:bg-emerald-50/50 text-slate-700 hover:text-[#006a4e] text-xs font-medium transition shadow-2xs"
+                >
+                  {pill.icon}
+                  <span>{pill.label}</span>
+                </button>
+              ))}
             </div>
 
             {/* Right Action Icons */}
@@ -200,19 +191,19 @@ export default function WhizzyHomeView({
                 className={`w-8 h-8 rounded-full border flex items-center justify-center transition shadow-2xs ${
                   isListening 
                     ? 'border-rose-400 bg-rose-50 text-rose-600 animate-bounce' 
-                    : 'border-slate-200/90 hover:border-slate-300 bg-white text-slate-600'
+                    : 'border-slate-200/90 hover:border-[#006a4e] bg-white text-slate-600'
                 }`}
                 title={isListening ? "Stop listening" : "Real-time Voice Dictation"}
               >
                 {isListening ? <MicOff className="w-3.5 h-3.5" /> : <Mic className="w-3.5 h-3.5" />}
               </button>
 
-              {/* Teal Up-Arrow Send Button */}
+              {/* Sovereign Green Up-Arrow Send Button */}
               <button
                 type="button"
                 onClick={handleSubmit}
                 disabled={!input.trim()}
-                className="w-8 h-8 rounded-full bg-teal-600 hover:bg-teal-700 disabled:opacity-30 text-white flex items-center justify-center transition shadow-xs"
+                className="w-8 h-8 rounded-full bg-[#006a4e] hover:bg-[#00543e] disabled:opacity-30 text-white flex items-center justify-center transition shadow-xs"
                 title="Send query"
               >
                 <ArrowUp className="w-4 h-4 stroke-[2.5]" />

@@ -38,7 +38,7 @@ function FormattedMessage({ text }) {
         <ul key={`ul-${elements.length}`} className="space-y-1.5 my-2 pl-1">
           {currentList.map((item, idx) => (
             <li key={idx} className="flex items-start gap-2">
-              <span className="text-teal-600 font-bold mt-0.5 select-none">•</span>
+              <span className="text-[#006a4e] font-bold mt-0.5 select-none">•</span>
               <span className="flex-1 text-slate-800">{formatInline(item)}</span>
             </li>
           ))}
@@ -61,7 +61,7 @@ function FormattedMessage({ text }) {
         return <em key={i} className="italic text-slate-700">{part.slice(1, -1)}</em>;
       }
       if (part.startsWith('`') && part.endsWith('`')) {
-        return <code key={i} className="px-1.5 py-0.5 rounded bg-slate-100 text-teal-800 text-xs font-mono">{part.slice(1, -1)}</code>;
+        return <code key={i} className="px-1.5 py-0.5 rounded bg-emerald-50 text-[#006a4e] text-xs font-mono font-bold">{part.slice(1, -1)}</code>;
       }
       return part;
     });
@@ -81,7 +81,7 @@ function FormattedMessage({ text }) {
       flushList();
       const quoteText = trimmed.replace(/^>\s*/, '');
       elements.push(
-        <blockquote key={`quote-${i}`} className="border-l-3 border-teal-600 pl-3.5 py-1.5 my-3 text-slate-700 italic bg-teal-50/40 rounded-r-lg">
+        <blockquote key={`quote-${i}`} className="border-l-3 border-[#006a4e] pl-3.5 py-1.5 my-3 text-slate-700 italic bg-emerald-50/50 rounded-r-lg">
           {formatInline(quoteText)}
         </blockquote>
       );
@@ -105,7 +105,7 @@ function FormattedMessage({ text }) {
         i++;
       }
       elements.push(
-        <pre key={`code-${i}`} className="p-3 my-2.5 bg-slate-900 text-teal-300 font-mono text-xs rounded-xl overflow-x-auto shadow-inner">
+        <pre key={`code-${i}`} className="p-3 my-2.5 bg-slate-900 text-emerald-300 font-mono text-xs rounded-xl overflow-x-auto shadow-inner">
           {codeLines.join('\n')}
         </pre>
       );
@@ -443,7 +443,7 @@ export default function WhizzyChatView({
                     className="hover:text-slate-600 transition p-1"
                     title="Copy response"
                   >
-                    {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-teal-600" /> : <Copy className="w-3.5 h-3.5" />}
+                    {copiedId === msg.id ? <Check className="w-3.5 h-3.5 text-[#006a4e]" /> : <Copy className="w-3.5 h-3.5" />}
                   </button>
 
                   <button 
@@ -456,7 +456,7 @@ export default function WhizzyChatView({
 
                   <button 
                     onClick={() => handleFeedback(msg.id, 'up')}
-                    className={`hover:text-slate-600 transition p-1 ${feedback[msg.id] === 'up' ? 'text-teal-600' : ''}`}
+                    className={`hover:text-slate-600 transition p-1 ${feedback[msg.id] === 'up' ? 'text-[#006a4e]' : ''}`}
                     title="Good response"
                   >
                     <ThumbsUp className="w-3.5 h-3.5" />
@@ -491,7 +491,7 @@ export default function WhizzyChatView({
             <div className="space-y-4 text-slate-800 text-sm leading-relaxed pt-1 animate-in fade-in duration-150">
               {thinkingStep && (
                 <div className="text-xs text-slate-500 italic flex items-center gap-2 bg-slate-50 border border-slate-100 rounded-lg px-3 py-1.5 w-fit">
-                  <Sparkles className="w-3.5 h-3.5 text-teal-600 animate-spin" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#006a4e] animate-spin" />
                   <span>{thinkingStep}</span>
                 </div>
               )}
@@ -499,7 +499,7 @@ export default function WhizzyChatView({
               {streamingText && (
                 <div className="text-slate-800 text-sm leading-relaxed font-normal">
                   <FormattedMessage text={streamingText} />
-                  <span className="inline-block w-2 h-4 ml-1 bg-teal-600 animate-pulse align-middle rounded-xs" />
+                  <span className="inline-block w-2 h-4 ml-1 bg-[#006a4e] animate-pulse align-middle rounded-xs" />
                 </div>
               )}
             </div>
@@ -547,16 +547,16 @@ export default function WhizzyChatView({
                   onClick={() => startRealTimeStream(`Analyze ${contract.title} for systemic commercial vulnerabilities.`, false)}
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-teal-600" />
+                  <Sparkles className="w-3.5 h-3.5 text-[#006a4e]" />
                   <span>Think Bigger</span>
                 </button>
 
                 <button
                   type="button"
                   onClick={() => startRealTimeStream(`Deep statutory audit on ${contract.governingLaw} precedents.`, false)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-[#006a4e] bg-white hover:bg-emerald-50/50 text-slate-700 hover:text-[#006a4e] text-xs font-medium transition shadow-2xs"
                 >
-                  <Globe className="w-3.5 h-3.5 text-teal-600" />
+                  <Globe className="w-3.5 h-3.5 text-[#006a4e]" />
                   <span>Deep Research</span>
                 </button>
               </div>
@@ -569,7 +569,7 @@ export default function WhizzyChatView({
                   className={`w-8 h-8 rounded-full border flex items-center justify-center transition shadow-2xs ${
                     isListening 
                       ? 'border-rose-400 bg-rose-50 text-rose-600 animate-bounce' 
-                      : 'border-slate-200/90 hover:border-slate-300 bg-white text-slate-600'
+                      : 'border-slate-200/90 hover:border-[#006a4e] bg-white text-slate-600'
                   }`}
                   title={isListening ? "Stop listening" : "Real-time Voice Dictation"}
                 >
@@ -591,7 +591,7 @@ export default function WhizzyChatView({
                     type="button"
                     onClick={() => startRealTimeStream(input, false)}
                     disabled={!input.trim()}
-                    className="w-8 h-8 rounded-full bg-teal-600 hover:bg-teal-700 disabled:opacity-30 text-white flex items-center justify-center transition shadow-xs"
+                    className="w-8 h-8 rounded-full bg-[#006a4e] hover:bg-[#00543e] disabled:opacity-30 text-white flex items-center justify-center transition shadow-xs"
                     title="Send message"
                   >
                     <ArrowUp className="w-4 h-4 stroke-[2.5]" />
