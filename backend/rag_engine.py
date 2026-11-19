@@ -134,6 +134,11 @@ class LegalKnowledgeBase:
         if not self.documents:
             self.mode_reason = "no documents"
             return
+        if os.getenv("DISABLE_DENSE", "").lower() in ("1", "true", "yes") or EMBED_MODEL in ("none", ""):
+            self.mode = "lexical"
+            self.mode_reason = "dense retrieval disabled (BM25 lexical RAG active)"
+            log.info(self.mode_reason)
+            return
         try:
             import chromadb
             if self._injected_embedder is None:
