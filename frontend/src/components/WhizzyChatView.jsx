@@ -134,8 +134,10 @@ export default function WhizzyChatView({
   onToggleInspector,
   isInspectorOpen,
   selectedModel = 'Legal-Gemini 2.5 Pro',
-  setSelectedModel
+  setSelectedModel,
+  lang = 'bn'
 }) {
+  const isEn = lang === 'en';
   const [input, setInput] = useState('');
   const [copiedId, setCopiedId] = useState(null);
   const [feedback, setFeedback] = useState({});
@@ -248,7 +250,7 @@ export default function WhizzyChatView({
     setInput('');
     setIsGenerating(true);
     setStreamingText('');
-    setThinkingStep('Analyzing contract clauses & statutory precedents...');
+    setThinkingStep(isEn ? 'Analyzing contract clauses & statutory precedents...' : 'ধারা ও আইনি নজির বিশ্লেষণ করা হচ্ছে...');
 
     if (!isExistingUserMsg) {
       const userMsg = {
@@ -265,11 +267,11 @@ export default function WhizzyChatView({
 
     // Progressive thinking indicators
     const t1 = setTimeout(() => {
-      setThinkingStep('Searching Delaware UCC § 2-719 & commercial case law...');
+      setThinkingStep(isEn ? 'Searching Bangladesh statutes & case law...' : 'বাংলাদেশ আইন ও মামলার নজির খোঁজা হচ্ছে...');
     }, 450);
 
     const t2 = setTimeout(() => {
-      setThinkingStep('Synthesizing market-standard redlines...');
+      setThinkingStep(isEn ? 'Synthesizing statutory redlines...' : 'ধারাভিত্তিক সমাধান তৈরি করা হচ্ছে...');
     }, 950);
 
     const t3 = setTimeout(() => {
@@ -348,29 +350,16 @@ export default function WhizzyChatView({
   };
 
   return (
-    <div className="flex-1 flex flex-col h-full bg-white relative overflow-hidden select-text">
-      
-      {/* Stepped Translucent Cyan Pillars at Bottom (Whizzy Signature) */}
-      <div className="whizzy-pillars">
-        <div className="whizzy-pillar h-16 opacity-30" />
-        <div className="whizzy-pillar h-24 opacity-50" />
-        <div className="whizzy-pillar h-36 opacity-70" />
-        <div className="whizzy-pillar h-48 opacity-85" />
-        <div className="whizzy-pillar h-56 opacity-95" />
-        <div className="whizzy-pillar h-48 opacity-85" />
-        <div className="whizzy-pillar h-36 opacity-70" />
-        <div className="whizzy-pillar h-24 opacity-50" />
-        <div className="whizzy-pillar h-16 opacity-30" />
-      </div>
+    <div className="flex-1 flex flex-col h-full bg-[#faf8f5] relative overflow-hidden select-text">
 
       {/* Main Conversation Scroll View */}
-      <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-6 z-10">
-        <div className="max-w-2xl mx-auto space-y-6 pb-48">
+      <div className="flex-1 overflow-y-auto px-4 sm:px-6 pt-8 sm:pt-10 pb-48 z-10">
+        <div className="max-w-2xl mx-auto space-y-6">
           
           {/* Centered Date Pill ("TODAY") */}
           <div className="flex justify-center">
             <span className="text-[11px] font-semibold text-slate-400 tracking-wider uppercase select-none">
-              TODAY
+              {isEn ? 'TODAY' : 'আজকের কথোপকথন'}
             </span>
           </div>
 
@@ -525,7 +514,9 @@ export default function WhizzyChatView({
                   startRealTimeStream(input, false);
                 }
               }}
-              placeholder={isListening ? "Listening to your voice..." : "What do you want to know..."}
+              placeholder={isListening
+                ? (isEn ? 'Listening to your voice...' : 'শুনছি...')
+                : (isEn ? 'What do you want to know...' : 'আপনার আইনি প্রশ্ন লিখুন...')}
               className={`w-full bg-transparent border-0 text-xs sm:text-sm text-slate-800 placeholder-slate-400 focus:outline-none px-2 py-1 ${
                 isListening ? 'animate-pulse text-teal-700 font-medium' : ''
               }`}
@@ -548,7 +539,7 @@ export default function WhizzyChatView({
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 text-xs font-medium transition shadow-2xs"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-[#006a4e]" />
-                  <span>Think Bigger</span>
+                  <span>{isEn ? 'Think Bigger' : 'বিস্তারিত বিশ্লেষণ'}</span>
                 </button>
 
                 <button
@@ -557,7 +548,7 @@ export default function WhizzyChatView({
                   className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200/90 hover:border-[#006a4e] bg-white hover:bg-emerald-50/50 text-slate-700 hover:text-[#006a4e] text-xs font-medium transition shadow-2xs"
                 >
                   <Globe className="w-3.5 h-3.5 text-[#006a4e]" />
-                  <span>Deep Research</span>
+                  <span>{isEn ? 'Deep Research' : 'গভীর গবেষণা'}</span>
                 </button>
               </div>
 
@@ -618,8 +609,11 @@ export default function WhizzyChatView({
               </button>
 
               {isModeDropdownOpen && (
-                <div className="absolute left-0 bottom-full mb-2 w-44 bg-white border border-slate-200 rounded-xl shadow-lg p-1 z-30">
-                  {['Direct Chat', 'Contract Deep Audit', 'Clause Redlining'].map((m) => (
+                <div className="absolute left-0 bottom-full mb-2 w-48 bg-white border border-slate-200 rounded-xl shadow-lg p-1 z-30">
+                  {(isEn
+                    ? ['Direct Chat', 'Contract Deep Audit', 'Clause Redlining']
+                    : ['সরাসরি চ্যাট', 'চুক্তি গভীর বিশ্লেষণ', 'ধারা পুনর্লিখন']
+                  ).map((m) => (
                     <button
                       key={m}
                       onClick={() => {
@@ -636,7 +630,7 @@ export default function WhizzyChatView({
             </div>
 
             <div className="relative flex items-center gap-2">
-              <span className="text-slate-400">Models</span>
+              <span className="text-slate-400">{isEn ? 'Models' : 'মডেল'}</span>
               <button
                 onClick={() => setIsModelDropdownOpen(!isModelDropdownOpen)}
                 className="flex items-center gap-1.5 text-slate-700 font-semibold hover:text-slate-900 transition"

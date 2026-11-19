@@ -21,8 +21,10 @@ export default function WhizzyHomeView({
   onSendMessage, 
   currentContract, 
   selectedModel, 
-  setSelectedModel 
+  setSelectedModel,
+  lang = 'bn'
 }) {
+  const isEn = lang === 'en';
   const [input, setInput] = useState('');
   const [directChatMode, setDirectChatMode] = useState('Direct Chat');
   const [isModelDropdownOpen, setIsModelDropdownOpen] = useState(false);
@@ -109,35 +111,27 @@ export default function WhizzyHomeView({
   ];
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-4 relative select-none min-h-[580px]">
-      
-      {/* Stepped Translucent Cyan Pillars at Bottom (Whizzy Signature) */}
-      <div className="whizzy-pillars">
-        <div className="whizzy-pillar h-16 opacity-30" />
-        <div className="whizzy-pillar h-24 opacity-50" />
-        <div className="whizzy-pillar h-36 opacity-70" />
-        <div className="whizzy-pillar h-48 opacity-85" />
-        <div className="whizzy-pillar h-56 opacity-95" />
-        <div className="whizzy-pillar h-48 opacity-85" />
-        <div className="whizzy-pillar h-36 opacity-70" />
-        <div className="whizzy-pillar h-24 opacity-50" />
-        <div className="whizzy-pillar h-16 opacity-30" />
-      </div>
+    <div className="flex-1 flex flex-col items-center justify-center px-4 relative select-none min-h-[580px] bg-[#faf8f5]">
+
+      {/* Subtle warm radial gradient background */}
+      <div className="absolute inset-0 pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 0%, #f0ece4 0%, #faf8f5 70%)'}} />
 
       {/* Main Center Content */}
-      <div className="w-full max-w-2xl mx-auto flex flex-col items-center -mt-12 z-10">
+      <div className="w-full max-w-2xl mx-auto flex flex-col items-center py-6 sm:py-8 z-10">
         
         {/* Sovereign Legal Badge & Editorial Headline */}
         <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-xs text-[#006a4e] font-semibold mb-3 shadow-2xs">
           <Scale className="w-3.5 h-3.5 text-[#006a4e]" />
-          <span>Supreme Court & Bangladesh Statutory Intelligence</span>
+          <span>{isEn ? 'Supreme Court & Bangladesh Statutory Intelligence' : 'সুপ্রিম কোর্ট ও বাংলাদেশ আইন বিশ্লেষণ'}</span>
         </div>
 
         <h1 className="font-editorial text-3xl sm:text-[44px] font-bold text-slate-900 tracking-tight text-center mb-3">
-          AI Legal Counsel for Bangladesh Jurisprudence
+          {isEn ? 'AI Legal Counsel for Bangladesh Jurisprudence' : 'বাংলাদেশ আইন ও বিচারিক সহায়তায় AI কোপাইলট'}
         </h1>
         <p className="text-xs sm:text-sm text-slate-600 text-center max-w-lg mb-8 leading-relaxed">
-          Cross-reference 500+ official Bangladesh Acts, draft statutory notices, and verify court jurisdiction in seconds.
+          {isEn
+            ? 'Cross-reference 500+ official Bangladesh Acts, draft statutory notices, and verify court jurisdiction in seconds.'
+            : 'দণ্ডবিধি, CrPC, NI অ্যাক্ট ও চুক্তিসহ ৫০০+ বাংলাদেশ আইনের ধারাভিত্তিক বিশ্লেষণ, আইনি নোটিশ খসড়া ও আদালত এখতিয়ার নিশ্চিত করুন।'}
         </p>
 
         {/* Central Search / Prompt Card */}
@@ -149,7 +143,9 @@ export default function WhizzyHomeView({
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder={isListening ? "Listening to your voice..." : "Ask any query on Bangladesh law, Penal Code, CrPC, NI Act, or contracts..."}
+            placeholder={isListening
+            ? (isEn ? 'Listening to your voice...' : 'শুনছি...')
+            : (isEn ? 'Ask any query on Bangladesh law, Penal Code, CrPC, NI Act, or contracts...' : 'বাংলাদেশ আইন, দণ্ডবিধি, CrPC, NI অ্যাক্ট বা চুক্তি সম্পর্কে প্রশ্ন করুন...')}
             className={`w-full bg-transparent border-0 text-sm sm:text-base text-slate-800 placeholder-slate-400 focus:outline-none resize-none px-1 py-1 ${
               isListening ? 'animate-pulse text-[#006a4e] font-medium' : ''
             }`}
@@ -235,8 +231,11 @@ export default function WhizzyHomeView({
             </button>
 
             {isModeDropdownOpen && (
-              <div className="absolute left-0 mt-2 w-44 bg-white border border-slate-200 rounded-xl shadow-lg p-1 z-30">
-                {['Direct Chat', 'Contract Deep Audit', 'Clause Redlining', 'Statutory Cross-Check'].map((m) => (
+              <div className="absolute left-0 mt-2 w-52 bg-white border border-slate-200 rounded-xl shadow-lg p-1 z-30">
+                {(isEn
+                  ? ['Direct Chat', 'Contract Deep Audit', 'Clause Redlining', 'Statutory Cross-Check']
+                  : ['সরাসরি চ্যাট', 'চুক্তি গভীর বিশ্লেষণ', 'ধারা পুনর্লিখন', 'ধারাভিত্তিক ক্রস-চেক']
+                ).map((m) => (
                   <button
                     key={m}
                     onClick={() => {
@@ -254,7 +253,7 @@ export default function WhizzyHomeView({
 
           {/* Right: Models Dropdown */}
           <div className="relative flex items-center gap-2">
-            <span className="text-slate-400">Models</span>
+            <span className="text-slate-400">{isEn ? 'Models' : 'মডেল'}</span>
             <button
               onClick={() => setIsModelDropdownOpen(!isModelDropdownOpen)}
               className="flex items-center gap-1.5 text-slate-700 font-semibold hover:text-slate-900 transition"
@@ -291,12 +290,17 @@ export default function WhizzyHomeView({
 
         {/* Quick Bangladesh Statutory & Contract Audit Chips */}
         <div className="w-full flex items-center justify-center gap-2 flex-wrap pt-6">
-          {[
+          {(isEn ? [
+            { label: 'NI Act § 138 (Check Bounce)', query: 'What legal steps must be taken within 30 days of check dishonor under NI Act Section 138 in Bangladesh?' },
+            { label: 'Bail under CrPC § 497', query: 'What are the conditions for obtaining bail in non-bailable offenses under CrPC Section 497 in Bangladesh?' },
+            { label: 'GD vs FIR', query: 'Explain the legal difference between filing a General Diary (GD) and an FIR in Bangladesh with CrPC references.' },
+            { label: 'SaaS Liability Cap', query: 'Analyze Enterprise Cloud SaaS Master Services Agreement Section 8.1 for Delaware UCC § 2-719 enforceability.' }
+          ] : [
             { label: 'চেক ডিজঅনার (NI Act 138)', query: 'চেক ডিজঅনার হলে ধারা ১৩৮ অনুযায়ী কী আইনি পদক্ষেপ নিতে হবে?' },
             { label: 'জামিন আবেদন (CrPC 496/497)', query: 'জামিনের আবেদন করার নিয়ম ও জামিনযোগ্য/অজামিনযোগ্য অপরাধের শর্তাবলী কী?' },
-            { label: 'GD vs FIR পার্থক্য', query: 'জিডি (General Diary) এবং এফআইআর (FIR) এর মধ্যে পার্থক্য কী এবং কখন কোনটি করতে হয়?' },
-            { label: 'SaaS Liability Cap Audit', query: 'Analyze Enterprise Cloud SaaS Master Services Agreement Section 8.1 for Delaware UCC § 2-719 enforceability.' }
-          ].map((chip, idx) => (
+            { label: 'GD বনাম FIR পার্থক্য', query: 'জিডি (General Diary) এবং এফআইআর (FIR) এর মধ্যে পার্থক্য কী এবং কখন কোনটি করতে হয়?' },
+            { label: 'শ্রম আইন বরখাস্ত', query: 'বাংলাদেশ শ্রম আইন ২০০৬ অনুযায়ী কর্মী ছাঁটাইয়ে নোটিশ পে ও গ্র্যাচুইটির নিয়ম কী?' }
+          ]).map((chip, idx) => (
             <button
               key={idx}
               onClick={() => onSendMessage(chip.query)}

@@ -25,6 +25,7 @@ export default function App() {
   const [sessions, setSessions] = useState(INITIAL_DEMO_SESSIONS);
   const [currentSessionId, setCurrentSessionId] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [lang, setLang] = useState('bn'); // 'bn' | 'en' — shared across chat app
   
   // Right Inspector drawer toggle
   const [isInspectorOpen, setIsInspectorOpen] = useState(false);
@@ -344,6 +345,7 @@ export default function App() {
         onTogglePin={handleTogglePin}
         activeTab={viewMode}
         onNavigateToLanding={() => setViewMode('landing')}
+        lang={lang}
       />
 
       {/* Main Content Workspace */}
@@ -359,6 +361,8 @@ export default function App() {
           contracts={contracts}
           setCurrentContract={setCurrentContract}
           onNavigateToLanding={() => setViewMode('landing')}
+          lang={lang}
+          onToggleLang={(l) => setLang(l)}
         />
 
           {/* Central Workspace View */}
@@ -373,6 +377,7 @@ export default function App() {
                   currentContract={currentContract}
                   selectedModel={selectedModel}
                   setSelectedModel={setSelectedModel}
+                  lang={lang}
                 />
               )}
 
@@ -391,6 +396,7 @@ export default function App() {
                   isInspectorOpen={isInspectorOpen}
                   selectedModel={selectedModel}
                   setSelectedModel={setSelectedModel}
+                  lang={lang}
                 />
               )}
 
