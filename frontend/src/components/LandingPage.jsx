@@ -164,7 +164,7 @@ export default function LandingPage({ onLaunchApp, onLaunchWithPrompt }) {
     stat1Label: isEn ? 'Bangladesh Gazette Statutes' : 'বাংলাদেশ গেজেট ও আইন',
     stat2Val: isEn ? '64 Districts' : '৬৪ জেলা',
     stat2Label: isEn ? 'Courts & Police Jurisdiction' : 'আদালত ও পুলিশ এখতিয়ার',
-    stat3Val: isEn ? '16,430' : '\u09E7\u09EC,\u09EA\u09E9\u09E6',
+    stat3Val: isEn ? '16430' : '১৬৪৩০',
     stat3Label: isEn ? 'Free Govt Legal Aid' : 'বিনামূল্যে সরকারি আইনি সহায়তা',
     stat4Val: isEn ? '100%' : '\u09E7\u09E6\u09E6%',
     stat4Label: isEn ? 'Statute Reference Verified' : 'ধারাভিত্তিক রেফারেন্স ভেরিফাইড',
