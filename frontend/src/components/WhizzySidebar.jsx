@@ -180,11 +180,11 @@ export default function WhizzySidebar({
           {!isCollapsed && (
             <div className="flex-1 min-w-0">
               <div className="text-xs font-bold text-slate-200 truncate flex items-center gap-1">
-                <span>Legal-Gemini 2.5</span>
+                <span>Llama 3.3 70B (Groq)</span>
                 <Sparkles className="w-3 h-3 text-teal-400" />
               </div>
               <div className="text-[10px] text-teal-400/90 font-mono truncate">
-                Jurisprudence Fine-tuned
+                CrewAI + RAG
               </div>
             </div>
           )}
