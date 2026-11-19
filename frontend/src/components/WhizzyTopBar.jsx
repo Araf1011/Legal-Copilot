@@ -58,7 +58,7 @@ export default function WhizzyTopBar({
   const isEn = lang === 'en';
 
   return (
-    <div className="h-13 px-4 sm:px-6 flex items-center justify-between select-none shrink-0 z-10 bg-white border-b border-slate-200/80">
+    <div className="h-13 px-4 sm:px-6 flex items-center justify-between select-none shrink-0 z-10 bg-white/85 backdrop-blur-md border-b border-stone-200/80">
       
       {/* Left: Sidebar toggle + Backend status */}
       <div className="flex items-center gap-3">

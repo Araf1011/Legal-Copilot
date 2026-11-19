@@ -111,7 +111,7 @@ export default function WhizzyHomeView({
   ];
 
   return (
-    <div className="flex-1 flex flex-col items-center justify-center px-4 relative select-none min-h-[580px] bg-[#faf8f5]">
+    <div className="flex-1 flex flex-col items-center justify-center px-4 relative select-none min-h-[580px] legal-workspace-bg">
 
       {/* Subtle warm radial gradient background */}
       <div className="absolute inset-0 pointer-events-none" style={{background: 'radial-gradient(ellipse 80% 60% at 50% 0%, #f0ece4 0%, #faf8f5 70%)'}} />

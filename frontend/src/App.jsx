@@ -349,7 +349,7 @@ export default function App() {
       />
 
       {/* Main Content Workspace */}
-      <div className="flex-1 flex flex-col h-full overflow-hidden bg-white relative">
+      <div className="flex-1 flex flex-col h-full overflow-hidden legal-workspace-bg relative">
         
         {/* Clean Header Bar */}
         <WhizzyTopBar 
